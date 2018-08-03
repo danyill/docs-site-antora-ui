@@ -12,6 +12,7 @@ const lintJs = require('./tasks/lint-js')
 const pack = require('./tasks/pack')
 const preview = require('./tasks/preview')
 const release = require('./tasks/release')
+const update = require('./tasks/update')
 
 const bundleName = 'ui'
 const buildDir = process.env.CONTEXT === 'deploy-preview' ? 'public/dist' : 'build'
@@ -59,3 +60,5 @@ gulp.task('pack', ['build', 'lint'], () => pack(destDir, buildDir, bundleName))
 gulp.task('release', ['pack'], () => release(buildDir, bundleName, 'couchbase', 'docs-ui', process.env.GITHUB_TOKEN))
 
 gulp.task('default', ['build'])
+
+gulp.task('update', () => update())

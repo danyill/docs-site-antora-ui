@@ -1,0 +1,286 @@
+= Monitoring Statistics
+
+[abstract]
+From the *Data Bucket* menu, information and statistics about buckets and nodes is displayed for the entire Couchbase Server cluster.
+The information is aggregated from all the server nodes within the configured cluster for the selected bucket.
+
+From the menu:Couchbase Web Console[Buckets] menu, click the menu:Statistics[] link for each bucket.
+
+Bucket Selection::
+The [.ui]*Buckets* selection list lets you select which of the buckets configured on your cluster is to be used as the basis for the graph display.
+The statistics shown are aggregated over the whole cluster for the selected bucket.
+
+Interval Selection::
+Periodic Selection::
++
+--
+The [.ui]*Interval* selection at the top of the main graph changes interval display for all graphs displayed on the page.
+
+As the selected interval increases, the amount of statistical data displayed will depend on how long your cluster has been running.
+--
+
+== Individual Bucket Monitoring
+
+Bucket monitoring within the Couchbase Web Console has been updated to show additional detailed information.
+
+<<summary_stats,Summary>>::
+The summary section provides a quick overview of the cluster activity.
+
+<<server_stats,Server Resources>>::
+This section provides information on the server resources across the cluster.
+
+== Admonition Blocks
+
+[TIP]
+This oughta do it!
+
+[NOTE]
+====
+Oh, you've been down _this_ road before.
+====
+
+[WARNING]
+====
+Watch out!
+====
+
+[CAUTION]
+====
+I wouldn't try that if I were you.
+====
+
+[IMPORTANT]
+====
+Don't forget this step!
+====
+
+.Key Points to Remember
+[TIP]
+====
+* Write
+* This
+* Down
+
+If you installed the CLI and the default site generator globally, you can upgrade both of them with the same command.
+
+ $ npm i -g @antora/cli @antora/site-generator-default
+====
+
+[#summary_stats]
+== Bucket Monitoring -- Summary Statistics
+
+The summary section is designed to provide a quick overview of the cluster activity.
+
+image::stats-summary.png[]
+
+The following statistics are available:
+
+.Summary statistics
+[cols="1,3"]
+|===
+| Statistic | Description
+
+| ops per second
+| The total number of operations per second on this bucket.
+
+| cache miss ratio
+| Ratio of reads per second to this bucket which required a read from disk rather than RAM.
+
+|===
+
+The `stale=false` view query argument has been enhanced.
+When an application sends a query that has the `stale` parameter set to false, the application receives all recent changes to the documents, including changes that haven't yet been persisted to disk.
+
+[caption="Best practice"]
+TIP: For better scalability and throughput, we recommend that you set the value of the `stale` parameter to `ok`.
+With the stream-based views, data returned when `stale` is set to `ok` is closer to the key-value data, even though it might not include all of it.
+
+[#server_stats]
+== Monitoring Server Resources
+
+The *Server Resources* statistics section displays the resource information on this server including swap usage, free RAM, CPU utilization percentage,and FTS RAM used.
+
+.A source block that is forced to wrap
+[source,java]
+----
+// Query (fluent API)
+Observable<AsyncN1qlQueryResult> theAirline = bucket.async()
+    .query(
+        N1qlQuery.simple(select("name").from("travel_sample").as("Airline").where(x("id").eq(5209)))
+    );
+return thisAirline;
+----
+
+[#vbucket_stats]
+== Monitoring `vBucket` Resources
+
+[cols="1,3"]
+|===
+| Statistic | Description
+
+| new items per sec.
+a|
+Number of new items created in vBuckets within the specified state.
+
+NOTE: The new items per second is not valid for the Pending state.
+
+| ejections per sec.
+| Number of items ejected per second within the vBuckets of the specified state.
+|===
+
+[#disk_stats]
+== Monitoring Disk Queues
+
+The *Disk Queues* statistics section displays the information for data being placed into the disk queue.
+
+[#dcp_stats]
+== Monitoring DCP Queues
+
+[#dcp_queues,cols="1,3"]
+|===
+| Statistic | Description
+
+| DCP connections
+| Number of internal replication DCP connections in this bucket.
+
+| DCP senders
+| Number of replication senders for this bucket.
+
+| DCP receivers
+| Number of replication receivers for this bucket.
+|===
+
+[#view_stats]
+== Monitoring View Statistics
+
+The *View Stats* show information about individual design documents within the selected bucket.
+
+[#index_stats]
+== Monitoring Index Statistics
+
+The INDEX STATS section provides statistics about the GSI Indexes.
+Statistics are provided per each individual index.
+
+Select `United States of America` from the menu.
+
+[#memcached_stats]
+== Memcached Buckets
+
+For Memcached buckets, Web Console displays a separate group of statistics:
+
+* Situation 1
+.. Client 1 queries view with `stale=false`
+.. Client 1 waits until server updates the index
+.. Client 2 queries view with `stale=false` while re-indexing from Client 1 still in progress
+.. Client 2 will wait until existing index process triggered by Client 1 completes.
+Client 2 gets updated index.
+* Situation 2
+.. Client 1 queries view with `stale=false`
+.. Client 1 waits until server updates the index
+.. Client 2 queries view with `stale=ok` while re-indexing from Client 1 in progress
+.. Client 2 will get the existing index
+* Situation 3
+.. Client 1 queries view with `stale=false`
+.. Client 1 waits until server updates the index
+.. Client 2 queries view with `stale=update_after`
+.. If re-indexing from Client 1 not done, Client 2 gets the existing index.
+If re-indexing from Client 1 is done, Client 2 gets this updated index and triggers re-indexing.
+
+Index updates may be stacked if multiple clients request the view be updated before the information is returned (`stale=false`).
+For `stale=update_after` queries, there is no stacking, since all updates occur after the query has been accessed.
+
+=== Sequential accesses
+
+. Client 1 queries view with stale=ok
+. Client 2 queries view with stale=false
+. View gets updated
+. Client 1 queries a second time view with stale=ok
+. Client 1 gets the updated view version
+
+==== View operations
+
+All views within Couchbase operate as follows:
+
+* Views are updated as the document data is updated in memory.
+** Documents that are stored with an expiry are not automatically removed until the background expiry process removes them from the database.
+This means that expired documents may still exist within the index.
+*** Views are scoped within a design document, with each design document part of a single bucket.
+**** View names must be specified using one or more UTF-8 characters.
+You cannot have a blank view name.
+***** Document IDs that are not UTF-8 encodable are automatically filtered and not included in any view.
+The filtered documents are logged so that they can be identified.
+***** If you have a long view request, use POST instead of GET.
+** Views can only access documents defined within their corresponding bucket.
+You cannot access or aggregate data from multiple buckets within a given view.
+*** Views are created as part of a design document, and each design document exists within the corresponding named bucket.
+
+=== Automated index updates
+
+If `replicaUpdateMinChanges` is set to 0 (zero), then automatic updates are disabled for replica indexes.
+The trigger level can be configured both globally and for individual design documents for all indexes using the REST API.
+
+NOTE: The `ddocs` allow you to set `updateMinChanges` or `replicaUpdateMinChanges` only via options.
+The `updateInterval` can only be set for the whole cluster.
+
+To obtain the current view update daemon settings, access a node within the cluster on the administration port using the URL `\http://nodename:8091/settings/viewUpdateDaemon`:
+
+----
+GET http://Administrator:Password@nodename:8091/settings/viewUpdateDaemon
+----
+
+----
+POST http://nodename:8091/settings/viewUpdateDaemon
+updateInterval=10000&updateMinChanges=7000
+----
+
+[source,json]
+----
+{
+   "_id": "_design/myddoc",
+   "views": {
+      "view1": {
+          "map": "function(doc, meta) { if (doc.value) { emit(doc.value, meta.id);} }"
+      }
+   },
+   "options": {
+       "updateMinChanges": 1000,
+       "replicaUpdateMinChanges": 20000
+   }
+}
+----
+
+You can set this information when creating and updating design documents through the design document REST API.
+To perform this operation using the `curl` tool:
+
+[source,console]
+----
+$ curl -X POST -v -d 'updateInterval=7000&updateMinChanges=7000' \
+    'http://Administrator:Password@192.168.0.72:8091/settings/viewUpdateDaemon'
+----
+
+Partial-set development views are not automatically rebuilt.
+
+=== Couchbase Kafka Connector 3.2.3 GA (2018-02-20)
+
+Options are "DISABLED", "ENABLED", and "FORCED".
+
+Issues resolved in this release:
+
+* https://issues.couchbase.com/browse/KAFKAC-89[KAFKAC-89]: [ENHANCEMENT] Enable NOOP for dead connection detection (Patrik Nordebo)
+* https://issues.couchbase.com/browse/KAFKAC-82[KAFKAC-82]: [FEATURE] Implement log redaction for Kafka Connector
+* https://issues.couchbase.com/browse/KAFKAC-90[KAFKAC-90]: [FEATURE] Source: Add config settings to enable compression
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.couchbase.client</groupId>
+    <artifactId>kafka-connect-couchbase</artifactId>
+    <version>3.2.3</version>
+</dependency>
+----
+
+http://packages.couchbase.com/clients/kafka/3.2.3/kafka-connect-couchbase-3.2.3.zip[kafka-connect-couchbase-3.2.3.zip]
+
+== `spec.volumeClaimTemplates.metadata`
+
+This section demonstrates what happens when the section title does not have any natural wrap opportunities.

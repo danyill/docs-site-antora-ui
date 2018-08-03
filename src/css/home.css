@@ -1,0 +1,245 @@
+.home p {
+  margin: 0;
+}
+
+.home .paragraph {
+  margin-top: 1.25rem;
+}
+
+.home .paragraph.hint {
+  margin-top: 2rem;
+  font-size: 0.9375rem;
+}
+
+.home h1,
+.home h2,
+.home h3 {
+  line-height: 1.2;
+  margin: 0;
+}
+
+.home h1.page {
+  font-size: 2.375rem;
+  margin-top: 3.5rem;
+  text-align: center;
+}
+
+.home .button::before {
+  content: "[";
+  padding-right: 0.25em;
+}
+
+.home .button::after {
+  content: "]";
+  padding-left: 0.25em;
+}
+
+.blade ul,
+.tile ul {
+  line-height: 1.25;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.blade li,
+.tile li {
+  padding: 0.25em 0;
+}
+
+.blade a,
+.tile a {
+  text-decoration: none;
+  position: relative;
+}
+
+.home #preamble {
+  margin: 2rem 0 3rem;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.blade a::before,
+.tile a::before {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: currentColor;
+  transform: scale3d(0, 0.9999, 0.9999);
+  transition-property: transform;
+  transition-duration: 0.3s;
+}
+
+.blade a:focus::before,
+.blade a:hover::before,
+.tile a:focus::before,
+.tile a:hover::before {
+  transform: scale3d(1, 0.9999, 0.9999);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.3s;
+}
+
+.conceal-title > h2 {
+  display: none;
+}
+
+.blades > .sectionbody {
+  display: flex;
+  flex-direction: column;
+}
+
+.blade {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+}
+
+.blade + .blade {
+  margin-top: 0.75rem;
+}
+
+.home .blade {
+  color: #fff;
+}
+
+.home .blade:nth-of-type(1) {
+  background-color: var(--color-brand-pink);
+}
+
+.home .blade:nth-of-type(2) {
+  background-color: var(--color-brand-green);
+}
+
+.home .blade:nth-of-type(3) {
+  background-color: var(--color-brand-light-blue);
+}
+
+.blade h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  padding: 0 0 1rem;
+  position: relative;
+}
+
+.blade h3::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 25%;
+  height: 2px;
+  bottom: 0;
+  background-color: currentColor;
+}
+
+.blade .paragraph {
+  font-weight: var(--weight-light);
+  margin-top: 1rem;
+  flex: 1 0 auto; /* NOTE must specify flex-basis for IE 11 */
+}
+
+.blade .ulist {
+  font-weight: var(--weight-bold);
+  margin: 1.5rem 0 0.5rem;
+  /* overflow-wrap: normal; */
+  word-wrap: normal; /* NOTE not sure why this is required, but without it, list items get spaced apart */
+}
+
+.blade a {
+  color: inherit;
+}
+
+.blade a::after {
+  content: "\00a0>";
+  width: 0;
+  display: inline-block;
+}
+
+.home .tiles {
+  font-size: 1.125rem;
+  margin-top: 2.5rem;
+}
+
+.tiles > h2 {
+  font-size: 2rem;
+  hyphens: auto;
+  padding-bottom: 3.125rem;
+  text-align: center;
+}
+
+.tiles > h2::after {
+  content: "";
+  display: block;
+  background-color: currentColor;
+  width: 5.625rem;
+  height: 1px;
+  margin: 0 auto;
+  margin-bottom: -1px;
+  position: relative;
+  top: 1.375rem;
+}
+
+.tiles > .sectionbody {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tile {
+  flex: 1;
+  margin-bottom: 0.75rem;
+  min-width: 0;
+}
+
+.home .tile {
+  flex-basis: auto;
+  width: 50%;
+}
+
+.tile .title {
+  font-weight: var(--weight-bold);
+}
+
+@media screen and (min-width: 769px) {
+  .home h1.page,
+  .home #preamble {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .blades > .sectionbody {
+    flex-direction: row;
+  }
+
+  .blade h3 {
+    width: 66.66%;
+  }
+
+  .blade h3::after {
+    width: 37.5%; /* NOTE equates to 25% of container */
+  }
+
+  .blade + .blade {
+    margin-top: 0;
+    margin-left: 0.75rem;
+  }
+
+  .home .tiles {
+    padding: 0 10%;
+  }
+
+  .tiles > .sectionbody {
+    margin: 0 -0.5rem;
+  }
+
+  .home .tile {
+    flex-basis: 0;
+  }
+
+  .tile {
+    margin-bottom: 0;
+    padding: 0 0.5rem;
+  }
+}

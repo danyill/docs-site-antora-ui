@@ -1,3 +1,7 @@
+/* globals */
+@import "globals/vars.css";
+@import "globals/utility.css";
+
 @import "typeface-gotham.css";
 @import "typeface-roboto-mono.css";
 @import "base.css";

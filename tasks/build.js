@@ -1,6 +1,5 @@
 'use strict'
 
-const autoprefixer = require('autoprefixer')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
 const concat = require('gulp-concat')
@@ -13,9 +12,9 @@ const mkdirp = require('mkdirp')
 const path = require('path')
 const postcss = require('gulp-postcss')
 const postcssCalc = require('postcss-calc')
+const postcssPresetEnv = require('postcss-preset-env')
 const postcssImport = require('postcss-import')
 const postcssUrl = require('postcss-url')
-const postcssVar = require('postcss-custom-properties')
 const uglify = require('gulp-uglify')
 const vfs = require('vinyl-fs')
 
@@ -42,9 +41,16 @@ module.exports = (src, dest, preview) => {
         },
       },
     ]),
-    postcssVar({ preserve: preview ? 'preserve-computed' : false }),
     postcssCalc(),
-    autoprefixer({ browsers: ['last 2 versions'] }),
+    postcssPresetEnv({
+      autoprefixer: {
+        browsers: ['last 2 versions'],
+      },
+      features: {
+        'custom-media-queries': true,
+        'nesting-rules': true,
+      },
+    }),
     cssnano({ preset: 'default' }),
   ]
 

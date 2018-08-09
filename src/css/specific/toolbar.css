@@ -53,6 +53,7 @@
 
 /* link to GitHub */
 .link-edit {
+  color: var(--aluminum-5);
   font-size: 12px;
   height: var(--lg);
   text-decoration: none;

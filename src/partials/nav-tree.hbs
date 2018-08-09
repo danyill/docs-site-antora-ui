@@ -1,7 +1,7 @@
 {{#if navigation.length}}
 <ul class="nav-list">
   {{#each navigation}}
-  <li class="nav-item{{#if (eq @root.page.url ./url)}} is-current-page{{/if}}{{#if (not ../level)}} is-active{{/if}}" data-depth="{{or ../level 0}}">
+  <li class="nav-item{{#if (eq @root.page.url ./url)}} is-current-page{{/if}}" data-depth="{{or ../level 0}}">
     {{#if ./content}}
     <span class="nav-line">
     {{#if ./items.length}}

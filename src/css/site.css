@@ -2,19 +2,20 @@
 @import "globals/reset.css";
 @import "globals/vars.css";
 @import "globals/utility.css";
+@import "globals/global.css";
+@import "globals/grid.css";
+@import "globals/typography.css";
 
-@import "typeface-gotham.css";
-@import "typeface-roboto-mono.css";
+/* specific */
+@import "specific/header.css";
+@import "specific/toolbar.css";
+
+/* other */
 @import "base.css";
 @import "body.css";
 @import "nav.css";
 @import "toc.css";
-@import "main.css";
-@import "toolbar.css";
-@import "breadcrumbs.css";
 @import "doc.css";
 @import "home.css";
-@import "header.css";
-@import "footer.css";
 @import "highlight.css";
 @import "feedback.css";

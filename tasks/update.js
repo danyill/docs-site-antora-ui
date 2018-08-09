@@ -37,7 +37,7 @@ function getDependencies (url, type) {
       for (let i = 0; i < parsed.scripts.length; i++) {
         scriptLink += `<script src="${parsed.scripts[i]}"></script>`
       }
-      fs.writeFileSync('src/partials/header-shared.hbs', styleLink + scriptLink)
+      fs.writeFileSync('src/partials/marketing.hbs', styleLink + scriptLink)
     })
   })
 };

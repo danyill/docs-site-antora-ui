@@ -1,11 +1,3 @@
-/* NOTE min-width of flex: 1 container = content-width to prevent wrapping by default; min-width: 0 lets content wrap */
-div.body {
-  display: flex;
-  margin-top: var(--height-to-body);
-  /* overflow-wrap: break-word; */
-  word-wrap: break-word; /* IE only supports word-wrap, which is an alias of overflow-wrap */
-}
-
 main {
   flex: 1;
   min-width: 0;

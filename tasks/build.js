@@ -91,5 +91,6 @@ module.exports = (src, dest, preview) => {
     vfs.src('layouts/*.hbs', opts),
 
     vfs.src('partials/*.hbs', opts),
+
   ]).pipe(vfs.dest(dest))
 }

@@ -2,7 +2,9 @@
   "extends": "stylelint-config-standard",
   "rules": {
     "comment-empty-line-before": null,
+    "function-comma-space-after": "never-single-line",
     "no-descending-specificity": null,
     "number-leading-zero": "never",
+    "rule-empty-line-before": null,
   }
 }

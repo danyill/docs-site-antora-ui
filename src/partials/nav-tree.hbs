@@ -1,5 +1,5 @@
 {{#if navigation.length}}
-<ul class="nav-list">
+<ol class="nav-list">
   {{#each navigation}}
   <li class="nav-item{{#if (eq @root.page.url ./url)}} is-current-page{{/if}}" data-depth="{{or ../level 0}}">
     {{#if ./content}}
@@ -19,5 +19,5 @@
 {{> nav-tree navigation=./items level=(increment ../level)}}
   </li>
   {{/each}}
-</ul>
+</ol>
 {{/if}}

@@ -15,3 +15,39 @@ body {
   height: 100%;
   width: 100%;
 }
+
+/* resets that are not part of normalize */
+/* box model reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* reset lists */
+ol,
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* reset inputs */
+input,
+textarea {
+  word-break: normal;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(0,162,223,.25);
+    outline: 0;
+  }
+
+  /* placeholder */
+  &::placeholder {
+    color: var(--aluminum-5);
+  }
+}
+
+textarea {
+  resize: vertical;
+}

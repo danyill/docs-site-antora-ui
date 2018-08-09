@@ -340,12 +340,4 @@ template {
 [hidden] {
   display: none;
 }
-
-/* reset lists */
-ol,
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
 /* stylelint-enable */

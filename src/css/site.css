@@ -6,8 +6,12 @@
 @import "globals/grid.css";
 @import "globals/typography.css";
 
+/* components */
+@import "components/input.css";
+
 /* specific */
 @import "specific/header.css";
+@import "specific/navigation.css";
 @import "specific/toolbar.css";
 
 /* other */

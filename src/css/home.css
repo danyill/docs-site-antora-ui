@@ -8,7 +8,7 @@
 
 .home .paragraph.hint {
   margin-top: 2rem;
-  font-size: 0.9375rem;
+  font-size: .9375rem;
 }
 
 .home h1,
@@ -26,12 +26,12 @@
 
 .home .button::before {
   content: "[";
-  padding-right: 0.25em;
+  padding-right: .25em;
 }
 
 .home .button::after {
   content: "]";
-  padding-left: 0.25em;
+  padding-left: .25em;
 }
 
 .blade ul,
@@ -44,7 +44,7 @@
 
 .blade li,
 .tile li {
-  padding: 0.25em 0;
+  padding: .25em 0;
 }
 
 .blade a,
@@ -68,18 +68,18 @@
   right: 0;
   height: 1px;
   background-color: currentColor;
-  transform: scale3d(0, 0.9999, 0.9999);
+  transform: scale3d(0,.9999,.9999);
   transition-property: transform;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 
 .blade a:focus::before,
 .blade a:hover::before,
 .tile a:focus::before,
 .tile a:hover::before {
-  transform: scale3d(1, 0.9999, 0.9999);
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 0.3s;
+  transform: scale3d(1,.9999,.9999);
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: .3s;
 }
 
 .conceal-title > h2 {
@@ -99,7 +99,7 @@
 }
 
 .blade + .blade {
-  margin-top: 0.75rem;
+  margin-top: .75rem;
 }
 
 .home .blade {
@@ -143,7 +143,7 @@
 
 .blade .ulist {
   font-weight: var(--weight-bold);
-  margin: 1.5rem 0 0.5rem;
+  margin: 1.5rem 0 .5rem;
   /* overflow-wrap: normal; */
   word-wrap: normal; /* NOTE not sure why this is required, but without it, list items get spaced apart */
 }
@@ -189,7 +189,7 @@
 
 .tile {
   flex: 1;
-  margin-bottom: 0.75rem;
+  margin-bottom: .75rem;
   min-width: 0;
 }
 
@@ -205,8 +205,8 @@
 @media screen and (min-width: 769px) {
   .home h1.page,
   .home #preamble {
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    margin-left: .5rem;
+    margin-right: .5rem;
   }
 
   .blades > .sectionbody {
@@ -223,7 +223,7 @@
 
   .blade + .blade {
     margin-top: 0;
-    margin-left: 0.75rem;
+    margin-left: .75rem;
   }
 
   .home .tiles {
@@ -231,7 +231,7 @@
   }
 
   .tiles > .sectionbody {
-    margin: 0 -0.5rem;
+    margin: 0 -.5rem;
   }
 
   .home .tile {
@@ -240,6 +240,6 @@
 
   .tile {
     margin-bottom: 0;
-    padding: 0 0.5rem;
+    padding: 0 .5rem;
   }
 }

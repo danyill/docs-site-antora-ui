@@ -1,8 +1,7 @@
 <main class="article" data-ceiling="topbar">
-  <div class="article-header">
-{{> nav-control}}
-{{> breadcrumbs}}
-{{> toolbar}}
-  </div>
-{{> article}}
+  <nav class="flex align-center toolbar">
+    {{> breadcrumbs}}
+    {{> toolbar}}
+  </nav>
+  {{> article}}
 </main>

@@ -12,9 +12,9 @@
 .doc h6 {
   font-weight: var(--weight-medium);
   hyphens: auto;
-  letter-spacing: -0.025rem;
+  letter-spacing: -.025rem;
   line-height: 1.2;
-  margin: 1.5rem 0 -0.25rem;
+  margin: 1.5rem 0 -.25rem;
 }
 
 .doc h1 {
@@ -38,7 +38,7 @@
   display: block;
   max-width: 5.75rem;
   height: 0;
-  outline: 0.5px solid currentColor;
+  outline: .5px solid currentColor;
   margin-top: 1.0625rem;
 }
 
@@ -61,7 +61,7 @@
 .doc h5 > a.anchor,
 .doc h6 > a.anchor {
   color: var(--color-brand-red);
-  background: -webkit-linear-gradient(-45deg, var(--color-brand-purple), var(--color-brand-red) 75%);
+  background: -webkit-linear-gradient(-45deg,var(--color-brand-purple),var(--color-brand-red) 75%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: var(--weight-normal);
@@ -70,7 +70,7 @@
   width: 2ex;
   margin-left: -1.75ex;
   visibility: hidden;
-  transform: scale(0.9);
+  transform: scale(.9);
   text-align: center;
 }
 
@@ -157,9 +157,9 @@
   text-align: left;
   font-size: 1.125rem;
   font-weight: var(--weight-bold);
-  letter-spacing: -0.025em;
+  letter-spacing: -.025em;
   line-height: 1.2;
-  margin-bottom: 0.25rem;
+  margin-bottom: .25rem;
 }
 
 .doc table.tableblock > tbody {
@@ -172,14 +172,14 @@
 
 .doc th.tableblock {
   font-weight: var(--weight-medium);
-  letter-spacing: -0.025em;
+  letter-spacing: -.025em;
 }
 
 .doc th.tableblock,
 .doc td.tableblock {
   border-width: 0 1px;
-  /* padding: 0.75rem 1.25rem; */
-  padding: 0.75rem 1rem;
+  /* padding: .75rem 1.25rem; */
+  padding: .75rem 1rem;
 }
 
 .doc thead th.tableblock {
@@ -243,11 +243,11 @@ p.tableblock + p.tableblock {
 .doc .admonitionblock td.content {
   display: block;
   flex: 1;
-  font-size: 0.9375rem;
+  font-size: .9375rem;
   hyphens: auto;
   line-height: 1.6;
   min-width: 0;
-  padding: 0.75rem 1rem;
+  padding: .75rem 1rem;
 }
 
 .doc .admonitionblock td.content > .title {
@@ -328,7 +328,7 @@ p.tableblock + p.tableblock {
 
 .doc .imageblock .title {
   font-style: italic;
-  margin-top: 0.5rem;
+  margin-top: .5rem;
 }
 
 .doc .imageblock img,
@@ -338,7 +338,7 @@ p.tableblock + p.tableblock {
 }
 
 .quoteblock.abstract blockquote {
-  font-size: 0.9375rem;
+  font-size: .9375rem;
   margin: 1rem 0 1.5625rem 0;
   font-weight: var(--weight-light);
 }
@@ -364,7 +364,7 @@ p.tableblock + p.tableblock {
 }
 
 .doc ul.checklist {
-  padding-left: 0.5rem;
+  padding-left: .5rem;
   list-style: none;
 }
 
@@ -373,7 +373,7 @@ p.tableblock + p.tableblock {
   display: inline-flex;
   justify-content: center;
   width: 1rem;
-  margin-right: 0.25rem;
+  margin-right: .25rem;
 }
 
 .doc ul.checklist i.fa-check-square-o::before {
@@ -393,12 +393,12 @@ p.tableblock + p.tableblock {
 .doc .ulist .dlist,
 .doc .ulist .olist,
 .doc .ulist .ulist {
-  margin-top: 0.5rem;
+  margin-top: .5rem;
 }
 
 .doc .olist li + li,
 .doc .ulist li + li {
-  margin-top: 0.5rem;
+  margin-top: .5rem;
 }
 
 .doc .ulist .listingblock,
@@ -414,15 +414,15 @@ p.tableblock + p.tableblock {
 .doc .openblock .title {
   font-size: 1.125rem;
   font-weight: var(--weight-bold);
-  letter-spacing: -0.025em;
+  letter-spacing: -.025em;
   line-height: 1.2;
-  margin-bottom: 0.25rem;
+  margin-bottom: .25rem;
 }
 
 .doc .exampleblock > .content {
   background-color: #fff;
   box-shadow: inset 0 0 1.75px #248232;
-  padding: 0.75rem;
+  padding: .75rem;
 }
 
 .doc .exampleblock > .content > :first-child {
@@ -432,7 +432,7 @@ p.tableblock + p.tableblock {
 /*
 .doc .sidebarblock {
   background-color: #eee;
-  padding: 0.75rem 1.5rem;
+  padding: .75rem 1.5rem;
 }
 
 .doc .sidebarblock > .content > .title {
@@ -449,7 +449,7 @@ p.tableblock + p.tableblock {
 */
 
 .doc pre {
-  font-size: 0.875rem;
+  font-size: .875rem;
   line-height: 1.25rem;
   margin: 0;
 }
@@ -458,7 +458,7 @@ p.tableblock + p.tableblock {
 .doc pre.highlight code {
   background-color: #151514;
   color: #f8f8f2;
-  padding: 0.625rem;
+  padding: .625rem;
   white-space: pre-wrap;
   /* NOTE enable these styles if side-to-side scrolling is preferred */
   /*
@@ -477,14 +477,14 @@ p.tableblock + p.tableblock {
   content: attr(data-lang);
   color: #f8f8f2;
   display: none;
-  font-size: 0.75em;
+  font-size: .75em;
   font-weight: var(--weight-light);
   letter-spacing: 1px;
   line-height: 1;
   text-transform: uppercase;
   position: absolute;
-  top: 0.375rem;
-  right: 0.5rem;
+  top: .375rem;
+  right: .5rem;
 }
 
 .doc .listingblock:hover code[data-lang]::before {
@@ -501,7 +501,7 @@ p.tableblock + p.tableblock {
 }
 
 .doc .dlist dt + dd {
-  margin-top: 0.125rem;
+  margin-top: .125rem;
 }
 
 .doc .dlist dd > .openblock > .content > * {
@@ -514,14 +514,14 @@ p.tableblock + p.tableblock {
   border-radius: 100%;
   display: inline-block;
   font-family: "Roboto", sans-serif;
-  font-size: 0.75rem;
+  font-size: .75rem;
   font-style: normal;
   width: 1.25em;
   height: 1.25em;
   line-height: 1.2;
   text-align: center;
-  letter-spacing: -0.25ex;
-  text-indent: -0.25ex;
+  letter-spacing: -.25ex;
+  text-indent: -.25ex;
 }
 
 .doc .conum[data-value]::after {
@@ -533,11 +533,11 @@ p.tableblock + p.tableblock {
 }
 
 .doc .colist {
-  font-size: 0.95rem;
+  font-size: .95rem;
 }
 
 .doc .colist > table tr > td:first-of-type {
-  padding: 0 0.75em;
+  padding: 0 .75em;
   line-height: 1;
 }
 
@@ -547,22 +547,22 @@ p.tableblock + p.tableblock {
 
 .doc b.button::before {
   content: "[";
-  padding-right: 0.25em;
+  padding-right: .25em;
 }
 
 .doc b.button::after {
   content: "]";
-  padding-left: 0.25em;
+  padding-left: .25em;
 }
 
 .doc kbd {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: .7rem;
   background-color: #fafafa;
   border: 1px solid var(--color-border);
-  border-radius: 0.25em;
-  box-shadow: 0 1px 0 var(--color-border), 0 0 0 0.1em #fff inset;
-  padding: 0.25em 0.5em;
+  border-radius: .25em;
+  box-shadow: 0 1px 0 var(--color-border), 0 0 0 .1em #fff inset;
+  padding: .25em .5em;
   vertical-align: text-bottom;
   white-space: nowrap;
 }
@@ -574,11 +574,11 @@ p.tableblock + p.tableblock {
 
 .doc .keyseq {
   font-family: "Roboto Mono", monospace;
-  font-size: 0.9em;
+  font-size: .9em;
 }
 
 .doc .keyseq kbd {
-  margin: 0 0.125em;
+  margin: 0 .125em;
 }
 
 .doc .keyseq kbd:first-child {
@@ -622,7 +622,7 @@ p.tableblock + p.tableblock {
   background-color: var(--color-border);
   height: 1px;
   width: 25%;
-  margin-top: 0.5em;
+  margin-top: .5em;
 }
 
 .doc-tiles aside.toc {

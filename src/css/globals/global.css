@@ -9,3 +9,9 @@ body {
 .wrapper {
   max-width: 100vw;
 }
+
+.svg {
+  fill: currentColor;
+  height: 100%;
+  width: 100%;
+}

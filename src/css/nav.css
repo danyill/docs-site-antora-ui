@@ -20,11 +20,7 @@
 }
 
 .nav-list .nav-li:not(.is-active) > .nav-list {
-  display: none;
-}
-
-.nav-li[data-depth="0"] > .nav-line {
-  text-transform: uppercase;
+  /* display: none; */
 }
 
 .nav-list .nav-li.is-current-page > .nav-line > a.nav-link {

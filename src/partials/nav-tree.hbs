@@ -3,21 +3,24 @@
   {{#each navigation}}
   <li class="nav-li{{#if (eq @root.page.url ./url)}} is-current-page{{/if}}" data-depth="{{or ../level 0}}">
     {{#if ./content}}
-    <span class="nav-line">
-
-    {{#if ./items.length}}
-    <button class="nav-toggle"></button>
-    {{/if}}
 
     {{#if ./url}}
-    <a class="nav-link" href="
+    <a class="flex shrink align-center link nav-link" href="
       {{~#if (eq ./urlType 'internal')}}{{{relativize @root.page.url ./url}}}
-      {{~else}}{{{./url}}}{{~/if}}">{{{./content}}}</a>
+      {{~else}}{{{./url}}}{{~/if}}">
+      {{{./content}}}
+    </a>
     {{else}}
-    <span class="nav-text">{{{./content}}}</span>
+
+    {{#if ./items.length}}
+    <a class="flex grow align-center strong link nav-link nav-heading" tabindex="0">
+      <image class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
+      {{{./content}}}
+    </a>
     {{/if}}
 
-    </span>
+    {{/if}}
+
     {{/if}}
     {{> nav-tree navigation=./items level=(increment ../level)}}
   {{/each}}

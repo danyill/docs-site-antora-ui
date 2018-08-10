@@ -34,7 +34,7 @@
 }
 
 .nav-list {
-  max-height: var(--nav-item-height);
+  /* max-height: var(--nav-item-height); */
   transition: max-height var(--transition-speed-md) var(--transition-timing);
 
   &.active {

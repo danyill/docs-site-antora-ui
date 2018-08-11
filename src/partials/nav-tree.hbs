@@ -11,14 +11,18 @@
       {{{./content}}}
     </a>
     {{else}}
-
     {{#if ./items.length}}
+    {{#if (eq urlType fragment)}}
     <a class="flex grow align-center strong link nav-link nav-heading" tabindex="0">
       <image class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
       {{{./content}}}
     </a>
+    {{else}}
+    <span class="flex grow align-center nav-heading" data-depth="{{increment ../level}}">
+      <span class="span">{{{./content}}}</span>
+    </span>
     {{/if}}
-
+    {{/if}}
     {{/if}}
 
     {{/if}}

@@ -56,8 +56,8 @@
   }
 
   /* for product icons */
-  > .nav-li .nav-link,
-  > .nav-li .nav-heading {
+  & > .nav-li .nav-link,
+  & > .nav-li .nav-heading {
     padding-left: 25px;
   }
 }
@@ -103,33 +103,23 @@
 }
 
 /* nesting: level 1 */
-.nav-li[data-depth="0"] .nav-heading,
-.nav-li[data-depth="1"] .nav-heading,
-.nav-li[data-depth="2"] .nav-heading,
-.nav-li[data-depth="3"] .nav-heading,
-.nav-li[data-depth="4"] .nav-heading,
-.nav-li[data-depth="5"] .nav-heading,
-.nav-li[data-depth="6"] .nav-heading {
+.nav-li[data-depth="1"] .nav-heading {
+  font-size: 12px;
   font-weight: var(--weight-bold);
   margin-top: var(--md);
+  opacity: .6;
+
+  & .span {
+    border-bottom: 1px solid rgba(0,0,0,.4);
+    display: inline-block;
+  }
 }
 
 /* nesting: level 2 */
-.nav-li[data-depth="1"] .nav-heading {
-  font-size: 12px;
-  font-weight: var(--weight-normal);
-  margin-top: var(--md);
-  opacity: .6;
-  text-transform: uppercase;
+.nav-heading[data-depth="3"],
+.nav-li[data-depth="3"] {
+  margin-left: var(--md);
 }
-
-/*  .nav-li[data-depth="2"],
- .nav-li[data-depth="3"],
- .nav-li[data-depth="4"],
- .nav-li[data-depth="5"],
- .nav-li[data-depth="6"] {
-   margin-left: var(--md);
- } */
 
 /* collapsing margin for nested lists (note: this is why we don't use flexbox on list items) */
 .nested-list {

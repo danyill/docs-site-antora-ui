@@ -69,6 +69,10 @@ h6 {
     color: var(--steel-4);
   }
 
+  &:focus {
+    outline: 0;
+  }
+
   &:focus,
   &:active {
     color: var(--core-blue-3);

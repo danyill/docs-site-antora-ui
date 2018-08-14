@@ -57,7 +57,7 @@ module.exports = (src, dest, preview) => {
   return merge([
     vfs
       .src('js/+([0-9])-*.js', opts)
-      .pipe(uglify())
+      // .pipe(uglify())
       .pipe(concat('js/site.js')),
 
     vfs

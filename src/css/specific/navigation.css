@@ -34,46 +34,41 @@
 }
 
 .nav-list {
-  /* max-height: var(--nav-item-height); */
-  transition: max-height var(--transition-speed-md) var(--transition-timing);
-
-  &.active {
-
-    /* marks parent nav item as active */
-    > .nav-li:first-child .nav-link {
-      color: var(--core-blue-3);
-      cursor: default;
-    }
-
-    + .nav-list {
-      margin-top: var(--md);
-    }
-
-    .nav-li {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
 
   /* for product icons */
   & > .nav-li .nav-link,
   & > .nav-li .nav-heading {
     padding-left: 25px;
   }
-}
 
-.nav-li {
+  & > .nav-li.active {
 
-  /* visibility prevents focus state when hidden */
-  &.fade {
-    opacity: 0;
-    transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
-    visibility: hidden;
+    & + .nav-list {
+      margin-top: var(--md);
+    }
+
+    & .nav-link {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    & .nav-list .nav-heading {
+      opacity: .6;
+      visibility: visible;
+    }
   }
 
-  /* marks sub nav items as active */
-  &.active .nav-link {
-    color: var(--core-blue-3);
+  & .nav-list {
+    max-height: 0;
+    transition: max-height var(--transition-speed-md) var(--transition-timing);
+
+
+    & .nav-link,
+    & .nav-heading {
+      opacity: 0;
+      transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
+      visibility: hidden;
+    }
   }
 }
 
@@ -88,6 +83,11 @@
   padding: var(--xs) var(--xs) var(--xs) 25px;
   position: relative;
   text-decoration: none;
+
+  &.active {
+    color: var(--core-blue-3);
+    cursor: default;
+  }
 
   & .icon {
     height: var(--lg);
@@ -107,7 +107,6 @@
   font-size: 12px;
   font-weight: var(--weight-bold);
   margin-top: var(--md);
-  opacity: .6;
 
   & .span {
     border-bottom: 1px solid rgba(0,0,0,.4);

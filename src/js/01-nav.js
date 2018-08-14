@@ -1,7 +1,7 @@
 ;(function () {
   'use strict'
 
-  var nav = document.querySelector('nav.nav')
+  var nav = document.querySelector('.nav')
   var navMenu = {}
   if (!(navMenu.element = nav ? nav.querySelector('.nav-menu') : undefined)) return
   var navControl

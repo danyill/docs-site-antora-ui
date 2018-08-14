@@ -1,0 +1,126 @@
+.nav {
+  flex: 0 0 var(--nav-width);
+  max-height: 100vh;
+  overflow-y: auto;
+  padding: var(--lg);
+  position: sticky;
+  top: 0;
+
+  /* search input wrapper */
+  & .search {
+    margin-bottom: var(--sm);
+    position: relative;
+    width: $nav-width - ($lg * 2);
+
+    &::before {
+      background-image: url(../img/icons/search.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: var(--md);
+      content: '';
+      display: block;
+      height: var(--md);
+      left: var(--xs);
+      opacity: .4; /* same as chevrons */
+      position: absolute;
+      width: var(--md);
+      z-index: 1;
+    }
+
+    & .input {
+      padding-left: 25px; /* align to navigation */
+    }
+  }
+}
+
+.nav-list {
+
+  /* for product icons */
+  & > .nav-li .nav-link,
+  & > .nav-li .nav-heading {
+    padding-left: 25px;
+  }
+
+  & > .nav-li.active {
+
+    & + .nav-list {
+      margin-top: var(--md);
+    }
+
+    & .nav-link {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    & .nav-list .nav-heading {
+      opacity: .6;
+      visibility: visible;
+    }
+  }
+
+  & .nav-list {
+    max-height: 0;
+    transition: max-height var(--transition-speed-md) var(--transition-timing);
+
+
+    & .nav-link,
+    & .nav-heading {
+      opacity: 0;
+      transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
+      visibility: hidden;
+    }
+  }
+}
+
+.nav-link,
+.nav-heading {
+  font-size: 14px;
+  padding: var(--xs);
+}
+
+.nav-link {
+  cursor: pointer;
+  padding: var(--xs) var(--xs) var(--xs) 25px;
+  position: relative;
+  text-decoration: none;
+
+  &.active {
+    color: var(--core-blue-3);
+    cursor: default;
+  }
+
+  & .icon {
+    height: var(--lg);
+    left: 0;
+    margin-right: var(--xs);
+    position: absolute;
+    width: var(--lg);
+  }
+}
+
+.nav-heading {
+  color: var(--steel-2);
+}
+
+/* nesting: level 1 */
+.nav-li[data-depth="1"] .nav-heading {
+  font-size: 12px;
+  font-weight: var(--weight-bold);
+  margin-top: var(--md);
+
+  & .span {
+    border-bottom: 1px solid rgba(0,0,0,.4);
+    display: inline-block;
+  }
+}
+
+/* nesting: level 2 */
+.nav-heading[data-depth="3"],
+.nav-li[data-depth="3"] {
+  margin-left: var(--md);
+}
+
+/* collapsing margin for nested lists (note: this is why we don't use flexbox on list items) */
+.nested-list {
+  margin-bottom: var(--md);
+}

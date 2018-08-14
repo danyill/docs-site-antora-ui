@@ -1,5 +1,5 @@
 {{#if navigation.length}}
-<ol class="nav-list {{#if level}}js-nav-list{{/if}}">
+<ol class="nav-list {{#if (eq level 1)}}js-nav-list{{/if}}">
   {{#each navigation}}
   <li class="nav-li{{#if (eq @root.page.url ./url)}} active{{/if}}" data-depth="{{or ../level 0}}">
     {{#if ./content}}

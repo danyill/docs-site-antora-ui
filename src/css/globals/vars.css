@@ -37,7 +37,7 @@
   /* typography */
   --heading: 'DIN Pro', 'Open Sans', sans-serif;
   --sans-serif: 'Open Sans', sans-serif;
-  --monospace: monospace;
+  --monospace: 'Monaco', monospace;
   --weight-normal: 400;
   --weight-bold: 600;
 

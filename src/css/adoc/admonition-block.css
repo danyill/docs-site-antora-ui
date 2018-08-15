@@ -27,6 +27,14 @@
 
   & .icon {
     display: none;
+
+    & + .content {
+      border-left: 0; /* reset table style */
+    }
+  }
+
+  & .content {
+    padding: 0; /* reset table style */
   }
 
   /* types of blocks */

@@ -19,6 +19,7 @@
 @import "adoc/abstract.css";
 @import "adoc/admonition-block.css";
 @import "adoc/description-list.css";
+@import "adoc/table.css";
 
 /* other */
 @import "base.css";

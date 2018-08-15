@@ -62,7 +62,6 @@
     max-height: 0;
     transition: max-height var(--transition-speed-md) var(--transition-timing);
 
-
     & .nav-link,
     & .nav-heading {
       opacity: 0;

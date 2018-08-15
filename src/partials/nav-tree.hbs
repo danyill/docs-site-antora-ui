@@ -12,7 +12,7 @@
     </a>
     {{else}}
     {{#if ./items.length}}
-    {{#if (eq urlType fragment)}}
+    {{#if (not ../level)}}
     <a class="flex grow align-center strong link nav-link nav-heading js-nav-link" tabindex="0">
       <img class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
       {{{./content}}}

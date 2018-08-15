@@ -34,6 +34,19 @@
 }
 
 .nav-list {
+  overflow: hidden;
+
+  & .parent {
+    max-height: 0;
+    transition: max-height var(--transition-speed-md) var(--transition-timing);
+
+    & .nav-link,
+    & .nav-heading {
+      opacity: 0;
+      transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
+      visibility: hidden;
+    }
+  }
 
   /* for product icons */
   & > .nav-li .nav-link,
@@ -55,18 +68,6 @@
     & .nav-list .nav-heading {
       opacity: .6;
       visibility: visible;
-    }
-  }
-
-  & .nav-list {
-    max-height: 0;
-    transition: max-height var(--transition-speed-md) var(--transition-timing);
-
-    & .nav-link,
-    & .nav-heading {
-      opacity: 0;
-      transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
-      visibility: hidden;
     }
   }
 }

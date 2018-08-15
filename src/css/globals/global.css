@@ -1,9 +1,13 @@
 body {
   background: #fefefe;
-  color: var(--steel-4);
+  color: var(--steel-2);
   font-family: var(--sans-serif);
   font-size: 16px;
   line-height: 1.6;
+}
+
+main {
+  max-width: calc(100% - var(--nav-width) - var(--width-toc));
 }
 
 .wrapper {

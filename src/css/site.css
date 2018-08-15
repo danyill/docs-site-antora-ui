@@ -14,11 +14,16 @@
 @import "specific/navigation.css";
 @import "specific/toolbar.css";
 
+/* adoc */
+@import "adoc/doc.css";
+@import "adoc/abstract.css";
+@import "adoc/admonition-block.css";
+@import "adoc/description-list.css";
+
 /* other */
 @import "base.css";
 @import "body.css";
 @import "toc.css";
-@import "doc.css";
 @import "home.css";
 @import "highlight.css";
 @import "feedback.css";

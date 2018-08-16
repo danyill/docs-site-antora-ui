@@ -50,8 +50,8 @@
   }
 
   &.important tbody {
-      background: color-mod(var(--yellow-3) lightness(96%));
-      border-color: color-mod(var(--yellow-3) lightness(75%));
+    background: color-mod(var(--yellow-3) lightness(96%));
+    border-color: color-mod(var(--yellow-3) lightness(75%));
 
     &::before {
       background-image: url(../img/icons/important.svg);

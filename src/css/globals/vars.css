@@ -37,7 +37,7 @@
   /* typography */
   --heading: 'DIN Pro', 'Open Sans', sans-serif;
   --sans-serif: 'Open Sans', sans-serif;
-  --monospace: monospace;
+  --monospace: 'Monaco', monospace;
   --weight-normal: 400;
   --weight-bold: 600;
 
@@ -45,7 +45,8 @@
   --header-height: 66px;
   --footer-height: 361px;
   --nav-item-height: 32px;
-  --nav-width: 300px;
+  --nav-width: 250px;
+  --toc-width: 200px;
   --radius: 2px;
   --xs: 5px;
   --sm: 10px;

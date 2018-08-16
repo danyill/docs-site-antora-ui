@@ -1,9 +1,9 @@
 ;(function () {
   'use strict'
 
-  var doc = document.querySelector('article.doc')
+  var doc = document.querySelector('.doc')
   if (!doc) return
-  var sidebar = document.querySelector('aside.toc.sidebar')
+  var sidebar = document.querySelector('.js-toc')
   var menu
   var headings = find('.sect1 > h2[id]', doc)
   if (!headings.length) {
@@ -30,9 +30,6 @@
     menu.className = 'toc-menu'
   }
 
-  var title = document.createElement('h3')
-  title.textContent = 'On This Page'
-  menu.appendChild(title)
   menu.appendChild(list)
 
   if (sidebar) window.addEventListener('scroll', onScroll)
@@ -57,19 +54,17 @@
       }
     })
     if (activeFragment) {
-      if (activeFragment !== lastActiveFragment) {
-        if (lastActiveFragment) {
-          links[lastActiveFragment].classList.remove('is-active')
-        }
-        var activeLink = links[activeFragment]
-        activeLink.classList.add('is-active')
-        if (menu.scrollHeight > menu.offsetHeight) {
-          menu.scrollTop = Math.max(0, activeLink.offsetTop + activeLink.offsetHeight - menu.offsetHeight)
-        }
-        lastActiveFragment = activeFragment
+      if (lastActiveFragment) {
+        links[lastActiveFragment].classList.remove('active')
       }
+      var activeLink = links[activeFragment]
+      activeLink.classList.add('active')
+      if (menu.scrollHeight > menu.offsetHeight) {
+        menu.scrollTop = Math.max(0, activeLink.offsetTop + activeLink.offsetHeight - menu.offsetHeight)
+      }
+      lastActiveFragment = activeFragment
     } else if (lastActiveFragment) {
-      links[lastActiveFragment].classList.remove('is-active')
+      links[lastActiveFragment].classList.remove('active')
       lastActiveFragment = undefined
     }
   }

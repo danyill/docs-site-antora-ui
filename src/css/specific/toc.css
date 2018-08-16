@@ -1,0 +1,43 @@
+.toc {
+  flex: 0 0 var(--toc-width);
+  padding: var(--lg) var(--sm) var(--xl);
+
+  & a {
+    color: var(--aluminum-5);
+    border-left: 3px solid var(--aluminum-3);
+    display: block;
+    font-size: 12px;
+    padding: var(--xs);
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      border-left-color: var(--aluminum-4);
+      color: var(--steel-1);
+    }
+
+    &.active {
+      border-color: var(--core-blue-3);
+      color: var(--steel-1);
+    }
+
+    & code {
+      background: none;
+      border: 0;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0;
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  aside.toc.embedded {
+    display: none;
+  }
+
+  aside.toc.sidebar {
+    display: block;
+  }
+}

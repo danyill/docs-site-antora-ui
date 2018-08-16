@@ -4,6 +4,7 @@
 }
 
 .breadcrumbs {
+  height: var(--input-md); /* match search input */
   padding: 0 var(--lg);
 
   & .link {

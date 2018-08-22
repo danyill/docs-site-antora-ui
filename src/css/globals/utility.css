@@ -7,3 +7,4 @@
 @custom-media --md (min-width: 768px);
 @custom-media --lg (min-width: 992px);
 @custom-media --xl (min-width: 1160px);
+@custom-media --marketing (max-width: 992px);

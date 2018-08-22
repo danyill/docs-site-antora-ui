@@ -1,6 +1,6 @@
 .nav {
   flex: 0 0 var(--nav-width);
-  padding: var(--lg) var(--lg) var(--xl);
+  padding: var(--lg) var(--md) var(--xl);
 
   /* search input wrapper */
   & .search {

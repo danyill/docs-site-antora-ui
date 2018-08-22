@@ -1,6 +1,6 @@
 .toc {
   flex: 0 0 var(--toc-width);
-  padding: var(--lg) var(--sm) var(--xl);
+  padding: var(--lg) var(--md) var(--xl);
 
   & a {
     color: var(--aluminum-5);
@@ -32,12 +32,16 @@
   }
 }
 
-@media screen and (min-width: 1200px) {
-  aside.toc.embedded {
-    display: none;
-  }
+.toc-sidebar {
+  display: none;
 
-  aside.toc.sidebar {
+  @media (--md) {
     display: block;
+  }
+}
+
+.toc-embedded {
+  @media (--md) {
+    display: none;
   }
 }

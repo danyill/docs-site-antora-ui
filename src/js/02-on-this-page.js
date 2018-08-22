@@ -37,7 +37,7 @@
   var startOfContent = doc.querySelector('h1.page + *')
   if (startOfContent) {
     var embeddedToc = document.createElement('aside')
-    embeddedToc.className = 'toc embedded'
+    embeddedToc.className = 'toc toc-embedded'
     embeddedToc.appendChild(menu.cloneNode(true))
     doc.insertBefore(embeddedToc, startOfContent)
   }

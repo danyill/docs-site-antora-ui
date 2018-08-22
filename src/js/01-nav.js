@@ -4,7 +4,6 @@
   var nav = document.querySelector('.nav')
   var navMenu = {}
   if (!(navMenu.element = nav ? nav.querySelector('.nav-menu') : undefined)) return
-  var navControl
 
   var currentPageItem = navMenu.element.querySelector('.is-current-page')
   if (currentPageItem) expandCurrentPath(currentPageItem)
@@ -26,10 +25,6 @@
   fitNavMenuInit({})
   window.addEventListener('load', fitNavMenuInit)
   window.addEventListener('resize', fitNavMenuInit)
-
-  if ((navControl = document.querySelector('main .nav-control'))) {
-    navControl.addEventListener('click', expandNav)
-  }
 
   function expandCurrentPath (navItem) {
     navItem.classList.add('is-active')

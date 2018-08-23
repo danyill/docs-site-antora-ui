@@ -1,5 +1,5 @@
 {{#if navigation.length}}
-<ol class="nav-list {{#if (eq level 1)}}js-nav-list{{/if}}">
+<ol class="nav-list {{#if (eq level 1)}}parent js-nav-list{{/if}}">
   {{#each navigation}}
   <li class="nav-li{{#if (eq @root.page.url ./url)}} active{{/if}}" data-depth="{{or ../level 0}}">
     {{#if ./content}}
@@ -12,7 +12,7 @@
     </a>
     {{else}}
     {{#if ./items.length}}
-    {{#if (eq urlType fragment)}}
+    {{#if (not ../level)}}
     <a class="flex grow align-center strong link nav-link nav-heading js-nav-link" tabindex="0">
       <img class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
       {{{./content}}}

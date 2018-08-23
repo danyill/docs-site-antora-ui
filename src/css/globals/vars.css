@@ -60,10 +60,11 @@
   --screen-xl: 1160px; /* match marketing header */
 
   /* z-index */
-  --z-header: 200;
-  --z-nav: 201;
-  --z-nav-toolbar: 100;
-  --z-backdrop: 101;
+  --z-backdrop: 13;
+  --z-header: 12; /* marketing header */
+  --z-nav: 11;
+  --z-nav-mobile: 14;
+  --z-nav-toolbar: 10;
 
   /* animations/transitions */
   --transition-speed-sm: .15s;

@@ -46,14 +46,15 @@
     display: inline-block;
     height: var(--lg);
     margin-left: -25px;
-    margin-top: 10px;
+    margin-top: -50%;
     opacity: 0;
     padding-right: var(--sm);
     position: absolute;
-    transform: scale(.9);
+    transform: scale(.9) translateY(50%);
     transition: opacity var(--transition-speed-sm) var(--transition-timing), transform var(--transition-speed-sm) var(--transition-timing);
 
     &:focus {
+      outline: 0;
       opacity: .5;
     }
 

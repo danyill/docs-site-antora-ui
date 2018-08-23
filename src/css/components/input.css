@@ -10,10 +10,4 @@
   transition: box-shadow var(--transition-speed-sm) var(--transition-timing);
   width: 100%;
   word-break: normal;
-
-  /* focus state */
-  &.focus,
-  &:focus {
-    border-color: var(--core-blue-3);
-  }
 }

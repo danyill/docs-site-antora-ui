@@ -1,14 +1,26 @@
-.toc {
-  flex: 0 0 var(--toc-width);
+.toc-sidebar {
+  display: none;
+  flex: 0 0 auto;
+  max-width: var(--toc-width);
   padding: var(--lg) var(--md) var(--xl);
+  position: sticky;
+  top: 0;
+
+  @media (--lg) {
+    display: block;
+  }
 
   & a {
-    color: var(--aluminum-5);
     border-left: 3px solid var(--aluminum-3);
+    color: var(--aluminum-5);
     display: block;
     font-size: 12px;
-    padding: var(--xs);
+    padding: var(--xs) var(--sm);
     text-decoration: none;
+
+    &:focus {
+      outline: 0;
+    }
 
     &:hover,
     &:focus,
@@ -32,16 +44,8 @@
   }
 }
 
-.toc-sidebar {
-  display: none;
-
-  @media (--md) {
-    display: block;
-  }
-}
-
 .toc-embedded {
-  @media (--md) {
+  @media (--lg) {
     display: none;
   }
 }

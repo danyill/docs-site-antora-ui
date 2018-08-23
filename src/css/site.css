@@ -8,6 +8,7 @@
 
 /* components */
 @import "components/input.css";
+@import "components/select.css";
 
 /* specific */
 @import "specific/header.css";

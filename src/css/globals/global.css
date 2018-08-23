@@ -9,6 +9,7 @@ body {
 
 .wrapper {
   max-width: 100vw;
+  width: 100%;
 
   @media (--marketing) {
     padding-top: var(--header-height);
@@ -16,14 +17,18 @@ body {
 }
 
 .main {
-  max-width: calc(100% - var(--nav-width) - var(--width-toc));
+  max-width: calc(100% - var(--nav-width));
+
+  @media (--lg) {
+    &:not(.no-sidebar) {
+      max-width: calc(100% - var(--nav-width) - var(--toc-width));
+    }
+  }
 }
 
 .nav,
 .toc {
   max-height: 100vh;
-  overflow-y: auto;
-  position: sticky;
   top: 0;
 }
 
@@ -51,10 +56,14 @@ ul {
 
 /* reset inputs */
 input,
-textarea {
+textarea,
+select {
   word-break: normal;
 
+  /* focus state */
+  &.focus,
   &:focus {
+    border-color: var(--core-blue-3);
     box-shadow: 0 0 0 3px rgba(0,162,223,.25);
     outline: 0;
   }

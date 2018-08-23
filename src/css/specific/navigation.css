@@ -1,6 +1,8 @@
 .nav {
   flex: 0 0 var(--nav-width);
+  overflow-y: auto;
   padding: var(--lg) var(--md) var(--xl);
+  position: sticky;
 
   /* search input wrapper */
   & .search {
@@ -57,7 +59,6 @@
   & .nav-list {
     max-height: 0;
     transition: max-height var(--transition-speed-md) var(--transition-timing);
-
 
     & .nav-link,
     & .nav-heading {

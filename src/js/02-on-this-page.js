@@ -7,7 +7,10 @@
   var menu
   var headings = find('.sect1 > h2[id]', doc)
   if (!headings.length) {
-    if (sidebar) sidebar.parentNode.removeChild(sidebar)
+    if (sidebar) {
+      sidebar.parentNode.removeChild(sidebar)
+      document.querySelector('.main').classList.add('no-sidebar')
+    }
     return
   }
   var lastActiveFragment
@@ -36,10 +39,33 @@
 
   var startOfContent = doc.querySelector('h1.page + *')
   if (startOfContent) {
-    var embeddedToc = document.createElement('aside')
-    embeddedToc.className = 'toc toc-embedded'
-    embeddedToc.appendChild(menu.cloneNode(true))
-    doc.insertBefore(embeddedToc, startOfContent)
+    // generate list
+    var options = headings.reduce(function (accum, heading) {
+      var option = toArray(heading.childNodes).reduce(function (target, child) {
+        if (child.nodeName !== 'A') target.appendChild(child.cloneNode(true))
+        return target
+      }, document.createElement('option'))
+      option.value = `#${heading.id}`
+      accum.appendChild(option)
+      return accum
+    }, document.createElement('select'))
+
+    // create jump to label
+    const jumpTo = document.createElement('option')
+    jumpTo.innerHTML = 'Jump to…'
+    jumpTo.setAttribute('disabled', true)
+    options.insertBefore(jumpTo, options.firstChild)
+    options.className = 'toc toc-embedded select'
+
+    // jump on change
+    options.addEventListener('change', function (e) {
+      let thisOptions = e.currentTarget.options
+      let thisValue = thisOptions[thisOptions.selectedIndex].value
+      location.hash = `${thisValue}`
+    })
+
+    // add to page
+    doc.insertBefore(options, startOfContent)
   }
 
   function onScroll () {

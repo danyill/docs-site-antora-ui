@@ -46,7 +46,7 @@
   --footer-height: 361px;
   --nav-item-height: 32px;
   --nav-width: 250px;
-  --toc-width: 200px;
+  --toc-width: 250px;
   --radius: 2px;
   --xs: 5px;
   --sm: 10px;
@@ -58,6 +58,12 @@
   --screen-md: 768px;
   --screen-lg: 992px;
   --screen-xl: 1160px; /* match marketing header */
+
+  /* z-index */
+  --z-header: 200;
+  --z-nav: 102;
+  --z-nav-toolbar: 100;
+  --z-backdrop: 101;
 
   /* animations/transitions */
   --transition-speed-sm: .15s;

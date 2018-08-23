@@ -1,60 +1,29 @@
 .toolbar {
-  padding: var(--lg) var(--lg);
-  width: 100%;
+  background: var(--tertiary);
+  border-bottom: 1px solid var(--aluminum-3);
+  padding: var(--sm) var(--xl);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav-toolbar);
+
+  @media (--md) {
+    display: none;
+  }
+
+  @supports (backdrop-filter: blur(10px)) {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,.7);
+  }
 }
 
-.breadcrumbs {
-  height: var(--input-md); /* match search input */
-  padding: 0 var(--lg);
-
-  & .link {
-    font-size: 12px;
-    height: var(--lg);
-    opacity: .75;
-    text-decoration: none;
-
-    &:hover,
-    &:active,
-    &:focus {
-      opacity: 1;
-    }
-  }
-
-  /* home icon in breadcrumbs */
-  & .link-home {
-    width: var(--lg);
-
-    &:active .svg,
-    &:focus .svg {
-      filter: grayscale(0);
-    }
-
-    & .svg {
-      filter: grayscale(1);
-      height: var(--lg);
-      width: var(--lg);
-    }
-  }
-
-  & .li + .li::before {
-    background-image: url(../img/icons/chevron.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: var(--md);
-    content: '';
-    display: inline-block;
-    height: var(--md);
-    margin: 0 var(--xs);
-    opacity: .4; /* same as search icon */
-    pointer-events: none;
-    transform: rotate(-90deg);
-    width: var(--md);
-  }
+.nav-toggle {
+  margin-right: var(--md);
 }
 
 /* link to GitHub */
 .link-edit {
   color: var(--aluminum-5);
+  display: none;
   font-size: 12px;
   height: var(--lg);
   text-decoration: none;

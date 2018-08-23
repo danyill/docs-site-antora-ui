@@ -1,6 +1,8 @@
 .admonitionblock {
 
-  & table {
+  & table,
+  & tr,
+  & td {
     display: block;
   }
 

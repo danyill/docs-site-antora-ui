@@ -7,8 +7,8 @@
   left: 0;
   overflow-y: auto;
   padding: var(--lg) var(--md) var(--xl);
-  position: absolute;
-  top: var(--header-height);
+  position: fixed;
+  top: 0;
   transform: translateX(calc(-1 * var(--nav-width)));
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);

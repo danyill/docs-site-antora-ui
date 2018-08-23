@@ -1,4 +1,5 @@
 .select {
   background: var(--tertiary);
   border: 1px solid var(--aluminum-4);
+  border-radius: 2px;
 }

@@ -25,10 +25,18 @@ body {
     }
   }
 
-  &.no-scroll::before {
-    opacity: .3;
-    pointer-events: auto;
-    z-index: var(--z-backdrop);
+  &.no-scroll {
+    overflow: hidden;
+
+    @media (--md) {
+      overflow-y: auto;
+    }
+
+    &::before {
+      opacity: .3;
+      pointer-events: auto;
+      z-index: var(--z-backdrop);
+    }
   }
 }
 

@@ -9,8 +9,3 @@ vars for reference:
 @custom-media --lg (min-width: 992px);
 @custom-media --xl (min-width: 1160px);
 @custom-media --marketing (max-width: 992px);
-
-/* utility classes */
-.no-scroll {
-  overflow: hidden;
-}

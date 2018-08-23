@@ -61,9 +61,9 @@
 
   /* z-index */
   --z-header: 200;
-  --z-nav: 101;
+  --z-nav: 102;
   --z-nav-toolbar: 100;
-  --z-backdrop: 1;
+  --z-backdrop: 101;
 
   /* animations/transitions */
   --transition-speed-sm: .15s;

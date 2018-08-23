@@ -59,6 +59,12 @@
   --screen-lg: 992px;
   --screen-xl: 1160px; /* match marketing header */
 
+  /* z-index */
+  --z-header: 200;
+  --z-nav: 101;
+  --z-nav-toolbar: 100;
+  --z-backdrop: 1;
+
   /* animations/transitions */
   --transition-speed-sm: .15s;
   --transition-speed-md: .3s;

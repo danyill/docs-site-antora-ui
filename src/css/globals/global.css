@@ -10,6 +10,7 @@ body {
     background: var(--tertiary);
     bottom: 0;
     content: '';
+    cursor: pointer;
     display: block;
     left: 0;
     opacity: 0;

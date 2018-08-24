@@ -1,4 +1,4 @@
-= Couchbase Documentation Site UI Prototype
+= MuleSoft Documentation Site UI Prototype
 // Settings:
 :experimental:
 :hide-uri-scheme:
@@ -16,9 +16,9 @@
 :uri-nvm: https://github.com/creationix/nvm
 :uri-nvm-install: {uri-nvm}#installation
 :uri-yarn: https://yarnpkg.com
-:uri-couchbase: https://couchbase.com
+:uri-mulesoft: https://docs.mulesoft.com
 
-Currently in prototype, this project will be used to generate the UI for the next version of the Couchbase documentation site.
+Currently in prototype, this project will be used to generate the UI for the next version of the MuleSoft documentation site.
 You can find a preview of this UI online at {uri-preview}.
 
 == Use the UI
@@ -151,8 +151,3 @@ If you need to package the UI in order to preview the UI on the real site in loc
 
 The UI bundle will be available at [.path]_build/ui-bundle.zip_.
 You can then point Antora at this bundle using the `--ui-bundle` command-line option.
-
-== Copyright and License
-
-Copyright (C) {uri-couchbase}[Couchbase] 2018.
-All rights reserved.

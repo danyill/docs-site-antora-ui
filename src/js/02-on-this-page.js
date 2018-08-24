@@ -61,7 +61,7 @@
     options.addEventListener('change', function (e) {
       let thisOptions = e.currentTarget.options
       let thisValue = thisOptions[thisOptions.selectedIndex].value
-      location.hash = `${thisValue}`
+      window.location.hash = `${thisValue}`
     })
 
     // add to page

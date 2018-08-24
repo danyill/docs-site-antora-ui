@@ -71,6 +71,7 @@
     navMenu.element.style.height = reclaimedHeight > 0 ? Math.max(0, (preferredHeight - reclaimedHeight)) + 'px' : ''
   }
 
+  /*
   function expandNav (e) {
     if (nav.classList.contains('is-active')) return closeNav(e)
     document.documentElement.classList.add('is-clipped--nav')
@@ -90,6 +91,11 @@
     // NOTE don't let event get picked up by window click listener
     concealEvent(e)
   }
+
+  function concealEvent (e) {
+    e.stopPropagation()
+  }
+  */
 
   function find (selector, from) {
     return [].slice.call((from || document).querySelectorAll(selector))
@@ -111,9 +117,5 @@
     el = from
     while ((el = el.nextSibling) && el.nodeType !== 1);
     return el
-  }
-
-  function concealEvent (e) {
-    e.stopPropagation()
   }
 })()

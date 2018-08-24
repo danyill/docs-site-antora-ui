@@ -13,10 +13,19 @@
     {{else}}
     {{#if ./items.length}}
     {{#if (not ../level)}}
-    <a class="flex grow align-center strong link nav-link nav-heading js-nav-link" tabindex="0">
-      <img class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
-      {{{./content}}}
-    </a>
+      <div class="flex align-center justify-justified">
+        <a class="flex grow strong link nav-link nav-heading js-nav-link" tabindex="0">
+          <img class="icon" src="/_/img/icons/{{{hyphenate ./content}}}.svg">
+          {{{./content}}}
+        </a>
+        {{!-- psuedo logic --}}
+        {{#if (eq ./content "Connector DevKit")}}
+        <button class="flex align-center shrink button version-select">
+          3.8
+          <svg class="svg" width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z" /></svg>
+        </button>
+        {{/if}}
+      </div>
     {{else}}
     <span class="flex grow align-center nav-heading" data-depth="{{increment ../level}}">
       <span class="span">{{{./content}}}</span>

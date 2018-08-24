@@ -18,6 +18,7 @@
 @import "specific/navigation.css";
 @import "specific/toc.css";
 @import "specific/toolbar.css";
+@import "specific/version-select.css";
 
 /* adoc */
 @import "adoc/doc.css";

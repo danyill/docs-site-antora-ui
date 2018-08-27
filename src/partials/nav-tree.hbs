@@ -20,9 +20,24 @@
         </a>
         {{!-- psuedo logic --}}
         {{#if (eq ./content "Connector DevKit")}}
-        <button class="flex align-center shrink button version-select">
+        <button class="flex align-center shrink button versions" data-trigger="versions">
           3.8
           <svg class="svg" width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z" /></svg>
+          <div class="popover" data-popover="versions">
+            <ol class="ol">
+              <li class="li-heading">Current version
+              <li class="flex align-center justify-justified li">3.8
+            </ol>
+            <ol class="ol">
+              <li class="li-heading">Previous versions
+              <li class="flex align-center justify-justified li">3.7
+              <li class="flex align-center justify-justified li">3.6
+              <li class="flex align-center justify-justified li">3.5
+              <li class="flex align-center justify-justified li">3.4
+              <li class="flex align-center justify-justified li">3.3
+              <li class="flex align-center justify-justified li">3.2
+            </ol>
+          </div>
         </button>
         {{/if}}
       </div>

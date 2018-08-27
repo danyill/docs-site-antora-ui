@@ -11,6 +11,7 @@
 @import "components/breadcrumbs.css";
 @import "components/button.css";
 @import "components/input.css";
+@import "components/popover.css";
 @import "components/select.css";
 
 /* specific */
@@ -18,7 +19,7 @@
 @import "specific/navigation.css";
 @import "specific/toc.css";
 @import "specific/toolbar.css";
-@import "specific/version-select.css";
+@import "specific/versions.css";
 
 /* adoc */
 @import "adoc/doc.css";

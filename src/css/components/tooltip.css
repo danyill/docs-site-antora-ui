@@ -1,0 +1,7 @@
+.tooltip-theme {
+  background: var(--steel-4);
+  border-radius: 2px;
+  font-size: 11px;
+  color: var(--tertiary);
+  padding: var(--xs);
+}

@@ -2,10 +2,11 @@
   border: 1px solid var(--aluminum-4);
   border-radius: 22px;
   color: var(--aluminum-5);
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: var(--weight-normal);
   height: 22px;
   margin-right: 3px;
-  padding: 0 var(--xs) 0 var(--sm);
+  padding: 0 2px 0 6px;
   position: relative;
 
   &:hover {
@@ -24,6 +25,10 @@
     height: var(--md);
     width: var(--md);
   }
+
+  & .svg-pin {
+    fill: var(--core-blue-3);
+  }
 }
 
 .popover-versions-theme {
@@ -33,7 +38,6 @@
     margin-top: var(--xs);
   }
 
-  & .small,
   & .li-heading,
   & .li {
     padding: var(--xs) var(--sm);
@@ -57,33 +61,25 @@
       background: #e2f8ff; /* yet another blue */
       color: var(--core-blue-3);
     }
-
-    & .svg {
-      height: 25px;
-      padding: var(--xs);
-      width: 25px;
-
-      &:hover,
-      &:focus {
-        fill: var(--core-blue-3);
-      }
-    }
-  }
-
-  & .small {
-    border-top: 1px solid var(--aluminum-3);
-    color: var(--aluminum-5);
-    font-size: 11px;
-    margin-top: var(--xs);
-    padding-top: var(--xs);
-    text-align: left;
-
-    & .svg {
-      margin-right: var(--xs);
-    }
   }
 
   & .svg {
-    fill: currentColor;
+    fill: var(--aluminum-5);
+    height: 25px;
+    padding: var(--xs);
+    width: 25px;
+
+    &:hover,
+    &:focus {
+      fill: var(--core-blue-2);
+    }
+
+    &:active {
+      fill: var(--core-blue-3);
+    }
+
+    &:focus {
+      outline: 0;
+    }
   }
 }

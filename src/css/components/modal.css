@@ -1,0 +1,28 @@
+.CoveoSearchInterface.modal {
+  background: var(--tertiary);
+  box-shadow: 0 3px 15px rgba(0,0,0,.1);
+  display: none !important;
+  font-size: 13px;
+  height: 600px;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--xl);
+  position: fixed;
+  right: 0;
+  top: 100px;
+  width: 600px;
+  z-index: 1000;
+
+  &.show {
+    display: block !important;
+  }
+
+  & ul {
+    list-style-type: decimal;
+  }
+
+  & li + li {
+    margin-top: var(--sm);
+  }
+}

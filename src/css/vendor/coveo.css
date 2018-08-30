@@ -137,6 +137,8 @@
 }
 
 .coveo-main-section.coveo-main-section {
+  background: #fefefe;
+  min-height: 120px;
   padding: var(--lg);
 
   /* facet things */
@@ -253,6 +255,7 @@
 
   /* result card */
   & .coveo-card-layout.CoveoResult {
+    background: var(--tertiary);
     border: 1px solid var(--aluminum-3);
     border-radius: 2px;
     box-shadow: 0 2px 6px rgba(0,0,0,.02);
@@ -391,6 +394,24 @@
   & .coveo-pager-list-item:not(.coveo-pager-previous):not(.coveo-pager-next) {
     display: none;
   }
+}
+
+/* empty state */
+.coveo-query-summary-no-results-string.coveo-query-summary-no-results-string {
+  background: #fefefe;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 0;
+  padding: var(--xl);
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+
+.coveo-query-summary-cancel-last {
+  display: none;
 }
 
 /* no idea what this is */

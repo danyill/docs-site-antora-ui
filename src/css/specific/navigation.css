@@ -47,8 +47,8 @@
     }
 
     & .svg {
-      height: var(--md);
       fill: currentColor;
+      height: var(--md);
       margin-right: var(--xs);
       width: var(--md);
     }

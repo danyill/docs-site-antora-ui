@@ -1,12 +1,399 @@
-.CoveoSearchInterface {
-  display: none !important; /* override coveo default */
+/* hide source facet */
+.CoveoSearchInterface .coveo-facet-column [data-field="@source"] {
+  display: none;
+}
 
-  &.show {
-    display: block !important; /* override coveo default */
+/* override coveo defaults */
+.CoveoSearchInterface.CoveoSearchInterface {
+  color: var(--steel-2);
+  font-family: var(--sans-serif);
+  font-size: 16px;
+}
+
+/* header */
+.coveo-searchbox-wrapper {
+  background: var(--tertiary);
+  border-bottom: 1px solid var(--aluminum-3);
+  box-shadow: 0 3px 15px rgba(0,0,0,.025);
+  height: 90px;
+  padding: var(--lg);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-modal-header);
+}
+
+.CoveoSearchbox {
+
+  /* input */
+  & .magic-box.magic-box {
+    background: #fefefe;
+    border: 1px solid var(--aluminum-4);
+    border-radius: 4px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.025);
+    color: var(--steel-2);
+    transition: box-shadow var(--transition-speed-sm) var(--transition-timing);
+
+    /* focus state */
+    &.magic-box-hasFocus {
+      background: var(--tertiary);
+      border-color: var(--core-blue-3);
+      box-shadow: 0 0 0 3px rgba(0,162,223,.25);
+      outline: 0;
+    }
+
+    & .magic-box-input {
+      background: none;
+
+      & > input {
+        text-indent: 0;
+
+        &::placeholder {
+          color: var(--aluminum-5);
+        }
+      }
+    }
+  }
+
+  /* search button */
+  & .CoveoSearchButton.CoveoSearchButton {
+    align-items: center;
+    border: 0;
+    display: flex;
+    float: left;
+    justify-content: center;
+    width: var(--xl);
+
+    & .coveo-search-button {
+      background: url(../img/icons/search.svg);
+      background-size: 100%;
+      height: 18px;
+      opacity: .5;
+      position: relative;
+      transition: opacity var(--transition-speed-sm) var(--transition-timing);
+      width: 18px;
+      z-index: 1;
+
+      & svg {
+        display: none;
+      }
+    }
+
+    /* loading state */
+    & .coveo-search-button-loading {
+      background: var(--tertiary);
+      height: 18px;
+      opacity: 0;
+      position: absolute;
+      transition: opacity var(--transition-speed-sm) var(--transition-timing);
+      width: 18px;
+      z-index: 2;
+    }
+
+    & .coveo-search-button-loading-svg {
+      color: var(--core-blue-3);
+    }
+  }
+
+  /* clear button */
+  & .magic-box-clear.magic-box-clear {
+    align-items: center;
+    background: none;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: rotate(30deg) scale(.9);
+    transition: opacity var(--transition-speed-md) var(--transition-timing), transform var(--transition-speed-md) var(--transition-timing);
+    width: 48px;
+
+    & .magic-box-icon {
+      background: url(../img/icons/close.svg);
+      background-size: 100%;
+      height: 10px;
+      opacity: .5;
+      width: 10px;
+
+      & svg {
+        display: none;
+      }
+    }
+  }
+
+  & .magic-box-notEmpty .magic-box-clear.magic-box-clear {
+    opacity: 1;
+    transform: rotate(0) scale(1);
   }
 }
 
-/* hide unwanted ui */
-.CoveoSearchInterface .coveo-facet-column [data-field="@source"] {
+/* loading state */
+.coveo-executing-query .CoveoSearchButton.CoveoSearchButton {
+
+  & .coveo-search-button {
+    opacity: 0;
+  }
+
+  & .coveo-search-button-loading {
+    opacity: 1;
+  }
+}
+
+.coveo-main-section.coveo-main-section {
+  padding: var(--lg);
+
+  /* facet things */
+  & .facet-heading {
+    color: var(--steel-2);
+    font-family: var(--heading);
+    font-size: 14px;
+    font-weight: var(--weight-bold);
+  }
+
+  & .coveo-facet-column {
+    float: right;
+    margin-left: var(--lg);
+    margin-right: 0;
+    padding: 0;
+    position: sticky;
+    top: 110px; /* search header + 20px padding */
+  }
+
+  & .CoveoFacet,
+  & .CoveoFacetRange,
+  & .CoveoFacetSlider,
+  & .CoveoHierarchicalFacet,
+  & .CoveoCategoryFacet {
+    border: 0;
+    margin: 0;
+
+    & + .CoveoFacet,
+    & + .CoveoFacetRange,
+    & + .CoveoFacetSlider,
+    & + .CoveoHierarchicalFacet,
+    & + .CoveoCategoryFacet {
+      margin-top: var(--md);
+    }
+  }
+
+  & .coveo-facet-header {
+    background: none;
+    padding: 0;
+
+    & .coveo-facet-header-title {
+      color: var(--steel-2);
+      font-size: 12px;
+    }
+
+    /* extra spinner */
+    & .coveo-facet-header-wait-animation {
+      display: none;
+    }
+
+    /* close and settings icon */
+    & .coveo-facet-header-settings-section {
+      display: none;
+    }
+  }
+
+  & .coveo-facet-value-label-wrapper {
+    align-items: center;
+    display: flex;
+  }
+
+  & .coveo-facet-values {
+    padding-top: 0;
+  }
+
+  & .coveo-facet-value {
+    padding: 0;
+
+    &:hover {
+      background: none;
+    }
+
+    &.coveo-selected {
+      font-weight: var(--weight-normal);
+    }
+  }
+
+  /* the 'x' icon */
+  & .coveo-facet-value-exclude {
+    display: none;
+  }
+
+  & .coveo-facet-value-label {
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  /* mystery footer */
+  & .coveo-facet-footer {
+    display: none;
+  }
+
+  /* results */
+  & .coveo-results-column {
+    padding: 0;
+
+    /* date */
+    & .CoveoFieldValue {
+      color: var(--aluminum-4);
+    }
+  }
+
+  /* query summary (results a out of b) */
+  & .CoveoQuerySummary {
+    color: var(--aluminum-4);
+    font-family: var(--heading);
+    font-size: 14px;
+    font-weight: var(--weight-bold);
+  }
+
+  & .coveo-card-layout-container {
+    margin-right: 0;
+  }
+
+  /* result card */
+  & .coveo-card-layout.CoveoResult {
+    border: 1px solid var(--aluminum-3);
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.02);
+    cursor: default;
+    font-size: 13px;
+    margin: 0;
+    padding: var(--md);
+    width: 100%;
+
+    /* override existing hover state */
+    &:hover {
+      border-color: var(--aluminum-3);
+      box-shadow: 0 2px 6px rgba(0,0,0,.02);
+    }
+
+    & + .coveo-card-layout {
+      margin-top: var(--sm);
+    }
+
+    & .coveo-result-frame {
+      padding: 0;
+    }
+
+    & .CoveoExcerpt {
+      cursor: text;
+    }
+
+    & .CoveoResultLink {
+      color: var(--steel-2);
+      font-family: var(--heading);
+      font-size: 13px;
+      font-weight: var(--weight-bold);
+
+      &:hover,
+      &:focus {
+        color: var(--core-blue-3);
+      }
+    }
+  }
+
+  /* hide icon, action bar */
+  & .coveo-result-row:first-child > .coveo-result-cell:first-child,
+  & .CoveoCardActionBar,
+  & .coveo-card-action-bar-arrow-container {
+    display: none;
+  }
+
+  & .coveo-result-cell {
+    padding-left: 0 !important; /* override inline style */
+  }
+}
+
+/* facet checkboxes */
+.coveo-facet-value.coveo-facet-value {
+
+  /* use default checkbox */
+  & .coveo-facet-value-checkbox {
+    display: none;
+  }
+
+  & input[type='checkbox'] {
+    display: inline-block;
+    margin-right: var(--sm);
+    order: 1;
+  }
+
+  /* facet value */
+  & .coveo-facet-value-caption {
+    flex: 1 1 auto;
+    order: 2;
+  }
+
+  /* facet result count */
+  & .coveo-facet-value-count {
+    color: var(--aluminum-4);
+    order: 3;
+  }
+}
+
+/* did you mean */
+.CoveoDidYouMean.CoveoDidYouMean {
+  border: 1px solid var(--aluminum-4);
+  border-radius: 2px;
+  font-size: 13px;
+  margin: var(--sm) 0;
+  padding: var(--sm);
+
+  & .coveo-did-you-mean-no-results-for {
+    font-size: 13px;
+  }
+}
+
+/* pagination */
+.CoveoPager.CoveoPager {
+  display: block;
+  margin-left: 0;
+
+  & .coveo-pager-list {
+    display: flex;
+  }
+
+  & a {
+    align-items: center;
+    color: var(--aluminum-5);
+    display: flex;
+    font-size: 13px;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--core-blue-3);
+    }
+  }
+
+  & [title="Previous"]::after {
+    content: 'Previous';
+  }
+
+  & [title="Next"]::before {
+    content: 'Next';
+  }
+
+  /* prev/next */
+  & .coveo-pager-next-icon-svg,
+  & .coveo-pager-previous-icon-svg {
+    color: currentColor;
+    height: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+    position: relative;
+    top: -1px;
+    width: 10px;
+  }
+
+  /* hide numbered pagination */
+  & .coveo-pager-list-item:not(.coveo-pager-previous):not(.coveo-pager-next) {
+    display: none;
+  }
+}
+
+/* no idea what this is */
+.coveo-card-layout-padding {
   display: none;
 }

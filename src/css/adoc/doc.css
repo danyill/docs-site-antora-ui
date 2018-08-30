@@ -36,8 +36,8 @@
       background: none;
       border: 0;
       font-family: inherit;
-      font-weight: inherit;
       font-size: inherit;
+      font-weight: inherit;
       padding: 0;
       top: 0;
     }
@@ -54,8 +54,8 @@
     transition: opacity var(--transition-speed-sm) var(--transition-timing), transform var(--transition-speed-sm) var(--transition-timing);
 
     &:focus {
-      outline: 0;
       opacity: .5;
+      outline: 0;
     }
 
     &::before {
@@ -140,8 +140,8 @@
     background: var(--aluminum-1);
     border: 1px solid var(--aluminum-3);
     border-radius: 2px;
-    padding: var(--md);
     overflow: auto;
+    padding: var(--md);
 
     & code {
       background: none;

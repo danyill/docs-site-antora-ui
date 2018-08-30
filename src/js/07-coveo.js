@@ -28,7 +28,7 @@
     }
     const hideCoveo = () => {
       backdrop.classList.remove('show')
-      body.classList.add('no-scroll')
+      body.classList.remove('no-scroll')
       searchUI.classList.remove('show')
     }
     const clickThru = (e) => e.stopPropagation()

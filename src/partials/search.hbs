@@ -1,25 +1,24 @@
 <div class="modal-backdrop"></div>
 <div id="search" class="js-search-ui js-coveo CoveoSearchInterface">
   <div class="modal">
-    <div class="CoveoSearchbox"></div>
+    <header class="coveo-searchbox-wrapper">
+      <div class="CoveoSearchbox" data-placeholder="Search docs" data-enable-search-as-you-type="true"></div>
+    </header>
     <div class="coveo-main-section">
-      <div class="coveo-facet-column">
+      <section class="coveo-facet-column">
+        <header class="facet-heading">Filter by</header>
         <div class="CoveoFacet" data-title="Source" data-field="@source" data-tab="All"></div>
-        <div class="CoveoFacet" data-title="Product" data-field="@product" data-number-of-values="10" data-enable-settings="false" data-enable-facet-search="false" data-enable-more-less="false"></div>
-        <div class="CoveoFacet" data-title="Version" data-field="@version" data-number-of-values="5" data-enable-settings="false" data-enable-facet-search="false" data-enable-more-less="false"></div>
-      </div>
-      <div class="coveo-results-column">
-        <div class="coveo-results-header">
-          <div class="coveo-summary-section">
-            <span class="CoveoQuerySummary"></span>
-          </div>
-        </div>
+        <div class="CoveoFacet" data-title="Product" data-field="@product" data-number-of-values="10" data-enable-settings="false" data-enable-facet-search="false" data-enable-more-less="false" data-preserve-position="false"></div>
+        <div class="CoveoFacet" data-title="Version" data-field="@version" data-number-of-values="5" data-enable-settings="false" data-enable-facet-search="false" data-enable-more-less="false" data-preserve-position="false"></div>
+      </section>
+      <section class="coveo-results-column">
+        <span class="CoveoQuerySummary" data-enable-search-tips="false"></span>
         <div class="CoveoHiddenQuery"></div>
         <div class="CoveoDidYouMean"></div>
         <div class="CoveoErrorReport"></div>
-        <div class="CoveoResultList" data-layout="list" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
-        <div class="CoveoPager"</div>
+        <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
+        <div class="CoveoPager"></div>
       </div>
-    </div>
+    </section>
   </div>
 </div>

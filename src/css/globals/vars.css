@@ -60,6 +60,7 @@
   --screen-xl: 1160px; /* match marketing header */
 
   /* z-index */
+  --z-modal-header: 15;
   --z-modal: 14;
   --z-backdrop: 13;
   --z-header: 12; /* marketing header */

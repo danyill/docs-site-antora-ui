@@ -6,36 +6,13 @@ body {
   line-height: 1.6;
   word-wrap: break-word;
 
-  &::before {
-    background: var(--tertiary);
-    bottom: 0;
-    content: '';
-    cursor: pointer;
-    display: block;
-    left: 0;
-    opacity: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    transition: opacity var(--transition-speed-md) var(--transition-timing);
-    z-index: -1;
-
-    @media (--md) {
-      display: none;
-    }
-  }
-
   &.no-scroll {
     overflow: hidden;
 
-    @media (--md) {
-      overflow-y: auto;
-    }
-
-    &::before {
-      opacity: .3;
-      pointer-events: auto;
-      z-index: var(--z-backdrop);
+    &.mobile {
+      @media (--md) {
+        overflow-y: auto;
+      }
     }
   }
 }

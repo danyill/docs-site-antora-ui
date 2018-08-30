@@ -1,0 +1,12 @@
+.CoveoSearchInterface {
+  display: none !important; /* override coveo default */
+
+  &.show {
+    display: block !important; /* override coveo default */
+  }
+}
+
+/* hide unwanted ui */
+.CoveoSearchInterface .coveo-facet-column [data-field="@source"] {
+  display: none;
+}

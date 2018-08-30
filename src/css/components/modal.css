@@ -1,28 +1,40 @@
-.CoveoSearchInterface.modal {
+.modal {
   background: var(--tertiary);
+  border-radius: 2px;
   box-shadow: 0 3px 15px rgba(0,0,0,.1);
-  display: none !important;
   font-size: 13px;
-  height: 600px;
   left: 0;
   margin-left: auto;
   margin-right: auto;
-  padding: var(--xl);
+  max-height: calc(100vh - var(--lg) - var(--lg));
+  max-width: 800px;
+  overflow-y: auto;
+  padding: var(--lg);
   position: fixed;
   right: 0;
-  top: 100px;
-  width: 600px;
-  z-index: 1000;
+  top: var(--md);
+  width: 100%;
+  z-index: var(--z-modal);
+}
+
+.modal-backdrop {
+  backdrop-filter: blur(1px);
+  background: rgba(0,0,0,.1);
+  bottom: 0;
+  display: none;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: var(--z-backdrop);
 
   &.show {
-    display: block !important;
-  }
+    display: block;
 
-  & ul {
-    list-style-type: decimal;
-  }
-
-  & li + li {
-    margin-top: var(--sm);
+    &.mobile {
+      @media (--md) {
+        display: none;
+      }
+    }
   }
 }

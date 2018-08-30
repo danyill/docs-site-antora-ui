@@ -12,7 +12,7 @@
   transform: translateX(calc(-1 * var(--nav-width)));
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
-  z-index: var(--z-nav-mobile);
+  z-index: var(--z-modal);
 
   @media (--md) {
     border-right: 0;
@@ -35,23 +35,22 @@
     position: relative;
     width: $nav-width - ($lg * 2);
 
-    &::before {
-      background-image: url(../img/icons/search.svg);
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: var(--md);
-      content: '';
-      display: block;
-      height: var(--md);
-      left: var(--xs);
-      opacity: .4; /* same as chevrons */
-      position: absolute;
-      width: var(--md);
-      z-index: 1;
+    & .input {
+      color: var(--aluminum-5);
+      cursor: pointer;
+      text-align: left;
+
+      &:focus {
+        border-color: var(--aluminum-4);
+        box-shadow: none;
+      }
     }
 
-    & .input {
-      padding-left: 25px; /* align to navigation */
+    & .svg {
+      height: var(--md);
+      fill: currentColor;
+      margin-right: var(--xs);
+      width: var(--md);
     }
   }
 }

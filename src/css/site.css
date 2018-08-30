@@ -27,6 +27,9 @@
 @import "adoc/description-list.css";
 @import "adoc/table.css";
 
+/* vendor */
+@import "vendor/coveo.css";
+
 /* other */
 @import "base.css";
 @import "home.css";

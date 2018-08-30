@@ -1,6 +1,7 @@
 ;(() => {
   'use strict'
 
+  /* eslint-disable no-undef */
   document.addEventListener('DOMContentLoaded', () => {
     // coveo setup
     const body = document.body
@@ -25,6 +26,7 @@
       backdrop.classList.add('show')
       body.classList.add('no-scroll')
       searchUI.classList.add('show')
+      body.querySelector('.CoveoSearchbox input').focus()
     }
     const hideCoveo = () => {
       backdrop.classList.remove('show')

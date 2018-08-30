@@ -24,7 +24,9 @@
     const searchUI = body.querySelector('.js-search-ui')
     const showCoveo = () => {
       backdrop.classList.add('show')
+      backdrop.classList.remove('mobile')
       body.classList.add('no-scroll')
+      body.classList.remove('mobile')
       searchUI.classList.add('show')
       body.querySelector('.CoveoSearchbox input').focus()
     }

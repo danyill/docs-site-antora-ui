@@ -39,6 +39,11 @@
     searchTrigger.addEventListener('touchend', showCoveo)
     body.addEventListener('click', hideCoveo)
     body.addEventListener('touchend', hideCoveo)
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 27) {
+        hideCoveo()
+      }
+    })
 
     // prevent clicks on nav from closing
     root.addEventListener('click', clickThru)

@@ -32,6 +32,11 @@ select {
   &::placeholder {
     color: var(--aluminum-5);
   }
+
+  /* checkbox radius */
+  &[type="checkbox"] {
+    border-radius: 3px;
+  }
 }
 
 textarea {

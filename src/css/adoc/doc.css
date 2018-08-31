@@ -18,6 +18,7 @@
   & h6 {
     padding-bottom: var(--md);
     padding-top: var(--xl);
+    position: relative;
 
     &:hover .anchor,
     &:focus .anchor {
@@ -35,8 +36,8 @@
       background: none;
       border: 0;
       font-family: inherit;
-      font-weight: inherit;
       font-size: inherit;
+      font-weight: inherit;
       padding: 0;
       top: 0;
     }
@@ -46,16 +47,15 @@
     display: inline-block;
     height: var(--lg);
     margin-left: -25px;
-    margin-top: -50%;
     opacity: 0;
     padding-right: var(--sm);
     position: absolute;
-    transform: scale(.9) translateY(50%);
+    transform: scale(.9);
     transition: opacity var(--transition-speed-sm) var(--transition-timing), transform var(--transition-speed-sm) var(--transition-timing);
 
     &:focus {
-      outline: 0;
       opacity: .5;
+      outline: 0;
     }
 
     &::before {
@@ -68,6 +68,26 @@
       height: var(--lg);
       width: var(--lg);
     }
+  }
+
+  & h1 .anchor {
+    margin-top: 15px;
+  }
+
+  & h2 .anchor {
+    margin-top: 10px;
+  }
+
+  & h3 .anchor {
+    margin-top: 7px;
+  }
+
+  & h4 .anchor {
+    margin-top: 5px;
+  }
+
+  & h5 .anchor {
+    margin-top: 3px;
   }
 
   & p,
@@ -124,8 +144,8 @@
     background: var(--aluminum-1);
     border: 1px solid var(--aluminum-3);
     border-radius: 2px;
-    padding: var(--md);
     overflow: auto;
+    padding: var(--md);
 
     & code {
       background: none;

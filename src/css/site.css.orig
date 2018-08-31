@@ -11,8 +11,11 @@
 @import "components/breadcrumbs.css";
 @import "components/button.css";
 @import "components/input.css";
-@import "components/modal.css";
+<<<<<<< HEAD
 @import "components/popover.css";
+=======
+@import "components/modal.css";
+>>>>>>> ffc3fbe1ed40f1f1560aaf91bca850d3c4bf8e9e
 @import "components/select.css";
 @import "components/tooltip.css";
 

@@ -7,8 +7,8 @@
 }
 
 .home .paragraph.hint {
-  margin-top: 2rem;
   font-size: .9375rem;
+  margin-top: 2rem;
 }
 
 .home h1,
@@ -49,28 +49,28 @@
 
 .blade a,
 .tile a {
-  text-decoration: none;
   position: relative;
+  text-decoration: none;
 }
 
 .home #preamble {
-  margin: 2rem 0 3rem;
   font-size: 1.125rem;
+  margin: 2rem 0 3rem;
   text-align: center;
 }
 
 .blade a::before,
 .tile a::before {
-  content: "";
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  right: 0;
-  height: 1px;
   background-color: currentColor;
+  bottom: -3px;
+  content: "";
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
   transform: scale3d(0,.9999,.9999);
-  transition-property: transform;
   transition-duration: .3s;
+  transition-property: transform;
 }
 
 .blade a:focus::before,
@@ -78,8 +78,8 @@
 .tile a:focus::before,
 .tile a:hover::before {
   transform: scale3d(1,.9999,.9999);
-  transition-timing-function: cubic-bezier(.4,0,.2,1);
   transition-duration: .3s;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
 }
 
 .conceal-title > h2 {
@@ -92,8 +92,8 @@
 }
 
 .blade {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
   padding: 1.25rem;
 }
@@ -126,19 +126,19 @@
 }
 
 .blade h3::after {
+  background-color: currentColor;
+  bottom: 0;
   content: "";
   display: block;
+  height: 2px;
   position: absolute;
   width: 25%;
-  height: 2px;
-  bottom: 0;
-  background-color: currentColor;
 }
 
 .blade .paragraph {
+  flex: 1 0 auto; /* NOTE must specify flex-basis for IE 11 */
   font-weight: var(--weight-light);
   margin-top: 1rem;
-  flex: 1 0 auto; /* NOTE must specify flex-basis for IE 11 */
 }
 
 .blade .ulist {
@@ -154,8 +154,8 @@
 
 .blade a::after {
   content: "\00a0>";
-  width: 0;
   display: inline-block;
+  width: 0;
 }
 
 .home .tiles {
@@ -171,15 +171,14 @@
 }
 
 .tiles > h2::after {
+  background-color: currentColor;
   content: "";
   display: block;
-  background-color: currentColor;
-  width: 5.625rem;
   height: 1px;
-  margin: 0 auto;
-  margin-bottom: -1px;
+  margin: 0 auto -1px;
   position: relative;
   top: 1.375rem;
+  width: 5.625rem;
 }
 
 .tiles > .sectionbody {
@@ -222,8 +221,8 @@
   }
 
   .blade + .blade {
-    margin-top: 0;
     margin-left: .75rem;
+    margin-top: 0;
   }
 
   .home .tiles {

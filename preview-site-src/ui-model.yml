@@ -1,138 +1,102 @@
-antoraVersion: '1.0.1'
+antoraVersion: '1.1.0'
 site:
   url: /home.html
-  title: Couchbase Developer
+  title: MuleSoft Documentation
   components:
-  - name: abc
-    title: Project ABC
-    url: '#'
-    versions:
-    - &latest_version_abc
+    home:
+      name: home
+      title: Home
       url: '#'
-      version: '1.1'
-    - url: '#'
-      version: '1.0'
-    latestVersion: *latest_version_abc
-  - &component
-    name: server
-    title: Couchbase Server
-    url: /server/5.5/index.html
-    versions:
-    - &latest_version_server
-      url: /server/5.5/index.html
-      version: '5.5'
-    - &component_version
+      versions:
+      - version: master
+        url: '#'
+    access-management:
+      name: access-management
+      title: Access Management
       url: '#'
-      version: '5.1'
-    - url: '#'
-      version: '5.0'
-    - url: '#'
-      version: '4.6'
-    latestVersion: *latest_version_server
-  - name: 123
-    title: Project 123
-    url: '#'
-    versions:
-    - &latest_version_123
-      url: '#'
-      version: '2.2'
-    - url: '#'
-      version: '2.1'
-    - url: '#'
-      version: '2.0'
-    latestVersion: *latest_version_123
+      versions:
+      - version: master
+        url: '#'
+        navigation:
+        - items:
+          - content: Managing Your Account
+            url: '#'
+          - content: Organization
+            url: '#'
+          - content: Users
+            url: '#'
+          - content: Roles
+            url: '#'
+          - content: Environments
+            url: '#'
+    connector-devkit: &component
+      name: connector-devkit
+      title: Connector DevKit
+      url: /connector-devkit/3.7/index.html
+      versions:
+      - &component_version_latest
+        version: '3.8'
+        url: '#'
+        navigation:
+        - items:
+          - content: Overview
+            url: '#'
+          - content: Setting Up Your Development Environment
+            url: '#'
+          - content: Connector Project Structure
+            url: /connector-devkit/3.7/index.html
+          - content: Creating a Project
+            items:
+            - content: Overview
+              url: '#'
+            - content: Setting up API Access
+              url: '#'
+            - content: Connection Strategies
+              url: '#'
+            - content: Authentication
+              items:
+              - content: Overview
+                url: '#'
+              - content: Methods
+                url: '#'
+              - content: OAuth v1
+                url: '#'
+              - content: OAuth v2
+                url: '#'
+              - content: Connection Management
+                url: '#'
+              - content: No Authentication
+                url: '#'
+              - content: HTTP Authentication
+                url: '#'
+      - &component_version
+        version: '3.7'
+        url: '#'
+        navigation: []
+      - version: '3.6'
+        url: '#'
+        navigation: []
+      latest: *component_version_latest
 page:
-  title: &page_title Connector DevKit
-  url: &page_url /server/5.5/index.html
+  title: &page_title Connector Project Structure
+  url: &page_url /connector-devkit/3.7/index.html
   component: *component
   componentVersion: *component_version
-  version: '5.5'
+  version: '3.7'
   module: ROOT
   home: false
-  editUrl: https://github.com/opendevise/couchbase-docs-ui/blob/new-ui/preview-site-src/index.adoc
+  editUrl: https://github.com/mulesoft/mulesoft-docs-antora-ui/blob/master/preview-site-src/index.adoc
+  versions:
+  - version: '3.8'
+    url: '#'
+  - version: '3.7'
+    url: '#'
+  - version: '3.6'
+    url: '#'
+  - version: '3.5'
+    missing: true
+    url: '#'
   breadcrumbs:
   - content: *page_title
     url: *page_url
-    urlType: internal
-  versions:
-  - version: '5.5'
-    url: '#'
-  - version: '5.1'
-    url: '#'
-  - version: '5.0'
-    url: '#'
-  - version: '4.6'
-    missing: true
-    url: '#'
-  navigation:
-  - content: Home
-    items:
-    - content: Why Couchbase?
-      url: '#'
-      urlType: fragment
-    - content: What's New?
-      url: '#'
-      urlType: fragment
-  - content: Access Management
-    items:
-    - content: Start Here!
-      url: '#'
-      urlType: fragment
-    - content: Do a Quick Install
-      url: '#'
-      urlType: fragment
-  - content: Analytics
-    items:
-    - content: Hello World!
-      url: '#'
-      urlType: fragment
-    - content: Users and Security
-      url: '#'
-      urlType: fragment
-  - content: Connector DevKit
-    items:
-    - content: Overview
-      url: '#'
-      urlType: fragment
-    - content: Setting up your development environment
-      url: '#'
-      urlType: fragment
-    - content: Project structure
-      url: '#'
-      urlType: fragment
-    - content: Creating a project
-      urlType: fragment
-      items:
-      - content: Overview
-        url: '#'
-        urlType: fragment
-      - content: Setting up API access
-        url: '#'
-        urlType: fragment
-      - content: Connection strategies
-        url: '#'
-        urlType: fragment
-      - content: Authentication
-        urlType: fragment
-        items:
-        - content: Overview
-          url: '#'
-          urlType: fragment
-        - content: Methods
-          url: '#'
-          urlType: fragment
-        - content: OAuth v1
-          url: '#'
-          urlType: fragment
-        - content: OAuth v2
-          url: '#'
-          urlType: fragment
-        - content: Connection management
-          url: '#'
-          urlType: fragment
-        - content: No authentication
-          url: '#'
-          urlType: fragment
-        - content: HTTP authentication
-          url: '#'
-          urlType: fragment
+  navigation: []

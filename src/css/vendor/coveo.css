@@ -188,11 +188,13 @@
     width: auto;
 
     @media (--md) {
+      flex: 0 0 250px;
       margin-bottom: 0;
       margin-left: var(--lg);
-      max-width: 275px;
+      max-width: 250px;
       position: sticky;
       top: 110px; /* search header + 20px padding */
+      width: 100%;
     }
   }
 

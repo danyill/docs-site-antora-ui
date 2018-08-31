@@ -26,13 +26,13 @@
     }
 
     // setup toggle events
-    navLink = navLists[i].previousElementSibling
+    navLink = navLists[i].parentElement.querySelector('.js-nav-link')
     navLink.addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
     navLink.addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
   }
 
   const toggleNav = (e, navLists, navListsHeights) => {
-    const thisList = e.target.nextElementSibling
+    const thisList = e.target.parentElement.nextElementSibling
     let thisIndex
 
     for (let i = 0; i < navLists.length; i++) {

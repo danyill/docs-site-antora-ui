@@ -7,9 +7,9 @@
   font-weight: var(--weight-bold);
   height: var(--nav-item-height);
   padding: var(--xs);
+  transition: box-shadow var(--transition-speed-sm) var(--transition-timing);
 
-  &:hover,
-  &:focus {
+  &:hover {
     border-color: var(--aluminum-5);
     color: var(--steel-1);
   }

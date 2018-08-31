@@ -20,12 +20,30 @@
   position: sticky;
   top: 0;
   z-index: var(--z-modal-header);
+
+  /* close button */
+  & .coveo-close {
+    cursor: pointer;
+    fill: var(--aluminum-4);
+    height: var(--lg);
+    margin-left: var(--md);
+    padding: var(--xs);
+    width: var(--lg);
+
+    &:hover,
+    &:focus,
+    &:active {
+      fill: var(--red-3);
+    }
+  }
 }
 
-.CoveoSearchbox {
+.CoveoSearchbox.CoveoSearchbox.CoveoSearchbox {
+  flex: 1 1 auto;
+  margin-right: 0;
 
   /* input */
-  & .magic-box.magic-box {
+  & .magic-box {
     background: #fefefe;
     border: 1px solid var(--aluminum-4);
     border-radius: 4px;
@@ -45,6 +63,7 @@
       background: none;
 
       & > input {
+        font-family: var(--sans-serif);
         text-indent: 0;
 
         &::placeholder {
@@ -55,7 +74,7 @@
   }
 
   /* search button */
-  & .CoveoSearchButton.CoveoSearchButton {
+  & .CoveoSearchButton {
     align-items: center;
     border: 0;
     display: flex;
@@ -95,32 +114,38 @@
   }
 
   /* clear button */
-  & .magic-box-clear.magic-box-clear {
+  & .magic-box-clear {
     align-items: center;
     background: none;
+    color: var(--aluminum-4);
     display: flex;
     justify-content: center;
     opacity: 0;
-    transform: rotate(30deg) scale(.9);
-    transition: opacity var(--transition-speed-md) var(--transition-timing), transform var(--transition-speed-md) var(--transition-timing);
+    transform: translateX(12px);
+    transition: opacity var(--transition-speed-sm) var(--transition-timing), transform var(--transition-speed-sm) var(--transition-timing);
     width: 48px;
 
-    & .magic-box-icon {
-      background: url(../img/icons/close.svg);
-      background-size: 100%;
-      height: 10px;
-      opacity: .5;
-      width: 10px;
+    &:hover,
+    &:focus {
+      color: var(--aluminum-5);
+    }
 
-      & svg {
-        display: none;
-      }
+    &::before {
+      color: currentColor;
+      content: 'Clear';
+      display: block;
+      font-size: 12px;
+      position: static;
+    }
+
+    & .magic-box-icon svg {
+      display: none;
     }
   }
 
-  & .magic-box-notEmpty .magic-box-clear.magic-box-clear {
+  & .magic-box-notEmpty .magic-box-clear {
     opacity: 1;
-    transform: rotate(0) scale(1);
+    transform: translateX(0);
   }
 }
 
@@ -138,8 +163,14 @@
 
 .coveo-main-section.coveo-main-section {
   background: #fefefe;
+  display: flex;
+  flex-direction: column;
   min-height: 120px;
   padding: var(--lg);
+
+  @media (--md) {
+    flex-direction: row;
+  }
 
   /* facet things */
   & .facet-heading {
@@ -150,12 +181,27 @@
   }
 
   & .coveo-facet-column {
-    float: right;
-    margin-left: var(--lg);
+    margin-bottom: var(--lg);
     margin-right: 0;
+    order: 2;
     padding: 0;
-    position: sticky;
-    top: 110px; /* search header + 20px padding */
+    width: auto;
+
+    @media (--md) {
+      margin-bottom: 0;
+      margin-left: var(--lg);
+      max-width: 275px;
+      position: sticky;
+      top: 110px; /* search header + 20px padding */
+    }
+  }
+
+  & .facet-wrapper {
+    flex-wrap: wrap;
+
+    @media (--md) {
+      flex-direction: column;
+    }
   }
 
   & .CoveoFacet,
@@ -171,7 +217,12 @@
     & + .CoveoFacetSlider,
     & + .CoveoHierarchicalFacet,
     & + .CoveoCategoryFacet {
+      margin-right: var(--md);
       margin-top: var(--md);
+
+      @media (--md) {
+        margin-left: 0;
+      }
     }
   }
 
@@ -233,7 +284,12 @@
 
   /* results */
   & .coveo-results-column {
+    order: 3;
     padding: 0;
+
+    @media (--md) {
+      order: 1;
+    }
 
     /* date */
     & .CoveoFieldValue {
@@ -251,6 +307,13 @@
 
   & .coveo-card-layout-container {
     margin-right: 0;
+  }
+
+  & .CoveoResultList {
+    @media (max-width: 800px) {
+      margin-left: 0;
+      margin-right: 0;
+    }
   }
 
   /* result card */
@@ -286,7 +349,7 @@
     & .CoveoResultLink {
       color: var(--steel-2);
       font-family: var(--heading);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: var(--weight-bold);
 
       &:hover,

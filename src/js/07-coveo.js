@@ -11,23 +11,26 @@
       accessToken: 'xxfb311f5b-4798-4ee9-b059-bd0cbc971104',
     })
     root.addEventListener('buildingQuery', (e) => {
-      const facetElement = document.querySelector('.CoveoFacet[data-title="Source"]')
+      const facetElement = body.querySelector('.CoveoFacet[data-title="Source"]')
       const facetInstance = Coveo.get(facetElement)
       facetInstance.selectValue('mulesoft docs staging')
     })
 
     // modal setup
-    const backdrop = document.querySelector('.modal-backdrop')
+    const backdrop = body.querySelector('.modal-backdrop')
+    const nav = body.querySelector('.js-nav')
 
     // show/hide coveo search
     const searchTrigger = body.querySelector('.js-search-trigger')
     const searchUI = body.querySelector('.js-search-ui')
+    const searchClose = body.querySelector('.js-search-close')
     const showCoveo = () => {
       backdrop.classList.add('show')
       backdrop.classList.remove('mobile')
       body.classList.add('no-scroll')
       body.classList.remove('mobile')
       searchUI.classList.add('show')
+      nav.classList.remove('active')
       body.querySelector('.CoveoSearchbox input').focus()
     }
     const hideCoveo = () => {
@@ -41,6 +44,8 @@
     searchTrigger.addEventListener('touchend', showCoveo)
     body.addEventListener('click', hideCoveo)
     body.addEventListener('touchend', hideCoveo)
+    searchClose.addEventListener('click', hideCoveo)
+    searchClose.addEventListener('touchend', hideCoveo)
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 27) hideCoveo()
     })

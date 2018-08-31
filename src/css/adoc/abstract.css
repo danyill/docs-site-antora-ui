@@ -4,7 +4,7 @@
 
   &::before {
     content: "Abstract: ";
-    font-weight: var(--weight-bold);
     font-style: normal;
+    font-weight: var(--weight-bold);
   }
 }

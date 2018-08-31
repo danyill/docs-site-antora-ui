@@ -11,6 +11,7 @@
 @import "components/breadcrumbs.css";
 @import "components/button.css";
 @import "components/input.css";
+@import "components/modal.css";
 @import "components/select.css";
 
 /* specific */
@@ -25,6 +26,9 @@
 @import "adoc/admonition-block.css";
 @import "adoc/description-list.css";
 @import "adoc/table.css";
+
+/* vendor */
+@import "vendor/coveo.css";
 
 /* other */
 @import "base.css";

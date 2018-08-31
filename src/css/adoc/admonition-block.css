@@ -46,8 +46,8 @@
 
     &::before {
       background-image: url(../img/icons/caution.svg);
-      content: 'CAUTION';
       color: color-mod(var(--red-3) lightness(40%));
+      content: 'CAUTION';
     }
   }
 
@@ -57,8 +57,8 @@
 
     &::before {
       background-image: url(../img/icons/important.svg);
-      content: 'IMPORTANT';
       color: color-mod(var(--yellow-3) lightness(40%));
+      content: 'IMPORTANT';
     }
   }
 
@@ -78,8 +78,8 @@
 
     &::before {
       background-image: url(../img/icons/caution.svg);
-      content: 'WARNING';
       color: color-mod(var(--red-3) lightness(40%));
+      content: 'WARNING';
     }
   }
 }

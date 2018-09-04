@@ -59,7 +59,6 @@
   // changing versions
   const versions = document.querySelectorAll('js-version')
   const changeVersion = () => {
-    debugger
     console.log('hi')
   }
 

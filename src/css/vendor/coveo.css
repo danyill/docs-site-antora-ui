@@ -354,6 +354,10 @@
       font-size: 14px;
       font-weight: var(--weight-bold);
 
+      &:focus {
+        outline: 0;
+      }
+
       &:hover,
       &:focus {
         color: var(--core-blue-3);

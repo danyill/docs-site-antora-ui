@@ -13,6 +13,14 @@
 }
 
 /* initial and hidden state */
+.js-version-popover {
+  visibility: hidden;
+}
+
+.tippy-popper .js-version-popover {
+  visibility: visible;
+}
+
 .tippy-popper .popover,
 .tippy-popper.hide .popover {
   opacity: 0;

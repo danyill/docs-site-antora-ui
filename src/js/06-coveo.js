@@ -1,7 +1,6 @@
 ;(() => {
   'use strict'
 
-  /* eslint-disable no-undef */
   document.addEventListener('DOMContentLoaded', () => {
     // coveo setup
     const body = document.body

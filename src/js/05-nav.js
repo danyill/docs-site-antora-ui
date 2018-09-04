@@ -65,6 +65,7 @@
     // make current element active
     thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
     thisList.parentNode.classList.add('active')
+    closePopovers()
   }
 
   // version popovers
@@ -79,13 +80,14 @@
       flip: false,
       html: versionsPopover[i],
       interactive: true,
-      offset: '-45, 5',
+      offset: '-40, 5',
       onHide (instance) {
         this.classList.add('hide')
         this.classList.remove('shown')
         unbindEvents(this)
       },
       onShow (instance) {
+        closePopovers(instance)
         this.classList.remove('hide')
         bindEvents(this)
       },
@@ -120,6 +122,16 @@
     placement: 'right',
     theme: 'tooltip',
   })
+
+  const closePopovers = (instance) => {
+    versionsTrigger.forEach((popper) => {
+      if (!instance) {
+        popper._tippy.hide()
+      } else if (popper !== instance.popper) {
+        popper._tippy.hide()
+      }
+    })
+  }
 
   // changing versions
   const changeVersion = (e) => {

@@ -55,4 +55,16 @@
     thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
     thisList.parentNode.classList.add('active')
   }
+
+  // changing versions
+  const versions = document.querySelectorAll('js-version')
+  const changeVersion = () => {
+    debugger
+    console.log('hi')
+  }
+
+  for (let i = 0; i < versions.length; i++) {
+    versions[i].addEventListener('click', changeVersion)
+    versions[i].addEventListener('touchend', changeVersion)
+  }
 })()

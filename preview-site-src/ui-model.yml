@@ -4,7 +4,7 @@ site:
   title: MuleSoft Documentation
   components:
     home:
-      name: home
+      name: general
       title: Home
       url: '#'
       versions:

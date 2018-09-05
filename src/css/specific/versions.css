@@ -1,4 +1,5 @@
 .versions {
+  align-self: start;
   border: 1px solid var(--aluminum-4);
   border-radius: 22px;
   color: var(--aluminum-5);
@@ -8,6 +9,7 @@
   margin-right: 3px;
   padding: 0 2px 0 6px;
   position: relative;
+  top: 4px;
 
   &:hover {
     border-color: var(--aluminum-5);

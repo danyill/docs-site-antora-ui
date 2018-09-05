@@ -85,6 +85,20 @@
   const versionsPopover = document.querySelectorAll('[data-popover="versions"]')
   const pinTrigger = document.querySelectorAll('[data-trigger="pin"]')
 
+  const setPin = (thisProduct, thisTrigger, thisVersion) => {
+    const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
+    if (savedVersion) {
+      thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
+      for (let i = 0; i < navLists.length; i++) {
+        const listProduct = navLists[i].getAttribute('data-product')
+        const listVersion = navLists[i].getAttribute('data-version')
+        if (thisProduct === listProduct && savedVersion === listVersion) {
+          navLists[i].setAttribute('data-pinned', true)
+        }
+      }
+    }
+  }
+
   for (let i = 0; i < versionsTrigger.length; i++) {
     tippy(versionsTrigger[i], {
       duration: [0, 150],
@@ -112,19 +126,7 @@
     })
 
     // if a version has been pinned
-    const thisProduct = versionsTrigger[i].getAttribute('data-trigger-product')
-    const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
-    if (savedVersion) {
-      versionsTrigger[i].classList.add('pinned')
-      versionsTrigger[i].querySelector('.js-versions-text').textContent = savedVersion
-      for (let i = 0; i < navLists.length; i++) {
-        const listProduct = navLists[i].getAttribute('data-product')
-        const listVersion = navLists[i].getAttribute('data-version')
-        if (thisProduct === listProduct && savedVersion === listVersion) {
-          navLists[i].setAttribute('data-pinned', true)
-        }
-      }
-    }
+    setPin(versionsTrigger[i].getAttribute('data-trigger-product'), versionsTrigger[i])
   }
 
   tippy(pinTrigger, {
@@ -150,13 +152,12 @@
     const thisTarget = e.target
     const thisProduct = thisTarget.getAttribute('data-product')
     const thisVersion = thisTarget.getAttribute('data-version')
-    // toggle nav
+    // save version
+    localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
+    // update pins
+    setPin(thisProduct, thisTippy.reference, thisVersion)
+    // update nav
     toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
-    // change version in trigger
-    thisTippy.reference.querySelector('.js-versions-text').textContent = e.target.getAttribute('data-version')
-    if (thisTarget.getAttribute('data-trigger')) {
-      localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
-    }
     // close the popover
     thisTippy.hide()
   }

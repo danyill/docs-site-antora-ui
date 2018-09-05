@@ -25,10 +25,6 @@
     height: var(--md);
     width: var(--md);
   }
-
-  & .svg-pin {
-    fill: var(--core-blue-3);
-  }
 }
 
 .popover-versions-theme {

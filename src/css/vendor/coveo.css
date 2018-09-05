@@ -1,6 +1,6 @@
 /* hide source facet */
 .CoveoSearchInterface .coveo-facet-column [data-field="@source"] {
-  display: none;
+  display: none !important;
 }
 
 /* override coveo defaults */
@@ -354,6 +354,10 @@
       font-size: 14px;
       font-weight: var(--weight-bold);
 
+      &:focus {
+        outline: 0;
+      }
+
       &:hover,
       &:focus {
         color: var(--core-blue-3);
@@ -477,6 +481,42 @@
 
 .coveo-query-summary-cancel-last {
   display: none;
+}
+
+/* loading states */
+.coveo-during-initialization.coveo-with-placeholder .coveo-result-row:nth-child(2) {
+  display: none !important;
+}
+
+.CoveoResultList.coveo-during-initialization.coveo-with-placeholder .coveo-card-layout.coveo-placeholder-result {
+  min-height: 0 !important;
+}
+
+.CoveoFacet.coveo-during-initialization.coveo-with-placeholder.coveo-facet-fade.coveo-active,
+.CoveoFacet.coveo-during-initialization.coveo-with-placeholder.coveo-facet-empty.coveo-facet-fade {
+  border: 0 !important;
+}
+
+.coveo-placeholder-title {
+  height: 15px !important;
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  opacity: .25 !important;
+}
+
+.coveo-placeholder-text {
+  opacity: .25 !important;
+}
+
+.coveo-facet-placeholder-line {
+  margin-bottom: 10px !important;
+  padding: 0 !important;
+}
+
+.coveo-facet-placeholder-checkbox {
+  height: 12px !important;
+  opacity: .25 !important;
+  width: 12px !important;
 }
 
 /* no idea what this is */

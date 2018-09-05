@@ -33,6 +33,7 @@
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
+    let changingVersion = false
     let thisTarget = e.target
     let thisList
     let thisIndex
@@ -44,17 +45,22 @@
     } else {
       // if navigation via version select
       thisList = document.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      // used for disabling transition during version change
+      changingVersion = true
     }
 
     for (let i = 0; i < navLists.length; i++) {
       // if transition disabled on load, re-enable
-      if (navLists[i].style.transition) {
-        navLists[i].style.transition = null
+      if (changingVersion) {
+        navLists[i].classList.add('transition-opacity-only')
+      } else if (navLists[i].classList.contains('transition-opacity-only')) {
+        navLists[i].classList.remove('transition-opacity-only')
       }
 
       // make other elements inactive
       navLists[i].parentNode.classList.remove('active')
       navLists[i].style.maxHeight = null
+      navLists[i].style.opacity = '0'
 
       // check if list matches active target
       if (navLists[i] === thisList) {
@@ -64,7 +70,9 @@
 
     // make current element active
     thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
+    thisList.style.opacity = '1'
     thisList.parentNode.classList.add('active')
+    if (changingVersion) thisList.classList.add('transition-opacity-only')
     closePopovers()
   }
 
@@ -101,14 +109,14 @@
     })
 
     // if a version has been pinned
-    let thisProduct = versionsTrigger[i].getAttribute('data-trigger-product')
-    let savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
+    const thisProduct = versionsTrigger[i].getAttribute('data-trigger-product')
+    const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
     if (savedVersion) {
       versionsTrigger[i].classList.add('pinned')
       versionsTrigger[i].querySelector('.js-versions-text').textContent = savedVersion
       for (let i = 0; i < navLists.length; i++) {
-        let listProduct = navLists[i].getAttribute('data-product')
-        let listVersion = navLists[i].getAttribute('data-version')
+        const listProduct = navLists[i].getAttribute('data-product')
+        const listVersion = navLists[i].getAttribute('data-version')
         if (thisProduct === listProduct && savedVersion === listVersion) {
           navLists[i].setAttribute('data-pinned', true)
         }

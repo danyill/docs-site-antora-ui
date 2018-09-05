@@ -60,13 +60,11 @@
 
   & .parent {
     max-height: 0;
-    transition: max-height var(--transition-speed-md) var(--transition-timing);
+    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
 
-    & .nav-link,
-    & .nav-heading {
-      opacity: 0;
-      transition: opacity var(--transition-speed-sm) var(--transition-timing), visibility var(--transition-speed-sm) var(--transition-timing);
-      visibility: hidden;
+    /* for opacity only transition */
+    &.transition-opacity-only {
+      transition: opacity var(--transition-speed-md) var(--transition-timing);
     }
   }
 
@@ -76,21 +74,12 @@
     padding-left: 25px;
   }
 
-  & > .nav-li.active {
+  & > .nav-li .nav-list .nav-heading {
+    opacity: .6;
+  }
 
-    & + .nav-list {
-      margin-top: var(--md);
-    }
-
-    & .nav-link {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    & .nav-list .nav-heading {
-      opacity: .6;
-      visibility: visible;
-    }
+  & > .nav-li.active + .nav-list {
+    margin-top: var(--md);
   }
 }
 

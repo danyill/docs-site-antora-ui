@@ -10,7 +10,7 @@
   <li class="nav-li{{#if (eq this @root.page.component)}} active{{/if}}" data-depth="0">
     <div class="flex align-center justify-justified">
       <a class="flex grow strong link nav-link nav-heading js-nav-link" tabindex="0">
-        <img class="icon" src="/_/img/icons/{{./name}}.svg"> {{{./title}}}
+        <img class="icon no-pointer" src="/_/img/icons/{{./name}}.svg"> {{{./title}}}
       </a>
       {{#if (gt ./versions.length 1)}}
       <button class="flex align-center shrink button versions" data-trigger="versions" data-trigger-product="{{./name}}">

@@ -74,69 +74,69 @@ site:
         url: '#'
         navigation:
         - items:
-          - content: Overview (v3.7)
+          - content: Overview
             url: '#'
-          - content: Setting Up Your Development Environment (v3.7)
+          - content: Setting Up Your Development Environment
             url: '#'
-          - content: Connector Project Structure (v3.7)
+          - content: Connector Project Structure
             url: /connector-devkit/3.7/index.html
           - content: Creating a Project (v3.7)
             items:
-            - content: Overview (v3.7)
+            - content: Overview
               url: '#'
-            - content: Setting up API Access (v3.7)
+            - content: Setting up API Access
               url: '#'
-            - content: Connection Strategies (v3.7)
+            - content: Connection Strategies
               url: '#'
             - content: Authentication (v3.7)
               items:
-              - content: Overview (v3.7)
+              - content: Overview
                 url: '#'
-              - content: Methods (v3.7)
+              - content: Methods
                 url: '#'
-              - content: OAuth v1 (v3.7)
+              - content: OAuth v1
                 url: '#'
-              - content: OAuth v2 (v3.7)
+              - content: OAuth v2
                 url: '#'
-              - content: Connection Management (v3.7)
+              - content: Connection Management
                 url: '#'
-              - content: No Authentication (v3.7)
+              - content: No Authentication
                 url: '#'
-              - content: HTTP Authentication (v3.7)
+              - content: HTTP Authentication
                 url: '#'
       - version: '3.6'
         url: '#'
         navigation:
         - items:
-          - content: Overview (v3.6)
+          - content: Overview
             url: '#'
-          - content: Setting Up Your Development Environment (v3.6)
+          - content: Setting Up Your Development Environment
             url: '#'
-          - content: Connector Project Structure (v3.6)
+          - content: Connector Project Structure
             url: /connector-devkit/3.6/index.html
           - content: Creating a Project (v3.6)
             items:
-            - content: Overview (v3.6)
+            - content: Overview
               url: '#'
-            - content: Setting up API Access (v3.6)
+            - content: Setting up API Access
               url: '#'
-            - content: Connection Strategies (v3.6)
+            - content: Connection Strategies
               url: '#'
             - content: Authentication (v3.6)
               items:
-              - content: Overview (v3.6)
+              - content: Overview
                 url: '#'
-              - content: Methods (v3.6)
+              - content: Methods
                 url: '#'
-              - content: OAuth v1 (v3.6)
+              - content: OAuth v1
                 url: '#'
-              - content: OAuth v2 (v3.6)
+              - content: OAuth v2
                 url: '#'
-              - content: Connection Management (v3.6)
+              - content: Connection Management
                 url: '#'
-              - content: No Authentication (v3.6)
+              - content: No Authentication
                 url: '#'
-              - content: HTTP Authentication (v3.6)
+              - content: HTTP Authentication
                 url: '#'
       latest: *component_version_latest
     studio: &component

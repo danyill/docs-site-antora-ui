@@ -20,22 +20,10 @@
     color: var(--core-blue-3);
   }
 
-  &.pinned .pin {
-    display: block;
-  }
-
   & .svg {
     fill: currentColor;
     height: var(--md);
     width: var(--md);
-  }
-
-  & .svg-pin {
-    fill: var(--core-blue-3);
-  }
-
-  & .pin {
-    display: none;
   }
 }
 

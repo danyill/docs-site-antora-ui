@@ -33,7 +33,7 @@
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
-    let changingVersion = false
+    let noTransition = false
     let thisTarget = e.target
     let thisList
     let thisIndex
@@ -41,6 +41,7 @@
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
       thisList = document.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      noTransition = true
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar
       let thisWrapper = thisTarget.parentElement
@@ -49,12 +50,12 @@
       // if navigation via version select
       thisList = document.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
       // used for disabling transition during version change
-      changingVersion = true
+      noTransition = true
     }
 
     for (let i = 0; i < navLists.length; i++) {
       // if transition disabled on load, re-enable
-      if (changingVersion) {
+      if (noTransition) {
         navLists[i].classList.add('transition-opacity-only')
       } else if (navLists[i].classList.contains('transition-opacity-only')) {
         navLists[i].classList.remove('transition-opacity-only')
@@ -75,7 +76,7 @@
     thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
     thisList.style.opacity = '1'
     thisList.parentNode.classList.add('active')
-    if (changingVersion) thisList.classList.add('transition-opacity-only')
+    if (noTransition) thisList.classList.add('transition-opacity-only')
     closePopovers()
   }
 

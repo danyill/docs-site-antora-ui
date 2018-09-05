@@ -38,8 +38,11 @@
     let thisList
     let thisIndex
 
-    // if navigating via sidebar
-    if (thisTarget.classList.contains('js-nav-link')) {
+    // when navigating on page load
+    if (e.type === 'DOMContentLoaded') {
+      thisList = document.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+    } else if (thisTarget.classList.contains('js-nav-link')) {
+      // if navigating via sidebar
       let thisWrapper = thisTarget.parentElement
       thisList = thisWrapper.parentElement.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
     } else {
@@ -173,4 +176,10 @@
       versions[i].removeEventListener('touchend', changeVersion)
     }
   }
+
+  // open current nav on load
+  window.addEventListener('DOMContentLoaded', (e) => {
+    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
+    if (thisProduct !== '') toggleNav(e, navLists, navListsHeights, thisProduct)
+  })
 })()

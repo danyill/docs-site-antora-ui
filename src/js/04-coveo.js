@@ -31,6 +31,14 @@
       searchUI.classList.add('show')
       nav.classList.remove('active')
       body.querySelector('.CoveoSearchbox input').focus()
+
+      // hide any popovers
+      for (const popper of document.querySelectorAll('.tippy-popper')) {
+        const instance = popper._tippy
+        if (instance.state.visible) {
+          instance.hide()
+        }
+      }
     }
     const hideCoveo = () => {
       backdrop.classList.remove('show')

@@ -12,7 +12,7 @@
   transform: translateX(calc(-1 * var(--nav-width)));
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
-  z-index: var(--z-modal);
+  z-index: var(--z-nav-mobile);
 
   @media (--md) {
     border-right: 0;

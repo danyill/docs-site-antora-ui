@@ -134,7 +134,7 @@
       placement: 'bottom',
       theme: 'popover-versions',
       trigger: 'click',
-      zIndex: 11, // same as z-nav
+      zIndex: 14, // same as z-nav-mobile
     })
 
     // if a version has been pinned

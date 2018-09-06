@@ -14,11 +14,11 @@
 
 /* initial and hidden state */
 .js-version-popover {
-  visibility: hidden;
+  display: none;
 }
 
 .tippy-popper .js-version-popover {
-  visibility: visible;
+  display: block;
 }
 
 .tippy-popper .popover,

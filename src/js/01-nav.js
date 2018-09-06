@@ -6,7 +6,7 @@
   let navListsHeights = []
   let navListItems
   let navListItemHeight
-  let navLink
+  const navLink = document.querySelectorAll('.js-nav-link')
 
   // calculate list height and set height on initial list
   for (let i = 0; i < navLists.length; i++) {
@@ -25,11 +25,12 @@
       navLists[i].style.transition = 'none'
       navLists[i].style.maxHeight = `${navListsHeights[i]}px`
     }
+  }
 
-    // setup toggle events
-    navLink = navLists[i].parentElement.querySelector('.js-nav-link')
-    navLink.addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
-    navLink.addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
+  // setup toggle events
+  for (let i = 0; i < navLink.length; i++) {
+    navLink[i].addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
+    navLink[i].addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
@@ -37,6 +38,7 @@
     let thisTarget = e.target
     let thisList
     let thisIndex
+    let collapse
 
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
@@ -45,7 +47,9 @@
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar
       let thisWrapper = thisTarget.parentElement
-      thisList = thisWrapper.parentElement.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      let thisNavLi = thisWrapper.parentElement
+      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      collapse = thisNavLi.classList.contains('active') || false
     } else {
       // if navigation via version select
       thisList = document.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
@@ -72,12 +76,19 @@
       }
     }
 
-    // make current element active
-    thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
-    thisList.style.opacity = '1'
-    thisList.parentNode.classList.add('active')
-    if (noTransition) thisList.classList.add('transition-opacity-only')
+    // close any open popovers
     closePopovers()
+
+    // if there's no list, stop here
+    if (!thisList) return
+
+    // make current element active if not collapsing
+    if (!collapse) {
+      thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
+      thisList.style.opacity = '1'
+      thisList.parentNode.classList.add('active')
+      if (noTransition) thisList.classList.add('transition-opacity-only')
+    }
   }
 
   // version popovers

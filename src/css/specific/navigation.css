@@ -78,7 +78,11 @@
     opacity: .6;
   }
 
-  & > .nav-li.active + .nav-list {
+  & .nav-li {
+    transition: margin var(--transition-speed-md) var(--transition-timing);
+  }
+
+  & > .nav-li.active + .nav-li {
     margin-top: var(--md);
   }
 }

@@ -112,7 +112,6 @@
   /* links */
   & a {
     color: var(--core-blue-3);
-    font-weight: var(--weight-bold);
 
     &:focus {
       outline: 0;

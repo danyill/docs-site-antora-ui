@@ -2,11 +2,12 @@
   'use strict'
 
   // navigation
-  const navLists = document.querySelectorAll('.js-nav-list')
+  const nav = document.querySelector('.js-nav')
+  const navLists = nav.querySelectorAll('.js-nav-list')
+  const navLink = nav.querySelectorAll('.js-nav-link')
   let navListsHeights = []
   let navListItems
   let navListItemHeight
-  const navLink = document.querySelectorAll('.js-nav-link')
 
   // calculate list height and set height on initial list
   for (let i = 0; i < navLists.length; i++) {
@@ -42,7 +43,7 @@
 
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
-      thisList = document.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
       noTransition = true
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar
@@ -52,7 +53,7 @@
       collapse = thisNavLi.classList.contains('active') || false
     } else {
       // if navigation via version select
-      thisList = document.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
       // used for disabling transition during version change
       noTransition = true
     }
@@ -95,7 +96,6 @@
   // tippy plugin https://atomiks.github.io/tippyjs/
   const versionsTrigger = document.querySelectorAll('[data-trigger="versions"]')
   const versionsPopover = document.querySelectorAll('[data-popover="versions"]')
-  const pinTrigger = document.querySelectorAll('[data-trigger="pin"]')
 
   const setPin = (thisProduct, thisTrigger, thisVersion) => {
     const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
@@ -116,7 +116,6 @@
       duration: [0, 150],
       flip: false,
       html: versionsPopover[i],
-      interactive: true,
       offset: '-40, 5',
       onHide (instance) {
         this.classList.add('hide')
@@ -140,13 +139,6 @@
     // if a version has been pinned
     setPin(versionsTrigger[i].getAttribute('data-trigger-product'), versionsTrigger[i])
   }
-
-  tippy(pinTrigger, {
-    duration: [0, 0],
-    offset: '0, 20',
-    placement: 'right',
-    theme: 'tooltip',
-  })
 
   const closePopovers = (instance) => {
     versionsTrigger.forEach((popper) => {

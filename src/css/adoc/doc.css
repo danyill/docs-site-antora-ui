@@ -170,13 +170,7 @@
 
     & ol,
     & ul {
-      font-size: 13px;
-    }
-
-    /* images */
-    & img {
-      height: auto;
-      max-width: 350px;
+      font-size: 14px;
     }
   }
 

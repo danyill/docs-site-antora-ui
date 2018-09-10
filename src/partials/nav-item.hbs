@@ -1,8 +1,11 @@
 <li class="nav-li" data-depth="0">
+
+  {{!-- top-level link --}}
   <div class="flex align-center justify-justified">
     <a class="flex grow strong link nav-link nav-heading js-nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}" tabindex="0">
       <img class="icon no-pointer" src="/_/img/icons/{{./name}}.svg"> {{{./title}}}
     </a>
+    {{!-- version selector --}}
     {{#if (gt ./versions.length 1)}}
     <button class="flex align-center shrink button versions" data-trigger="versions" data-trigger-product="{{./name}}">
       <span class="js-versions-text">{{./versions.0.version}}</span>
@@ -24,6 +27,8 @@
     </button>
     {{/if}}
   </div>
+
+  {{!-- nested links --}}
   {{#each ./versions}}
   {{> nav-tree navigation=./navigation.0.items level=1 version=./version product=./../name}}
   {{/each}}

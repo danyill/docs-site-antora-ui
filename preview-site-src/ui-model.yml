@@ -4,7 +4,7 @@ site:
   title: MuleSoft Documentation
   components:
     home:
-      name: home
+      name: general
       title: Home
       url: '#'
       versions:
@@ -153,6 +153,13 @@ site:
             url: '#'
           - content: Download and Install Studio
             url: '#'
+          - content: Creating a Project
+            url: '#'
+            items:
+              - content: APIKit
+                url: '#'
+              - content: Debugging
+                url: '#'
       - &component_version
         version: '7.1'
         url: '#'

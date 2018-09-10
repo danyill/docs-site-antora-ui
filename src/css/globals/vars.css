@@ -45,7 +45,7 @@
   --header-height: 66px;
   --footer-height: 361px;
   --nav-item-height: 32px;
-  --nav-width: 250px;
+  --nav-width: 275px;
   --toc-width: 250px;
   --radius: 2px;
   --xs: 5px;
@@ -60,8 +60,9 @@
   --screen-xl: 1160px; /* match marketing header */
 
   /* z-index */
-  --z-modal-header: 15;
-  --z-modal: 14;
+  --z-modal-header: 16;
+  --z-modal: 15;
+  --z-nav-mobile: 14;
   --z-backdrop: 13;
   --z-header: 12; /* marketing header */
   --z-nav: 11;

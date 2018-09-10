@@ -2,11 +2,12 @@
   'use strict'
 
   // navigation
-  const navLists = document.querySelectorAll('.js-nav-list')
+  const nav = document.querySelector('.js-nav')
+  const navLists = nav.querySelectorAll('.js-nav-list')
+  const navLink = nav.querySelectorAll('.js-nav-link')
   let navListsHeights = []
   let navListItems
   let navListItemHeight
-  let navLink
 
   // calculate list height and set height on initial list
   for (let i = 0; i < navLists.length; i++) {
@@ -25,36 +26,41 @@
       navLists[i].style.transition = 'none'
       navLists[i].style.maxHeight = `${navListsHeights[i]}px`
     }
+  }
 
-    // setup toggle events
-    navLink = navLists[i].parentElement.querySelector('.js-nav-link')
-    navLink.addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
-    navLink.addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
+  // setup toggle events
+  for (let i = 0; i < navLink.length; i++) {
+    navLink[i].addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
+    navLink[i].addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
-    let changingVersion = false
+    let noTransition = false
     let thisTarget = e.target
     let thisList
     let thisIndex
+    let collapse
 
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
-      thisList = document.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      noTransition = true
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar
       let thisWrapper = thisTarget.parentElement
-      thisList = thisWrapper.parentElement.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      let thisNavLi = thisWrapper.parentElement
+      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      collapse = thisNavLi.classList.contains('active') || false
     } else {
       // if navigation via version select
-      thisList = document.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
       // used for disabling transition during version change
-      changingVersion = true
+      noTransition = true
     }
 
     for (let i = 0; i < navLists.length; i++) {
       // if transition disabled on load, re-enable
-      if (changingVersion) {
+      if (noTransition) {
         navLists[i].classList.add('transition-opacity-only')
       } else if (navLists[i].classList.contains('transition-opacity-only')) {
         navLists[i].classList.remove('transition-opacity-only')
@@ -71,19 +77,25 @@
       }
     }
 
-    // make current element active
-    thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
-    thisList.style.opacity = '1'
-    thisList.parentNode.classList.add('active')
-    if (changingVersion) thisList.classList.add('transition-opacity-only')
+    // close any open popovers
     closePopovers()
+
+    // if there's no list, stop here
+    if (!thisList) return
+
+    // make current element active if not collapsing
+    if (!collapse) {
+      thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
+      thisList.style.opacity = '1'
+      thisList.parentNode.classList.add('active')
+      if (noTransition) thisList.classList.add('transition-opacity-only')
+    }
   }
 
   // version popovers
   // tippy plugin https://atomiks.github.io/tippyjs/
   const versionsTrigger = document.querySelectorAll('[data-trigger="versions"]')
   const versionsPopover = document.querySelectorAll('[data-popover="versions"]')
-  const pinTrigger = document.querySelectorAll('[data-trigger="pin"]')
 
   const setPin = (thisProduct, thisTrigger, thisVersion) => {
     const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
@@ -104,7 +116,6 @@
       duration: [0, 150],
       flip: false,
       html: versionsPopover[i],
-      interactive: true,
       offset: '-40, 5',
       onHide (instance) {
         this.classList.add('hide')
@@ -122,19 +133,12 @@
       placement: 'bottom',
       theme: 'popover-versions',
       trigger: 'click',
-      zIndex: 11, // same as z-nav
+      zIndex: 14, // same as z-nav-mobile
     })
 
     // if a version has been pinned
     setPin(versionsTrigger[i].getAttribute('data-trigger-product'), versionsTrigger[i])
   }
-
-  tippy(pinTrigger, {
-    duration: [0, 0],
-    offset: '0, 20',
-    placement: 'right',
-    theme: 'tooltip',
-  })
 
   const closePopovers = (instance) => {
     versionsTrigger.forEach((popper) => {

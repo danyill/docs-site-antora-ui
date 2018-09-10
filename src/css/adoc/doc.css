@@ -112,7 +112,6 @@
   /* links */
   & a {
     color: var(--core-blue-3);
-    font-weight: var(--weight-bold);
 
     &:focus {
       outline: 0;
@@ -171,13 +170,7 @@
 
     & ol,
     & ul {
-      font-size: 13px;
-    }
-
-    /* images */
-    & img {
-      height: auto;
-      max-width: 350px;
+      font-size: 14px;
     }
   }
 

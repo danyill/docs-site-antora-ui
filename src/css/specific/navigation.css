@@ -12,7 +12,7 @@
   transform: translateX(calc(-1 * var(--nav-width)));
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
-  z-index: var(--z-modal);
+  z-index: var(--z-nav-mobile);
 
   @media (--md) {
     border-right: 0;
@@ -27,6 +27,10 @@
 
   &.active {
     transform: translateX(0);
+  }
+
+  & ::selection {
+    background: transparent;
   }
 
   /* search input wrapper */
@@ -67,7 +71,6 @@
       transition: opacity var(--transition-speed-md) var(--transition-timing);
     }
   }
-
   /* for product icons */
   & > .nav-li .nav-link,
   & > .nav-li .nav-heading {
@@ -78,8 +81,30 @@
     opacity: .6;
   }
 
-  & > .nav-li.active + .nav-list {
-    margin-top: var(--md);
+  & .nav-li {
+    transition: margin var(--transition-speed-md) var(--transition-timing);
+  }
+
+  & > .nav-li.active {
+
+    & .nav-link.nav-heading {
+      color: var(--core-blue-3);
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: var(--core-blue-2);
+      }
+
+      & .icon {
+        filter: grayscale(0);
+        opacity: 1;
+      }
+    }
+
+    & + .nav-li {
+      margin-top: var(--md);
+    }
   }
 }
 
@@ -98,13 +123,21 @@
   &.active {
     color: var(--core-blue-3);
     cursor: default;
+
+    .icon {
+      filter: grayscale(0);
+      opacity: 1;
+    }
   }
 
   & .icon {
+    filter: grayscale(1);
     height: var(--lg);
     left: 0;
     margin-right: var(--xs);
+    opacity: .75;
     position: absolute;
+    top: 6px;
     width: var(--lg);
   }
 }
@@ -135,6 +168,7 @@
 }
 
 /* nesting: level 2 */
+.nav-li[data-depth="2"] .nav-heading,
 .nav-heading[data-depth="3"],
 .nav-li[data-depth="3"] {
   margin-left: var(--md);
@@ -144,3 +178,20 @@
 .nested-list {
   margin-bottom: var(--md);
 }
+
+/* nested lists withings headings */
+.nav-nested {
+
+  & + .nav-list {
+    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
+
+    & .nav-link {
+      padding-left: 45px;
+    }
+  }
+
+  &:not(.active):not(.expanded) + .nav-list {
+    max-height: 0;
+  }
+}
+

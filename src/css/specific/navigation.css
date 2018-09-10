@@ -71,7 +71,6 @@
       transition: opacity var(--transition-speed-md) var(--transition-timing);
     }
   }
-
   /* for product icons */
   & > .nav-li .nav-link,
   & > .nav-li .nav-heading {
@@ -179,3 +178,20 @@
 .nested-list {
   margin-bottom: var(--md);
 }
+
+/* nested lists withings headings */
+.nav-nested {
+
+  & + .nav-list {
+    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
+
+    & .nav-link {
+      padding-left: 45px;
+    }
+  }
+
+  &:not(.active):not(.expanded) + .nav-list {
+    max-height: 0;
+  }
+}
+

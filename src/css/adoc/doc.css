@@ -186,4 +186,9 @@
     color: var(--aluminum-5);
     margin-left: 0;
   }
+
+  /* images */
+  .image img {
+    margin: 0;
+  }
 }

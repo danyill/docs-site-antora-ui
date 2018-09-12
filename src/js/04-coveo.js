@@ -12,7 +12,7 @@
     root.addEventListener('buildingQuery', (e) => {
       const facetElement = body.querySelector('.CoveoFacet[data-title="Source"]')
       const facetInstance = Coveo.get(facetElement)
-      facetInstance.selectValue('mulesoft docs staging')
+      facetInstance.selectValue('Documentation - CDN')
     })
 
     // modal setup

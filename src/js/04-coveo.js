@@ -7,7 +7,7 @@
     const root = body.querySelector('.js-coveo')
     Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
       restUri: 'https://platform.cloud.coveo.com/rest/search',
-      accessToken: 'xxfb311f5b-4798-4ee9-b059-bd0cbc971104',
+      accessToken: 'xx6864598c-3519-4f73-a2f1-ef287a322eb2',
     })
     root.addEventListener('buildingQuery', (e) => {
       const facetElement = body.querySelector('.CoveoFacet[data-title="Source"]')

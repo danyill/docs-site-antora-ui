@@ -23,6 +23,22 @@ You can find a preview of this UI online at {uri-preview}.
 
 == Use the UI
 
+To use this UI with Antora, first download the UI bundle from the following URL and save it to the root of the project:
+
+{uri-project}/releases/download/{current-release}/ui-bundle.zip
+
+NOTE: It's necessary to download the UI bundle manually since it's stored in a private repository on GitHub.
+
+Next, add the following configuration to your playbook file:
+
+[source,yaml]
+----
+ui:
+  bundle:
+    url: ./ui-bundle.zip
+----
+
+////
 To use this UI with Antora, add the following configuration to your playbook file:
 
 [source,yaml,subs=attributes+]
@@ -31,6 +47,7 @@ ui:
   bundle:
     url: {uri-project}/releases/download/{current-release}/ui-bundle.zip
 ----
+////
 
 Read on to learn how to build the UI from source.
 

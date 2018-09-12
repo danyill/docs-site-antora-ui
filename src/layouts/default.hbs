@@ -13,15 +13,8 @@
     {{#if page.keywords}}
     <meta name="keywords" content="{{page.keywords}}">
     {{/if}}
-    {{#if page.attributes.version}}
-    <meta name="version" content="{{page.attributes.version}}">
-    {{/if}}
-    {{#if page.attributes.product}}
-    <meta name="product" content="{{page.attributes.product}}">
-    {{/if}}
-    {{#if page.attributes.goal}}
-    <meta name="goal" content="{{page.attributes.goal}}">
-    {{/if}}
+    <meta name="product" content="{{page.attributes.component-title}}">
+    <meta name="version" content="{{page.attributes.component-version}}">
     {{> head}}
   <body class="flex col">
     {{> header}}

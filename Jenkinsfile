@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
+        echo env.GIT_URL
         checkout scm:
             [
               $class: 'GitSCM',

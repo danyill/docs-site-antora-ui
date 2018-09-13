@@ -15,7 +15,7 @@ pipeline {
               branches: [[name: "refs/heads/${gitBranch}"]],
               extensions: [
                 [$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true],
-                [$class: 'MessageExclusion', excludedMessage: '(?s)(?:Release v\\d+|.*\\[skip .+?\\]).*']
+                [$class: 'MessageExclusion', excludedMessage: '(?s).*(?:Release v\\d+|\\[skip .+?\\]).*']
               ]
             ],
             changelog: false,

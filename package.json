@@ -4,7 +4,7 @@
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mulesoft-labs/mulesoft-docs-ui.git"
+    "url": "https://github.com/mulesoft/docs-site-antora-ui.git"
   },
   "engines": {
     "node": ">= 8.0.0"

@@ -1,4 +1,4 @@
-def gitUrl = 'git@github.com:mulesoft/docs-site-antora'
+def gitUrl = 'git@github.com:mulesoft/docs-site-antora-ui'
 def gitBranch = 'master'
 def gitCredentialsId = 'mule-docs-agent-ssh-key'
 def releaseTokenCredentialsId = 'mule-docs-agent-github-token'

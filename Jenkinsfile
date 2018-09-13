@@ -15,7 +15,7 @@ pipeline {
               branches: [[name: "refs/heads/${gitBranch}"]],
               extensions: [
                 [$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true],
-                [$class: 'MessageExclusion', excludedMessage: '(?s).*\\[skip .+?\\].*']
+                [$class: 'MessageExclusion', excludedMessage: '(?s)(?:Release v\\d+|.*\\[skip .+?\\]).*']
               ]
             ],
             changelog: false,
@@ -36,7 +36,7 @@ pipeline {
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
           nodejs('node8') {
-            //sh '$(npm bin)/gulp release'
+            sh '$(npm bin)/gulp release'
           }
         }
       }

@@ -87,23 +87,17 @@
 
   & > .nav-li.active {
 
-    & .nav-link.nav-heading {
-      color: var(--core-blue-3);
-
-      &:hover,
-      &:active,
-      &:focus {
-        color: var(--core-blue-2);
-      }
-
-      & .icon {
-        filter: grayscale(0);
-        opacity: 1;
-      }
-    }
-
     & + .nav-li {
       margin-top: var(--md);
+    }
+
+    & .nav-link.nav-heading {
+      color: var(--core-blue-3);
+    }
+
+    & .icon {
+      filter: grayscale(0);
+      opacity: 1;
     }
   }
 }
@@ -120,11 +114,14 @@
   position: relative;
   text-decoration: none;
 
+  &:focus {
+    color: var(--steel-2);
+  }
+
   &.active {
     color: var(--core-blue-3);
-    cursor: default;
 
-    .icon {
+    & .icon {
       filter: grayscale(0);
       opacity: 1;
     }

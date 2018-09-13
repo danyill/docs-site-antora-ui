@@ -57,6 +57,11 @@
       width: var(--md);
     }
   }
+
+  /* spacing between lists when active */
+  & > .nav-list > .nav-li.active + .nav-li {
+    margin-top: var(--md);
+  }
 }
 
 .nav-list {
@@ -86,10 +91,6 @@
   }
 
   & > .nav-li.active {
-
-    & + .nav-li {
-      margin-top: var(--md);
-    }
 
     & .nav-link.nav-heading {
       color: var(--core-blue-3);

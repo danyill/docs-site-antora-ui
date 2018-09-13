@@ -2,7 +2,7 @@
 
   {{!-- top-level link --}}
   <div class="flex align-center justify-justified">
-    <a class="flex grow strong link nav-link nav-heading js-nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}" tabindex="0">
+    <a class="flex grow strong link nav-link nav-heading js-nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}" href="{{url}}"tabindex="0">
       <img class="icon no-pointer" src="/_/img/icons/{{./name}}.svg"> {{{./title}}}
     </a>
     {{!-- version selector --}}

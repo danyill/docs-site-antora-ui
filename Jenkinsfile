@@ -1,7 +1,7 @@
 def gitUrl = 'git@github.com:mulesoft/docs-site-antora-ui'
 def gitBranch = 'master'
 def gitCredentialsId = 'mule-docs-agent-ssh-key'
-def releaseTokenCredentialsId = 'mule-docs-agent-github-token'
+def githubCredentialsId = 'mule-docs-agent-github-token'
 
 pipeline {
   agent any
@@ -14,7 +14,7 @@ pipeline {
               userRemoteConfigs: [[credentialsId: gitCredentialsId, url: gitUrl]],
               branches: [[name: "refs/heads/${gitBranch}"]],
               extensions: [
-                [$class: 'CloneOption', honorRefspec: true, noTags: true, shallow: true],
+                [$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true],
                 [$class: 'MessageExclusion', excludedMessage: '(?s).*\\[skip .+?\\].*']
               ]
             ],
@@ -34,7 +34,7 @@ pipeline {
         dir('public') {
           deleteDir()
         }
-        withCredentials([string(credentialsId: releaseTokenCredentialsId, variable: 'GITHUB_TOKEN')]) {
+        withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
           nodejs('node8') {
             sh '$(npm bin)/gulp release'
           }

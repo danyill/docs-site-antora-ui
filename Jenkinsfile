@@ -13,16 +13,19 @@ pipeline {
               $class: 'GitSCM',
               userRemoteConfigs: [[credentialsId: gitCredentialsId, url: gitUrl]],
               branches: [[name: "refs/heads/${gitBranch}"]],
-              extensions: [
-                [$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true],
-                [$class: 'MessageExclusion', excludedMessage: '(?s).*(?:Release v\\d+|\\[skip .+?\\]).*']
-              ]
+              extensions: [[$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true]]
             ],
             changelog: false,
             poll: false
+        script {
+          env.SKIP_CI = sh(script: 'git log -1 --pretty=tformat:%s | grep -cP "^Release v\\d|\\[skip .+?\\]"', returnStdout: true).trim()
+        }
       }
     }
     stage('Install') {
+      when {
+        environment name: 'SKIP_CI', value: '0'
+      }
       steps {
         nodejs('node8') {
           sh 'yarn'
@@ -30,12 +33,16 @@ pipeline {
       }
     }
     stage('Release') {
+      when {
+        environment name: 'SKIP_CI', value: '0'
+      }
       steps {
         dir('public') {
           deleteDir()
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
           nodejs('node8') {
+            echo 'release'
             //sh '$(npm bin)/gulp release'
           }
         }

@@ -18,7 +18,7 @@ pipeline {
                 [$class: 'MessageExclusion', excludedMessage: '(?s).*(?:Release v\\d+|\\[skip .+?\\]).*']
               ]
             ],
-            changelog: false,
+            changelog: true,
             poll: false
       }
     }
@@ -36,6 +36,7 @@ pipeline {
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
           nodejs('node8') {
+            ech 'release'
             //sh '$(npm bin)/gulp release'
           }
         }

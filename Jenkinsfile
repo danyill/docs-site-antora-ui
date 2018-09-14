@@ -40,8 +40,7 @@ pipeline {
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
           nodejs('node8') {
-            echo 'release'
-            //sh '$(npm bin)/gulp release'
+            sh '$(npm bin)/gulp release'
           }
         }
       }

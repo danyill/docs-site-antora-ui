@@ -19,15 +19,13 @@ pipeline {
             poll: false
         script {
           if (sh(script: 'git log -1 --pretty=tformat:%s | grep -qP "^Release v\\d|\\[skip .+?\\]"', returnStatus: true) == 0) {
-            println 'skip'
+            env.SKIP_CI = 'true'
           }
         }
       }
     }
     stage('Install') {
-      //when {
-      //  environment name: 'SKIP_CI', value: '0'
-      //}
+      when { not { environment name: 'SKIP_CI', value: 'true' } }
       steps {
         nodejs('node8') {
           sh 'yarn'
@@ -35,9 +33,7 @@ pipeline {
       }
     }
     stage('Release') {
-      //when {
-      //  environment name: 'SKIP_CI', value: '0'
-      //}
+      when { not { environment name: 'SKIP_CI', value: 'true' } }
       steps {
         dir('public') {
           deleteDir()

@@ -8,15 +8,16 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        checkout scm:
-            [
-              $class: 'GitSCM',
-              userRemoteConfigs: [[credentialsId: gitCredentialsId, url: gitUrl]],
-              branches: [[name: "refs/heads/${gitBranch}"]],
-              extensions: [[$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true]]
-            ],
-            changelog: false,
-            poll: false
+        // NOTE this job is configured such that the branch is already checked out at this stage
+        //checkout scm:
+        //    [
+        //      $class: 'GitSCM',
+        //      userRemoteConfigs: [[credentialsId: gitCredentialsId, url: gitUrl]],
+        //      branches: [[name: "refs/heads/${gitBranch}"]],
+        //      extensions: [[$class: 'CloneOption', depth: 1, honorRefspec: true, noTags: true, shallow: true]]
+        //    ],
+        //    changelog: false,
+        //    poll: false
         script {
           if (sh(script: 'git log -1 --pretty=tformat:%s | grep -qP "^Release v\\d|\\[skip .+?\\]"', returnStatus: true) == 0) {
             env.SKIP_CI = 'true'

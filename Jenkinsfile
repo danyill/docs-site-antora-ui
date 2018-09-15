@@ -26,12 +26,7 @@ pipeline {
       }
     }
     stage('Install') {
-      when {
-        allOf {
-          branch 'master'
-          not { environment name: 'SKIP_CI', value: 'true' }
-        }
-      }
+      when { allOf { environment name: 'GIT_BRANCH', value: 'master'; not { environment name: 'SKIP_CI', value: 'true' } } }
       steps {
         nodejs('node8') {
           sh 'yarn'
@@ -39,12 +34,7 @@ pipeline {
       }
     }
     stage('Release') {
-      when {
-        allOf {
-          branch 'master'
-          not { environment name: 'SKIP_CI', value: 'true' }
-        }
-      }
+      when { allOf { environment name: 'GIT_BRANCH', value: 'master'; not { environment name: 'SKIP_CI', value: 'true' } } }
       steps {
         dir('public') {
           deleteDir()

@@ -186,5 +186,8 @@
   window.addEventListener('DOMContentLoaded', (e) => {
     const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
     if (thisProduct !== '') toggleNav(e, navLists, navListsHeights, thisProduct)
+
+    // transition when loaded
+    document.querySelector('.js-nav .nav-list').classList.add('loaded')
   })
 })()

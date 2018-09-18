@@ -90,6 +90,29 @@
       thisList.parentNode.classList.add('active')
       if (noTransition) thisList.classList.add('transition-opacity-only')
     }
+
+    // finish load transition
+    if (e.type === 'DOMContentLoaded') {
+      document.querySelector('.js-nav .nav-list').classList.add('loaded')
+      scrollToActive(thisList)
+    }
+  }
+
+  // this scrolls the navbar to the current page…
+  // really this doesn't work great b/c the nav should not reload when the page changes (singe-page)
+  const scrollToActive = (thisList) => {
+    const activeLinks = thisList.querySelectorAll('.nav-link.active')
+    for (let i = 0; i < activeLinks.length; i++) {
+      let thisList = activeLinks[i].parentNode
+      while (thisList.style.opacity === '1') {
+        thisList = thisList.parentNode
+      }
+      document.querySelector('.js-nav').scrollTo({
+        behavior: 'smooth',
+        top: thisList.offsetTop - (window.innerHeight / 2) + 65, // scroll to center; 65 is the header height
+      })
+      break
+    }
   }
 
   // version popovers

@@ -59,6 +59,15 @@
   }
 
   /* spacing between lists when active */
+  & > .nav-list {
+    opacity: 0;
+    transition: opacity var(--transition-speed-md) var(--transition-timing);
+
+    &.loaded {
+      opacity: 1;
+    }
+  }
+
   & > .nav-list > .nav-li.active + .nav-li {
     margin-top: var(--md);
   }
@@ -111,7 +120,7 @@
 
 .nav-link {
   cursor: pointer;
-  padding: var(--xs) var(--xs) var(--xs) 25px;
+  padding: 7px var(--xs) 7px 25px;
   position: relative;
   text-decoration: none;
 
@@ -135,8 +144,14 @@
     margin-right: var(--xs);
     opacity: .75;
     position: absolute;
-    top: 6px;
+    top: 8px;
     width: var(--lg);
+  }
+
+  /* less padding for not parent links */
+  & .nav-link {
+    padding-bottom: var(--xs);
+    padding-top: var(--xs);
   }
 }
 

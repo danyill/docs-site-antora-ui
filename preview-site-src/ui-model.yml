@@ -8,8 +8,14 @@ site:
       title: Home
       url: '#'
       versions:
-      - version: master
-        url: '#'
+        - version: master
+          url: '#'
+          navigation:
+          - items:
+            - content: Getting Started
+              url: '#'
+            - content: About Crowd Release
+              url: '#'
     access-management:
       name: access-management
       title: Access Management
@@ -170,8 +176,8 @@ site:
           - content: Download and Install Studio (v7.1)
             url: '#'
 page:
-  title: &page_title Connector Project Structure
-  url: &page_url /connector-devkit/3.7/index.html
+  title: &page_title Home
+  url: &page_url /general/index.html
   component: *component
   componentVersion: *component_version
   version: '3.7'

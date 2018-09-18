@@ -39,6 +39,8 @@
           instance.hide()
         }
       }
+
+      analytics.track('Clicked Open Search')
     }
     const hideCoveo = () => {
       backdrop.classList.remove('show')

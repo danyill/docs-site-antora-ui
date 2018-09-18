@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "globals": {
+    "analytics": true,
     "Coveo": true,
     "localStorage": true,
     "tippy": true

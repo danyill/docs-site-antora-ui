@@ -48,5 +48,3 @@ pipeline {
     }
   }
 }
-
-⌘ + Shift + J

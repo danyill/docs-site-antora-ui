@@ -7,13 +7,13 @@
   {{#with page.componentVersion}}
   {{#if (and ./title (not (or ./root (eq @root.page.breadcrumbs.0.content ./title))))}}
   <li class="flex align-center li">
-    <a class="link" href="{{{relativize @root.page.url ./url}}}">{{{./title}}}</a>
+    <a class="link" href="{{{relativize ./url}}}">{{{./title}}}</a>
   {{/if}}
   {{/with}}
   {{#each page.breadcrumbs}}
   {{#if (and ./url (eq ./urlType 'internal'))~}}
   <li class="flex align-center li">
-    <a class="link" href="{{{relativize @root.page.url ./url}}}">{{{./content}}}</a>
+    <a class="link" href="{{{relativize ./url}}}">{{{./content}}}</a>
   {{~/if}}
   {{/each}}
 </ol>

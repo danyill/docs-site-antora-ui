@@ -2,8 +2,9 @@
 
 const { posix: path } = require('path')
 
-// TODO memoize
-module.exports = (from, to) => {
+module.exports = (to, { data: { root } }) => {
+  if (!to) return '#'
+  const from = root.page.url
   if (!from || to.charAt() === '#') return to
   let hash = ''
   const hashIdx = to.indexOf('#')
@@ -11,7 +12,7 @@ module.exports = (from, to) => {
     hash = to.substr(hashIdx)
     to = to.substr(0, hashIdx)
   }
-  return from === to
+  return to === from
     ? hash || (isDir(to) ? './' : path.basename(to))
     : (path.relative(path.dirname(from + '_'), to) || '.') + (isDir(to) ? '/' + hash : hash)
 }

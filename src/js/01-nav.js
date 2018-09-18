@@ -208,6 +208,10 @@
   // open current nav on load
   window.addEventListener('DOMContentLoaded', (e) => {
     const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
-    if (thisProduct !== '') toggleNav(e, navLists, navListsHeights, thisProduct)
+    if (thisProduct !== '') {
+      toggleNav(e, navLists, navListsHeights, thisProduct)
+    } else {
+      document.querySelector('.js-nav .nav-list').classList.add('loaded')
+    }
   })
 })()

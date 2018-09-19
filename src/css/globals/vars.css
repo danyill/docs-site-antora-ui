@@ -57,7 +57,7 @@
   --screen-sm: 576px;
   --screen-md: 768px;
   --screen-lg: 992px;
-  --screen-xl: 1160px; /* match marketing header */
+  --screen-xl: 1200px;
 
   /* z-index */
   --z-modal-header: 16;

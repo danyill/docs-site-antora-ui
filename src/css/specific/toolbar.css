@@ -19,18 +19,3 @@
 .nav-toggle {
   margin-right: var(--md);
 }
-
-/* link to GitHub */
-.link-edit {
-  color: var(--aluminum-5);
-  display: none;
-  font-size: 12px;
-  height: var(--lg);
-  text-decoration: none;
-
-  & .svg {
-    height: var(--md);
-    margin-right: var(--xs);
-    width: var(--md);
-  }
-}

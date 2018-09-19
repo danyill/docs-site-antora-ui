@@ -9,38 +9,38 @@
   @media (--lg) {
     display: block;
   }
+}
 
-  & a {
-    border-left: 3px solid var(--aluminum-3);
-    color: var(--aluminum-5);
-    display: block;
-    font-size: 12px;
-    padding: var(--xs) var(--sm);
-    text-decoration: none;
+.toc-menu a {
+  border-left: 3px solid var(--aluminum-3);
+  color: var(--aluminum-5);
+  display: block;
+  font-size: 12px;
+  padding: var(--xs) var(--sm);
+  text-decoration: none;
 
-    &:focus {
-      outline: 0;
-    }
+  &:focus {
+    outline: 0;
+  }
 
-    &:hover,
-    &:focus,
-    &:active {
-      border-left-color: var(--aluminum-4);
-      color: var(--steel-1);
-    }
+  &:hover,
+  &:focus,
+  &:active {
+    border-left-color: var(--aluminum-4);
+    color: var(--steel-1);
+  }
 
-    &.active {
-      border-color: var(--core-blue-3);
-      color: var(--steel-1);
-    }
+  &.active {
+    border-color: var(--core-blue-3);
+    color: var(--steel-1);
+  }
 
-    & code {
-      background: none;
-      border: 0;
-      font-family: inherit;
-      font-size: inherit;
-      padding: 0;
-    }
+  & code {
+    background: none;
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
   }
 }
 

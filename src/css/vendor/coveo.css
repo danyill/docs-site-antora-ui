@@ -1,8 +1,3 @@
-/* hide source facet */
-.CoveoSearchInterface .coveo-facet-column [data-field="@source"] {
-  display: none !important;
-}
-
 /* override coveo defaults */
 .CoveoSearchInterface.CoveoSearchInterface {
   color: var(--steel-2);
@@ -149,6 +144,25 @@
   }
 }
 
+/* magic box suggestions */
+.magic-box.magic-box .magic-box-suggestions {
+  border: 1px solid var(--aluminum-3);
+  border-radius: 4px;
+  box-shadow: 0 2px 9px rgba(0,0,0,.1);
+  margin-top: var(--sm);
+
+  & .magic-box-suggestion {
+    border-top: 0;
+    color: var(--steel-2);
+    padding: var(--sm);
+
+    &:hover,
+    &:focus {
+      background: var(--aluminum-1);
+    }
+  }
+}
+
 /* loading state */
 .coveo-executing-query .CoveoSearchButton.CoveoSearchButton {
 
@@ -178,6 +192,10 @@
     font-family: var(--heading);
     font-size: 14px;
     font-weight: var(--weight-bold);
+
+    & + .facet-wrapper {
+      margin-top: var(--md);
+    }
   }
 
   & .coveo-facet-column {
@@ -219,7 +237,7 @@
     & + .CoveoFacetSlider,
     & + .CoveoHierarchicalFacet,
     & + .CoveoCategoryFacet {
-      margin-right: var(--md);
+      margin-left: var(--md);
       margin-top: var(--md);
 
       @media (--md) {
@@ -279,8 +297,42 @@
     padding-top: 0;
   }
 
-  /* mystery footer */
+  /* footer */
   & .coveo-facet-footer {
+    background: none;
+  }
+
+  & .coveo-facet-more,
+  & .coveo-facet-less {
+    background: none;
+    color: var(--core-blue-3);
+    font-size: 12px;
+    text-align: left;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+
+    &.coveo-active {
+      display: inline;
+
+      & + div {
+        display: none; /* only one level of "more" */
+      }
+    }
+  }
+
+  & .coveo-facet-more::before {
+    content: 'More…';
+  }
+
+  & .coveo-facet-less::before {
+    content: 'Less…';
+  }
+
+  & .coveo-facet-more-icon,
+  & .coveo-facet-less-icon {
     display: none;
   }
 

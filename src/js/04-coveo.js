@@ -10,9 +10,7 @@
       accessToken: 'xx6864598c-3519-4f73-a2f1-ef287a322eb2',
     })
     root.addEventListener('buildingQuery', (e) => {
-      const facetElement = body.querySelector('.CoveoFacet[data-title="Source"]')
-      const facetInstance = Coveo.get(facetElement)
-      facetInstance.selectValue('Documentation - CDN')
+      e.detail.queryBuilder.pipeline = 'doc-query-pipeline'
     })
 
     // modal setup

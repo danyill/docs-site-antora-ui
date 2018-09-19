@@ -27,6 +27,21 @@ site:
         - items:
           - content: Managing Your Account
             url: '#'
+            items:
+              - content: Overview
+                url: '#'
+              - content: Methods
+                url: '#'
+              - content: OAuth v1
+                url: '#'
+              - content: OAuth v2
+                url: '#'
+              - content: Connection Management
+                url: '#'
+              - content: No Authentication
+                url: '#'
+              - content: HTTP Authentication
+                url: '#'
           - content: Organization
             url: '#'
           - content: Users

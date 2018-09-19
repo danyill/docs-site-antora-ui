@@ -1,0 +1,20 @@
+/* link to GitHub */
+.button-edit {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: var(--weight-aluminum);
+  height: auto;
+  padding-bottom: 4px;
+  padding-top: 4px;
+  text-decoration: none;
+
+  & .svg {
+    height: 12px;
+    margin-right: 4px;
+    width: 12px;
+  }
+
+  & + .toc-menu {
+    margin-top: var(--lg);
+  }
+}

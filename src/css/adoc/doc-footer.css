@@ -1,0 +1,5 @@
+.doc-footer {
+  @media (--lg) {
+    display: none;
+  }
+}

@@ -10,6 +10,7 @@
 /* components */
 @import "components/breadcrumbs.css";
 @import "components/button.css";
+@import "components/github.css";
 @import "components/input.css";
 @import "components/modal.css";
 @import "components/popover.css";
@@ -25,6 +26,7 @@
 
 /* adoc */
 @import "adoc/doc.css";
+@import "adoc/doc-footer.css";
 @import "adoc/abstract.css";
 @import "adoc/admonition-block.css";
 @import "adoc/description-list.css";

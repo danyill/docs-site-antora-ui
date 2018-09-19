@@ -3,7 +3,7 @@
   {{#each navigation}}
   <li class="nav-li{{#if (eq @root.page.url ./url)}} active{{/if}}" data-depth="{{../level}}">
     {{#if ./url}}
-    <a class="flex shrink align-center link nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}{{#if ./items}} nav-nested js-nav-nested{{/if}}" href="{{~#if (eq ./urlType 'external')}}{{{./url}}}{{else}}{{{relativize @root.page.url ./url}}}{{~/if}}">
+    <a class="flex shrink align-center link nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}{{#if ./items}} nav-nested js-nav-nested{{/if}}" href="{{~#if (eq ./urlType 'external')}}{{{./url}}}{{else}}{{{relativize ./url}}}{{~/if}}">
       {{{./content}}}
     </a>
     {{else}}

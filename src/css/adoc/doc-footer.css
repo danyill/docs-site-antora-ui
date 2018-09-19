@@ -1,5 +1,8 @@
 .doc-footer {
-  @media (--lg) {
-    display: none;
+
+  .button-github {
+    @media (--lg) {
+      display: none;
+    }
   }
 }

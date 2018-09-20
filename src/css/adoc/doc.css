@@ -1,8 +1,13 @@
 .doc {
   flex: 1 1 auto;
   padding-bottom: var(--xl); /* matches nav padding */
-  padding-left: var(--xl);
-  padding-right: var(--xl);
+  padding-left: var(--lg);
+  padding-right: var(--lg);
+
+  @media (--lg) {
+    padding-left: var(--xl);
+    padding-right: var(--xl);
+  }
 
   /* default spacing */
   & > h1:first-child {

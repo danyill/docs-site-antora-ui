@@ -18,7 +18,10 @@
       backdrop.classList.remove('show', 'mobile')
     }
 
-    const clickThru = (e) => e.stopPropagation()
+    const clickThru = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+    }
 
     // navtoggle listeners
     for (let i = 0; i < navToggle.length; i++) {

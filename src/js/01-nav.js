@@ -200,6 +200,7 @@
     toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
     // close the popover
     thisTippy.hide()
+    e.stopPropagation()
   }
 
   const bindEvents = (popover) => {

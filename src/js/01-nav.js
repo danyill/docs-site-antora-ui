@@ -51,6 +51,9 @@
       let thisNavLi = thisWrapper.parentElement
       thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
       collapse = thisNavLi.classList.contains('active') || false
+      analytics.track('Toggled Nav', {
+        url: thisTarget.innerText,
+      })
     } else {
       // if navigation via version select
       thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
@@ -132,6 +135,10 @@
         }
       }
     }
+    analytics.track('Version Pinned', {
+      product: thisProduct,
+      version: thisVersion,
+    })
   }
 
   for (let i = 0; i < versionsTrigger.length; i++) {

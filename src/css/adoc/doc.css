@@ -9,6 +9,13 @@
     padding-right: var(--xl);
   }
 
+  /* hide toc select */
+  & .select-wrapper {
+    @media (--lg) {
+      display: none;
+    }
+  }
+
   /* default spacing */
   & > h1:first-child {
     padding-top: var(--lg);

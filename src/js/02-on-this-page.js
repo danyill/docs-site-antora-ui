@@ -50,6 +50,10 @@
       return accum
     }, document.createElement('select'))
 
+    const selectWrap = document.createElement('div')
+    selectWrap.classList.add('select-wrapper')
+    selectWrap.appendChild(options)
+
     // create jump to label
     const jumpTo = document.createElement('option')
     jumpTo.innerHTML = 'Jump to…'
@@ -65,7 +69,7 @@
     })
 
     // add to page
-    doc.insertBefore(options, startOfContent)
+    doc.insertBefore(selectWrap, startOfContent)
   }
 
   function onScroll () {

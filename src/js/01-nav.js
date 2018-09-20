@@ -43,7 +43,13 @@
 
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
-      thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      // check if there's a pinned version
+      const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
+      if (loadVersion) {
+        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
+      } else {
+        thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+      }
       noTransition = true
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar

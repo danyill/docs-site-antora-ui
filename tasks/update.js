@@ -2,7 +2,7 @@
 const https = require('https')
 const fs = require('fs')
 
-const headerPath = 'https://www.mulesoft.com/api/header'
+const headerPath = 'https://www.mulesoft.com/api/header?searchbox=false'
 const headerFileName = 'header.hbs'
 const footerPath = 'https://www.mulesoft.com/api/footer'
 const footerFileName = 'footer-content.hbs'

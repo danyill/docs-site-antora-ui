@@ -4,7 +4,7 @@
   padding-left: var(--lg);
   padding-right: var(--lg);
 
-  @media (--lg) {
+  @media (--md) {
     padding-left: var(--xl);
     padding-right: var(--xl);
   }
@@ -50,13 +50,18 @@
 
   & .anchor {
     display: inline-block;
+    float: right;
     height: var(--lg);
-    margin-left: -25px;
     opacity: 0;
     padding-right: var(--sm);
-    position: absolute;
     transform: scale(.9);
     transition: opacity var(--transition-speed-sm) var(--transition-timing), transform var(--transition-speed-sm) var(--transition-timing);
+
+    @media (--md) {
+      float: none;
+      margin-left: -25px;
+      position: absolute;
+    }
 
     &:focus {
       opacity: .5;
@@ -76,23 +81,27 @@
   }
 
   & h1 .anchor {
-    margin-top: 15px;
-  }
-
-  & h2 .anchor {
     margin-top: 10px;
   }
 
-  & h3 .anchor {
-    margin-top: 7px;
-  }
-
-  & h4 .anchor {
+  & h2 .anchor {
     margin-top: 5px;
   }
 
+  & h3 .anchor {
+    margin-top: 2px;
+  }
+
+  & h4 .anchor {
+    @media (--md) {
+      margin-top: 5;
+    }
+  }
+
   & h5 .anchor {
-    margin-top: 3px;
+    @media (--md) {
+      margin-top: 3px;
+    }
   }
 
   & p,

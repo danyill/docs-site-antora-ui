@@ -53,6 +53,8 @@
 }
 
 .toc-embedded {
+  max-width: 100%;
+
   @media (--lg) {
     display: none;
   }

@@ -230,19 +230,18 @@
   & .CoveoHierarchicalFacet,
   & .CoveoCategoryFacet {
     border: 0;
-    margin: 0;
+    margin: 0 var(--md) 0 0;
+
+    @media (--md) {
+      margin-right: 0;
+    }
 
     & + .CoveoFacet,
     & + .CoveoFacetRange,
     & + .CoveoFacetSlider,
     & + .CoveoHierarchicalFacet,
     & + .CoveoCategoryFacet {
-      margin-left: var(--md);
       margin-top: var(--md);
-
-      @media (--md) {
-        margin-left: 0;
-      }
     }
   }
 

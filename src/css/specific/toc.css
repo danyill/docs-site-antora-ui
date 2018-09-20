@@ -9,6 +9,14 @@
   @media (--lg) {
     display: block;
   }
+
+  & .button-edit {
+    font-size: 11px;
+    font-weight: var(--weight-aluminum);
+    margin-bottom: var(--lg);
+    padding-bottom: 4px;
+    padding-top: 4px;
+  }
 }
 
 .toc-menu a {

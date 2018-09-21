@@ -177,13 +177,8 @@
   }
 
   const closePopovers = (instance) => {
-    versionsTrigger.forEach((popper) => {
-      if (!instance) {
-        popper._tippy.hide()
-      } else if (popper !== instance.popper) {
-        popper._tippy.hide()
-      }
-    })
+    const popper = document.querySelector('.tippy-popper')
+    if (popper) popper._tippy.hide()
   }
 
   // changing versions

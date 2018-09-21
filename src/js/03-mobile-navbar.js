@@ -1,4 +1,6 @@
 ;(() => {
+  'use strict'
+
   document.addEventListener('DOMContentLoaded', () => {
     const body = document.body
     const navToggle = body.querySelectorAll('.js-nav-toggle')

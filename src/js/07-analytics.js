@@ -1,4 +1,6 @@
 ;(() => {
+  'use strict'
+
   document.addEventListener('DOMContentLoaded', () => {
     const gitHubLinks = document.querySelectorAll('.js-github')
     const trackGitHub = () => {

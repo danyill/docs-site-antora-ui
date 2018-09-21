@@ -1,4 +1,6 @@
 ;(() => {
+  'use strict'
+
   // track not helpful
   const trackNotHelpful = () => {
     analytics.track('Clicked Helpful No', {

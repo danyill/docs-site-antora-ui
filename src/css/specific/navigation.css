@@ -9,7 +9,8 @@
   padding: var(--lg) var(--md) var(--xl);
   position: fixed;
   top: 0;
-  transform: translateX(calc(-1 * var(--nav-width)));
+  -ms-transform: translateX(-275px);
+  transform: translateX(-275px); /* var(--nav-width) */
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
   z-index: var(--z-nav-mobile);

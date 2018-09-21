@@ -19,6 +19,7 @@
     box-shadow: none;
     height: auto;
     left: auto;
+    position: relative;
     position: sticky;
     top: 0;
     transform: none;

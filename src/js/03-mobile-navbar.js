@@ -20,7 +20,8 @@
 
     const clickThru = (e) => {
       e.stopPropagation()
-      e.preventDefault()
+      // don't prevent link behavior if this is a link
+      if (!e.target.href) e.preventDefault()
     }
 
     // navtoggle listeners

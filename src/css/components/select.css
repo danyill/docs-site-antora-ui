@@ -18,4 +18,8 @@
   box-shadow: none;
   height: var(--input-md);
   padding: var(--xs) 20px var(--xs) var(--xs); /* 20px for the arrow */
+
+  &::-ms-expand {
+    display: none;
+  }
 }

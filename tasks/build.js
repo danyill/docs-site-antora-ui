@@ -58,7 +58,10 @@ module.exports = (src, dest, preview) => {
   return merge([
     vfs
       .src('js/+([0-9])-*.js', opts)
-      // .pipe(babel())
+      .pipe(babel({
+        babelrc: false,
+        presets: ['@babel/env'],
+      }))
       // .pipe(uglify())
       .pipe(concat('js/site.js')),
 

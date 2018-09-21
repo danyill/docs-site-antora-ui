@@ -11,11 +11,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
     "@octokit/rest": "^15.9.3",
     "asciidoctor.js": "^1.5.6",
-    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
-    "babel-plugin-transform-es2015-template-literals": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
     "browserify": "^16.2.2",
     "chokidar": "^2.0.3",
     "cssnano": "^3.10.0",

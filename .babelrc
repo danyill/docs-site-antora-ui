@@ -1,9 +1,0 @@
-{
-  "plugins": [
-    ["transform-es2015-arrow-functions"],
-    ["transform-es2015-template-literals"]
-  ],
-  "presets": ["env", {
-    "browsers": ["last 2 versions", "ie >= 11"]
-  }]
-}

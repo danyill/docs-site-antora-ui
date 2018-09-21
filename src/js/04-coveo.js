@@ -7,7 +7,7 @@
     const root = body.querySelector('.js-coveo')
     Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
       restUri: 'https://platform.cloud.coveo.com/rest/search',
-      accessToken: 'xx6864598c-3519-4f73-a2f1-ef287a322eb2',
+      accessToken: 'xx3ba020b0-d9b5-4339-bc0e-92fe79a681e7',
     })
     root.addEventListener('buildingQuery', (e) => {
       e.detail.queryBuilder.pipeline = 'doc-query-pipeline'

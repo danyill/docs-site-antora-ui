@@ -209,7 +209,7 @@
   }
 
   /* images */
-  .image img {
+  & .image img {
     margin: 0;
   }
 }

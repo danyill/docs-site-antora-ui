@@ -7,7 +7,7 @@
 
 /* header */
 .coveo-searchbox-wrapper {
-  background: none;
+  background: var(--tertiary);
   border-bottom: 1px solid var(--aluminum-3);
   box-shadow: 0 3px 15px rgba(0,0,0,.025);
   height: 90px;

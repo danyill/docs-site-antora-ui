@@ -198,7 +198,7 @@ page:
   version: '3.7'
   module: ROOT
   home: false
-  editUrl: https://github.com/mulesoft/mulesoft-docs-antora-ui/blob/master/preview-site-src/index.adoc
+  editUrl: https://github.com/mulesoft/docs-site-antora-ui/edit/master/preview-site-src/index.adoc
   versions:
   - version: '3.8'
     url: '#'

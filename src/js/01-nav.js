@@ -35,6 +35,7 @@
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
+    const pageLoad = e.type === 'DOMContentLoaded'
     let noTransition = false
     let thisTarget = e.target
     let thisList
@@ -42,10 +43,11 @@
     let collapse
 
     // when navigating on page load
-    if (e.type === 'DOMContentLoaded') {
+    if (pageLoad) {
       // check if there's a pinned version
       const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
-      if (loadVersion) {
+      // if there's a version (and it’s a number)
+      if (loadVersion && !isNaN(loadVersion)) {
         thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
       } else {
         thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
@@ -90,7 +92,11 @@
     closePopovers()
 
     // if there's no list, stop here
-    if (!thisList) return
+    if (!thisList || pageLoad) {
+      // finish load transition
+      document.querySelector('.js-nav .nav-list').classList.add('loaded')
+      return
+    }
 
     // make current element active if not collapsing
     if (!collapse) {
@@ -100,11 +106,7 @@
       if (noTransition) thisList.classList.add('transition-opacity-only')
     }
 
-    // finish load transition
-    if (e.type === 'DOMContentLoaded') {
-      document.querySelector('.js-nav .nav-list').classList.add('loaded')
-      scrollToActive(thisList)
-    }
+    if (pageLoad) scrollToActive(thisList)
   }
 
   // this scrolls the navbar to the current page…
@@ -216,9 +218,11 @@
 
   // open current nav on load
   window.addEventListener('DOMContentLoaded', (e) => {
-    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
+    const paths = window.location.pathname.split('/')
+    const thisProduct = paths[2]
+    const thisVersion = paths[3] === '' ? undefined : paths[3]
     if (thisProduct !== '') {
-      toggleNav(e, navLists, navListsHeights, thisProduct)
+      toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
     } else {
       document.querySelector('.js-nav .nav-list').classList.add('loaded')
     }

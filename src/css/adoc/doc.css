@@ -88,20 +88,20 @@
   }
 
   & h1 .anchor {
-    margin-top: 15px;
-  }
-
-  & h2 .anchor {
     margin-top: 10px;
   }
 
-  & h3 .anchor {
+  & h2 .anchor {
     margin-top: 5px;
+  }
+
+  & h3 .anchor {
+    margin-top: 2px;
   }
 
   & h4 .anchor {
     @media (--md) {
-      margin-top: 4px;
+      margin-top: 5;
     }
   }
 

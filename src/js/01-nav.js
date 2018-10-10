@@ -45,7 +45,8 @@
     if (e.type === 'DOMContentLoaded') {
       // check if there's a pinned version
       const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
-      if (loadVersion) {
+      // if there's a version (and it’s a number)
+      if (loadVersion && !isNaN(loadVersion)) {
         thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
       } else {
         thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
@@ -216,9 +217,11 @@
 
   // open current nav on load
   window.addEventListener('DOMContentLoaded', (e) => {
-    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
+    const paths = window.location.pathname.split('/')
+    const thisProduct = paths[2]
+    const thisVersion = paths[3]
     if (thisProduct !== '') {
-      toggleNav(e, navLists, navListsHeights, thisProduct)
+      toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
     } else {
       document.querySelector('.js-nav .nav-list').classList.add('loaded')
     }

@@ -14,8 +14,10 @@
 <meta name="product" content="{{page.component.title}}">
 <meta name="version" content="{{page.version}}">
 {{> head}}
-<section class="flex col">
-{{> header}}
-{{> body}}
-{{> footer}}
-{{> search}}
+<body>
+  {{> body-scripts}}
+  <section class="flex col">
+  {{> header}}
+  {{> body}}
+  {{> footer}}
+  {{> search}}

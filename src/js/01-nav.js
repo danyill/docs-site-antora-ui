@@ -34,6 +34,11 @@
     navLink[i].addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
   }
 
+  const showNav = () => {
+    const nav = document.querySelector('.js-nav .nav-list')
+    if (!nav.classList.contains('loaded')) nav.classList.add('loaded')
+  }
+
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
     let noTransition = false
     let thisTarget = e.target
@@ -102,7 +107,7 @@
 
     // finish load transition
     if (e.type === 'DOMContentLoaded') {
-      document.querySelector('.js-nav .nav-list').classList.add('loaded')
+      showNav()
       scrollToActive(thisList)
     }
   }
@@ -219,8 +224,7 @@
     const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
     if (thisProduct !== '') {
       toggleNav(e, navLists, navListsHeights, thisProduct)
-    } else {
-      document.querySelector('.js-nav .nav-list').classList.add('loaded')
     }
+    showNav()
   })
 })()

@@ -1,19 +1,16 @@
 .beta-banner {
-
   background: color-mod(var(--red-3) lightness(97%));
   border: 1px solid;
   border-color: color-mod(var(--red-3) lightness(75%));
-  border-radius: 2px;
+  border-radius: 1px;
   display: block;
   padding: var(--md) var(--lg) var(--sm);
-
 }
-
 .beta-heading {
-  font-size: 1.0rem;
+  font-size: 1rem;
   font-weight: bold;
+  color: rgb(166, 38, 59);
   text-align: left;
-  color: color-mod(var(--red-3) lightness(70%));
 }
 .beta-text {
   font-size: .9rem;

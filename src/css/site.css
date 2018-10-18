@@ -18,7 +18,6 @@
 @import "components/tooltip.css";
 
 /* specific */
-@import "specific/beta.css";
 @import "specific/header.css";
 @import "specific/navigation.css";
 @import "specific/toc.css";

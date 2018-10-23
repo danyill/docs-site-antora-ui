@@ -1,5 +1,5 @@
 <footer class="flex col align-center doc-footer">
-  {{#if (eq page.layout '404')}}
+  {{#if (eq page.layout 'default') || (eq page.layout 'home')}}
 	  <section class="section-helpful js-thanks-section">
 	    <p class="p" data-thanks="start">Was this article helpful?</p>
 	    <button class="button js-thanks" data-thanks="start" type="button">👍 Yes, thanks!</button>

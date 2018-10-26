@@ -23,8 +23,8 @@
       })
     },
     fieldValues: {
-      description: 'URL: ' + window.location.href
-    }
+      description: 'URL: ' + window.location.href,
+    },
   }
 
   // saying thanks

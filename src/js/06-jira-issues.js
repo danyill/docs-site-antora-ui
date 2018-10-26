@@ -22,6 +22,9 @@
         trackNotHelpful()
       })
     },
+    fieldValues: {
+      description: 'URL: ' + window.location.href,
+    },
   }
 
   // saying thanks

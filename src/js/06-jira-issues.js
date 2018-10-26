@@ -22,8 +22,8 @@
         trackNotHelpful()
       })
     },
-    fieldValues : {
-      description : 'URL: ' + window.location.href
+    fieldValues: {
+      description: 'URL: ' + window.location.href
     }
   }
 

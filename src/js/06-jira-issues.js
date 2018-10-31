@@ -4,6 +4,7 @@
   // track not helpful
   const trackNotHelpful = () => {
     analytics.track('Clicked Helpful No', {
+      title: document.title,
       url: window.location.href,
     })
   }
@@ -33,6 +34,7 @@
   const sayThanks = () => {
     thanksSection.classList.add('flip')
     analytics.track('Clicked Helpful Yes', {
+      title: document.title,
       url: window.location.href,
     })
   }

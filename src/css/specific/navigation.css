@@ -188,6 +188,20 @@
   margin-left: var(--md);
 }
 
+/* nesting: level 3 */
+.nav-li[data-depth="3"] .nav-heading,
+.nav-heading[data-depth="4"],
+.nav-li[data-depth="4"] {
+  margin-left: 30px; /* md * 2 */
+}
+
+/* nesting: level 4 */
+.nav-li[data-depth="4"] .nav-heading,
+.nav-heading[data-depth="5"],
+.nav-li[data-depth="5"] {
+  margin-left: 45px; /* md * 3 */
+}
+
 /* collapsing margin for nested lists (note: this is why we don't use flexbox on list items) */
 .nested-list {
   margin-bottom: var(--md);

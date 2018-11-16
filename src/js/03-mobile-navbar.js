@@ -5,6 +5,9 @@
     const body = document.body
     const navToggle = body.querySelectorAll('.js-nav-toggle')
     const nav = body.querySelector('.js-nav')
+
+    if (!nav) return
+
     const backdrop = document.querySelector('.modal-backdrop')
 
     const openNav = (e) => {

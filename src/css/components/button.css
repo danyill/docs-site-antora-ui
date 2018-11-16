@@ -8,6 +8,7 @@
   font-weight: var(--weight-bold);
   height: var(--nav-item-height);
   padding: var(--xs);
+  text-decoration: none; /* if [href] */
   transition: box-shadow var(--transition-speed-sm) var(--transition-timing);
 
   &:hover {

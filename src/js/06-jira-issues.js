@@ -29,6 +29,9 @@
 
   // saying thanks
   const thanksSection = document.querySelector('.js-thanks-section')
+
+  if (!thanksSection) return
+
   const thanksTrigger = thanksSection.querySelector('.js-thanks')
   const sayThanks = () => {
     thanksSection.classList.add('flip')

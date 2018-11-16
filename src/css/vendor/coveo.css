@@ -5,32 +5,38 @@
   font-size: 16px;
 }
 
+.modal {
+
+  /* header */
+  .coveo-searchbox-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-modal-header);
+
+    /* close button */
+    & .coveo-close {
+      cursor: pointer;
+      fill: var(--aluminum-4);
+      height: var(--lg);
+      margin-left: var(--md);
+      padding: var(--xs);
+      width: var(--lg);
+
+      &:hover,
+      &:focus,
+      &:active {
+        fill: var(--red-3);
+      }
+    }
+  }
+}
+
 /* header */
 .coveo-searchbox-wrapper {
   background: var(--tertiary);
   border-bottom: 1px solid var(--aluminum-3);
-  box-shadow: 0 3px 15px rgba(0,0,0,.025);
   height: 90px;
   padding: var(--lg);
-  position: sticky;
-  top: 0;
-  z-index: var(--z-modal-header);
-
-  /* close button */
-  & .coveo-close {
-    cursor: pointer;
-    fill: var(--aluminum-4);
-    height: var(--lg);
-    margin-left: var(--md);
-    padding: var(--xs);
-    width: var(--lg);
-
-    &:hover,
-    &:focus,
-    &:active {
-      fill: var(--red-3);
-    }
-  }
 }
 
 .CoveoSearchbox.CoveoSearchbox.CoveoSearchbox {

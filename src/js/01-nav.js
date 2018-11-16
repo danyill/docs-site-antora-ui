@@ -3,6 +3,9 @@
 
   // navigation
   const nav = document.querySelector('.js-nav')
+
+  if (!nav) return
+
   const navLists = nav.querySelectorAll('.js-nav-list')
   const navLink = nav.querySelectorAll('.js-nav-link')
   let navListsHeights = []

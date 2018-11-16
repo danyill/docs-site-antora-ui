@@ -19,6 +19,9 @@
 
     // show/hide coveo search
     const searchTrigger = body.querySelector('.js-search-trigger')
+
+    if (!searchTrigger) return
+
     const searchUI = body.querySelector('.js-search-ui')
     const searchClose = body.querySelector('.js-search-close')
     const showCoveo = () => {

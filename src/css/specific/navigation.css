@@ -215,7 +215,8 @@
 
 /* expand arrows */
 .icon-expand {
-  fill: var(--aluminum-4);
+  fill: var(--aluminum-5);
+  flex: 0 0 auto;
   height: var(--md);
   transform: rotate(-90deg);
   transition: transform var(--transition-speed-sm) var(--transition-timing);

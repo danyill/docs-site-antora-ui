@@ -136,6 +136,10 @@
       filter: grayscale(0);
       opacity: 1;
     }
+
+    & .icon-expand {
+      transform: none;
+    }
   }
 
   & .icon {
@@ -207,5 +211,14 @@
   &:not(.active):not(.expanded) + .nav-list {
     max-height: 0;
   }
+}
+
+/* expand arrows */
+.icon-expand {
+  fill: var(--aluminum-4);
+  height: var(--md);
+  transform: rotate(-90deg);
+  transition: transform var(--transition-speed-sm) var(--transition-timing);
+  width: var(--md);
 }
 

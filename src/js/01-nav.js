@@ -221,7 +221,12 @@
 
   // open current nav on load
   window.addEventListener('DOMContentLoaded', (e) => {
-    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
+    const paths = window.location.pathname.split('/')
+    let thisProduct = paths[1]
+    const domain = window.location.host
+    const domainParts = domain.split('.')
+
+    if (domainParts[0] === 'beta') thisProduct = paths[2]
     if (thisProduct !== '') {
       toggleNav(e, navLists, navListsHeights, thisProduct)
     }

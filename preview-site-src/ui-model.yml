@@ -186,9 +186,9 @@ site:
         url: '#'
         navigation:
         - items:
-          - content: Overview (v7.1)
+          - content: Overview
             url: '#'
-          - content: Download and Install Studio (v7.1)
+          - content: Download and Install Studio
             url: '#'
 page:
   title: &page_title Home

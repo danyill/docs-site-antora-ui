@@ -3,8 +3,11 @@
   {{#each navigation}}
   <li class="nav-li{{#if (eq @root.page.url ./url)}} active{{/if}}" data-depth="{{../level}}">
     {{#if ./url}}
-    <a class="flex shrink align-center link nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}{{#if ./items}} nav-nested js-nav-nested{{/if}}" href="{{~#if (eq ./urlType 'external')}}{{{./url}}}{{else}}{{{relativize ./url}}}{{~/if}}">
+    <a class="flex shrink align-center justify-justified link nav-link{{#if (eq @root.page.url ./url)}} active{{/if}}{{#if ./items}} nav-nested js-nav-nested{{/if}}" href="{{~#if (eq ./urlType 'external')}}{{{./url}}}{{else}}{{{relativize ./url}}}{{~/if}}">
       {{{./content}}}
+      {{#if this.items}}
+      <svg class="svg icon-expand" width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><path d="M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z" /></svg>
+      {{/if}}
     </a>
     {{else}}
     <span class="flex grow align-center nav-heading">

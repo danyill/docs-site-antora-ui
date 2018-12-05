@@ -9,8 +9,8 @@
   padding: var(--lg) var(--md) var(--xl);
   position: fixed;
   top: 0;
-  -ms-transform: translateX(-275px);
-  transform: translateX(-275px); /* var(--nav-width) */
+  -ms-transform: translateX(calc(var(--nav-width) * -1));
+  transform: translateX(calc(var(--nav-width) * -1));
   transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
   z-index: var(--z-nav-mobile);
@@ -136,6 +136,10 @@
       filter: grayscale(0);
       opacity: 1;
     }
+
+    & .icon-expand {
+      transform: none;
+    }
   }
 
   & .icon {
@@ -209,3 +213,12 @@
   }
 }
 
+/* expand arrows */
+.icon-expand {
+  fill: var(--aluminum-5);
+  flex: 0 0 auto;
+  height: var(--md);
+  transform: rotate(-90deg);
+  transition: transform var(--transition-speed-sm) var(--transition-timing);
+  width: var(--md);
+}

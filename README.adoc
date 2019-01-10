@@ -20,8 +20,8 @@
 
 This repo contains assets for the UI elements of docs.mulesoft.com and related sites. The build process uses the following branches:
 
-staging/production: master
-beta: beta-ui
+* staging/production: master
+* beta: beta-ui
 
 == Use the UI
 

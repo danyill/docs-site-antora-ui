@@ -18,8 +18,10 @@
 :uri-yarn: https://yarnpkg.com
 :uri-mulesoft: https://docs.mulesoft.com
 
-Currently in prototype, this project will be used to generate the UI for the next version of the MuleSoft documentation site.
-You can find a preview of this UI online at {uri-preview}.
+This repo contains assets for the UI elements of docs.mulesoft.com and related sites. The build process uses the following branches:
+
+staging/production: master
+beta: beta-ui
 
 == Use the UI
 

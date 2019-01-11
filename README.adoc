@@ -3,7 +3,7 @@
 :experimental:
 :hide-uri-scheme:
 // Variables:
-:current-release: v309
+:current-release: v310
 // Project URIs:
 :uri-project: https://github.com/couchbase/docs-ui
 :uri-preview: https://cb-docs-ui.netlify.com
@@ -18,10 +18,8 @@
 :uri-yarn: https://yarnpkg.com
 :uri-mulesoft: https://docs.mulesoft.com
 
-This repo contains assets for the UI elements of docs.mulesoft.com and related sites. The build process uses the following branches:
-
-* staging/production: master
-* beta: beta-ui
+Currently in prototype, this project will be used to generate the UI for the next version of the MuleSoft documentation site.
+You can find a preview of this UI online at {uri-preview}.
 
 == Use the UI
 

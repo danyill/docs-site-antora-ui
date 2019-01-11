@@ -3,7 +3,6 @@ def gitBranch = 'master'
 def gitCredentialsId = 'mule-docs-agent-ssh-key'
 def githubCredentialsId = 'mule-docs-agent-github-token'
 
-
 pipeline {
   agent any
   stages {

@@ -16,43 +16,44 @@
     }
   }
 
-  & .conum[data-value] {
-    align-items: center;
-    border: 1px solid;
-    border-color: #11a9e0;
-    border-radius: 100%;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    font-family: Roboto, sans-serif;
-    font-size: .75rem;
+  /* numbered callouts from codeblocks */
+  & .conum {
+    background: var(--tertiary);
+    border: 1px solid var(--aluminum-3);
+    border-radius: 4px;
+    font-family: var(--sans-serif);
+    font-size: 12px;
     font-style: normal;
-    height: 1rem;
-    justify-content: center;
-    vertical-align: text-bottom;
-    width: 1rem;
+    font-weight: --weight-bold;
+    padding: 0 5px;
+
+    &::after {
+      content: attr(data-value);
+    }
+
+    & + b {
+      display: none;
+    }
   }
-  & .conum[data-value]::after {
-    content: attr(data-value);
+
+  /* collouts within the codeblock */
+  & pre .conum {
+    box-shadow: 0 2px 6px var(--aluminum-3);
   }
-  & .conum[data-value] + b {
-    display: none;
-  }
-  & pre .conum[data-value] {
-    background-color: #f8f8f2;
-    border-color: #f8f8f2;
-    color: #151514;
-  }
+
+  /* references within codeblock */
   & .colist {
-    margin-top: .5rem;
-  }
-  & .colist td:first-of-type {
-    line-height: 1.4;
-    padding: 0 .5rem;
-    vertical-align: top;
-  }
-  & .colist td:last-of-type {
-    padding: 0;
+
+    /* numbers */
+    & td:first-of-type {
+      padding: 0 10px
+      vertical-align: top;
+    }
+
+    /* content */
+    & td:last-of-type {
+      padding: 0;
+    }
   }
 
   /* default spacing */

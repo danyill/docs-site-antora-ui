@@ -276,3 +276,20 @@ http://packages.couchbase.com/clients/kafka/3.2.3/kafka-connect-couchbase-3.2.3.
 == `spec.volumeClaimTemplates.metadata`
 
 This section demonstrates what happens when the section title does not have any natural wrap opportunities.
+
+== Callouts
+
+.XML element
+[source,xml,linenums]
+----
+<api-platform-gw:api
+  apiName="${apiName}" // <1>
+  version="${apiVersion}" //<2>
+  flowRef="proxy" //<3>
+  apikitRef="api-config"/> //<4>
+----
+
+<1> Configure the `${apiName}` with the UUID, which is the group ID and the Exchange asset ID assigned to your API by API Manager.
+<2> Configure the `${apiVersion}` with the API Version, which is the version name and the instance ID or the label assigned to your API by API Manager.
+<3> Set the `flowRef` element to point to the flow that you want to pair to the API in API Manager.
+<4> If you use APIKit and you would like to apply policies at a resource level, you must set this value. Otherwise said policies won't work at resource level.

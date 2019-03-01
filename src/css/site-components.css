@@ -1,7 +1,7 @@
 .site-components {
   display: none;
   margin-right: 0.7rem;
-  
+  position: relative;
 }
 
 @media screen and (min-width: 1024px) {
@@ -48,17 +48,17 @@
   display: none;
 }
 
-.site-components .version {
+.site-components .component {
   display: block;
   line-height: 1;
   padding-top: 0.6em;
 }
 
-.site-components .version.is-current {
+.site-components .component.is-current {
   display: none;
 }
 
-.site-components .version.is-missing {
+.site-components .component.is-missing {
   color: #8e8e8e;
   font-style: italic;
   text-decoration: none;

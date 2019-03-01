@@ -1,10 +1,12 @@
 {{#if page.component}}
 <div class="site-components">
+
 <button class="components-menu-toggle" title="Show other components">{{page.component.title}}</button>
  <div class="components-menu">
     {{#each site.components}}
-    <a href="{{@root.site.components.url}}">
-      <span class="title">{{{./title}}}</span></a>
+    <a class="component
+          {{~#if (eq ./title @root.page.component.title)}} is-current{{/if~}} {{~#if ./missing}} is-missing{{/if}}"
+           href="{{{relativize @root.page.url ./url}}}">{{{./title}}}</a>
     {{/each}}
   </div>
 </div>

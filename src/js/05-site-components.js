@@ -1,7 +1,7 @@
 ;(function () {
   'use strict'
 
-  var toggle = document.querySelector('.site-components .component-menu-toggle')
+  var toggle = document.querySelector('.site-components .components-menu-toggle')
   if (!toggle) return
 
   var selector = document.querySelector('.site-components')

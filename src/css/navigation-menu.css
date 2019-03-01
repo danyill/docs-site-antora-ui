@@ -36,6 +36,7 @@ html.is-clipped--nav {
   padding: 0.5rem 0.75rem;
   line-height: 1.35;
   position: relative;
+  font-family: sans-serif;
 }
 
 .nav-menu h3.title {
@@ -49,6 +50,7 @@ html.is-clipped--nav {
 .nav-menu a,
 .nav-menu a:visited {
   color: inherit;
+
 }
 
 .nav-list {
@@ -69,7 +71,6 @@ html.is-clipped--nav {
 .nav-toggle ~ .nav-list {
   padding-bottom: 0.125rem;
 }
-
 /* matches list without a title */
 .nav-item[data-depth="0"] > .nav-list:first-child {
   display: block;
@@ -103,4 +104,11 @@ html.is-clipped--nav {
 .is-current-page > .nav-link,
 .is-current-page > .nav-text {
   font-weight: 500;
+  color: #00a2df;
+}
+.nav-item:active{
+  color: #00a2df;
+}
+.nav-link:active{
+  color: #00a2df;
 }

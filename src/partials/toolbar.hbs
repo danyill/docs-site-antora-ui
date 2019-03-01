@@ -1,4 +1,11 @@
-<nav class="flex align-center toolbar">
-  <button class="button nav-toggle js-nav-toggle">Menu</button>
-  {{> breadcrumbs}}
-</nav>
+<div class="toolbar" role="navigation">
+  <button class="navigation-toggle"></button>
+  {{#if site.homeUrl}}
+  <a href="{{relativize page.url site.homeUrl}}" class="home-link{{#if page.home}} is-current{{/if}}"></a>
+  {{/if}}
+{{> breadcrumbs}}
+{{> page-versions}}
+  {{#if (and page.editUrl (not page.origin.private))}}
+  <div class="edit-this-page"><a href="{{page.editUrl}}">Edit this Page</a></div>
+  {{/if}}
+</div>

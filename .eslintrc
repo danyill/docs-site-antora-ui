@@ -1,11 +1,5 @@
 {
   "extends": "standard",
-  "globals": {
-    "analytics": true,
-    "Coveo": true,
-    "localStorage": true,
-    "tippy": true
-  },
   "rules": {
     "arrow-parens": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],

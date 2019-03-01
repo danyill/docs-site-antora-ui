@@ -4,6 +4,7 @@ const asciidoctor = require('asciidoctor.js')()
 const fs = require('fs')
 const handlebars = require('handlebars')
 const map = require('map-stream')
+const merge = require('merge-stream')
 const path = require('path')
 const { promisify } = require('util')
 const requireFromString = require('require-from-string')
@@ -26,38 +27,39 @@ module.exports = async (src, dest, siteSrc, siteDest, sink) => {
   ])
 
   baseUiModel.env = process.env
-  const stream = vfs
-    .src('**/*.adoc', { base: siteSrc, cwd: siteSrc })
-    .pipe(
-      map((file, next) => {
-        const siteRootPath = path.relative(path.dirname(file.path), path.resolve(siteSrc))
-        const uiModel = Object.assign({}, baseUiModel)
-        uiModel.page = Object.assign({}, uiModel.page)
-        uiModel.siteRootPath = siteRootPath
-        uiModel.siteRootUrl = path.join(siteRootPath, 'index.html')
-        uiModel.uiRootPath = path.join(siteRootPath, '_')
-        if (file.stem === '404') {
-          uiModel.page = { layout: '404' }
-        } else {
-          const doc = asciidoctor.load(file.contents, { safe: 'safe', attributes: ASCIIDOC_ATTRIBUTES })
-          const pageAttributes = {}
-          const pageRole = doc.getAttribute('page-role')
-          if (pageRole) pageAttributes.role = pageRole
-          uiModel.page.attributes = pageAttributes
-          uiModel.page.layout = doc.getAttribute('page-layout', 'default')
-          uiModel.page.title = doc.getDocumentTitle()
-          uiModel.page.contents = doc.convert()
-          if (file.stem === 'home') {
-            uiModel.page.component = Object.assign({}, uiModel.page.component, { name: 'home' })
+  const stream = merge([
+    vfs
+      .src('**/*.adoc', { base: siteSrc, cwd: siteSrc })
+      .pipe(
+        map((file, next) => {
+          const siteRootPath = path.relative(path.dirname(file.path), path.resolve(siteSrc))
+          const uiModel = Object.assign({}, baseUiModel)
+          uiModel.page = Object.assign({}, uiModel.page)
+          uiModel.siteRootPath = siteRootPath
+          uiModel.siteRootUrl = path.join(siteRootPath, 'index.html')
+          uiModel.uiRootPath = path.join(siteRootPath, '_')
+          if (file.stem === '404') {
+            uiModel.page = { layout: '404' }
+          } else {
+            const doc = asciidoctor.load(file.contents, { safe: 'safe', attributes: ASCIIDOC_ATTRIBUTES })
+            const pageAttributes = {}
+            const pageRole = doc.getAttribute('page-role')
+            if (pageRole) pageAttributes.role = pageRole
+            uiModel.page.attributes = pageAttributes
+            uiModel.page.layout = doc.getAttribute('page-layout', 'default')
+            uiModel.page.title = doc.getDocumentTitle()
+            uiModel.page.contents = doc.convert()
+            if (file.stem === 'home') {
+              uiModel.page.component = Object.assign({}, uiModel.page.component, { name: 'home' })
+            }
           }
-        }
-        file.extname = '.html'
-        file.contents = Buffer.from(layouts[uiModel.page.layout](uiModel))
-        next(null, file)
-      })
-    )
-    .pipe(vfs.dest(siteDest))
-
+          file.extname = '.html'
+          file.contents = Buffer.from(layouts[uiModel.page.layout](uiModel))
+          next(null, file)
+        })
+      ),
+    vfs.src('site-navigation-data.js', { base: siteSrc, cwd: siteSrc }),
+  ]).pipe(vfs.dest(siteDest))
   if (sink) stream.pipe(sink())
   return stream
 }

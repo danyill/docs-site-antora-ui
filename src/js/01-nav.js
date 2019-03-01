@@ -1,6 +1,154 @@
 ;(() => {
   'use strict'
 
+  function buildNavTree (parent, group, version, items, level) {
+    var navList = document.createElement('ol')
+    navList.className = level === 1 ? 'nav-list parent js-nav-list' : 'nav-list'
+    navList.dataset.product = group
+    navList.dataset.version = version
+    items.forEach(function (item) {
+      var currentUrl = window.location.pathname
+      var active = item.url === currentUrl
+      var navItem = document.createElement('li')
+      navItem.className = active ? 'nav-li active' : 'nav-li'
+      navItem.dataset.depth = level
+      var navLink = document.createElement('a')
+      navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
+        (item.items ? ' nav-nested js-nav-nested' : '')
+      navLink.href = relativize(currentUrl, item.url)
+      navLink.innerHTML = item.content
+      navItem.appendChild(navLink)
+      if (item.items) buildNavTree(navItem, group, version, item.items, level + 1)
+      navList.appendChild(navItem)
+    })
+    parent.appendChild(navList)
+  }
+
+  function relativize (from, to) {
+    if (!from || to.charAt() === '#') return to
+    var hash = ''
+    var hashIdx = to.indexOf('#')
+    if (~hashIdx) {
+      hash = to.substr(hashIdx)
+      to = to.substr(0, hashIdx)
+    }
+    if (from === to) {
+      return hash || (to.charAt(to.length - 1) === '/' ? './' : to.substr(to.lastIndexOf('/') + 1))
+    } else {
+      return (relativePath(from.slice(0, from.lastIndexOf('/')), to) || '.') +
+        (to.charAt(to.length - 1) === '/' ? '/' + hash : hash)
+    }
+  }
+
+  function relativePath (from, to) {
+    var fromParts = trimArray(from.split('/'))
+    var toParts = trimArray(to.split('/'))
+    for (var i = 0, len = Math.min(fromParts.length, toParts.length), sharedPathLength = len; i < len; i++) {
+      if (fromParts[i] !== toParts[i]) {
+        sharedPathLength = i
+        break
+      }
+    }
+    var outputParts = []
+    for (var remain = fromParts.length - sharedPathLength; remain > 0; remain--) outputParts.push('..')
+    return outputParts.concat(toParts.slice(sharedPathLength)).join('/')
+  }
+
+  function trimArray (arr) {
+    var start = 0
+    var length = arr.length
+    for (; start < length; start++) {
+      if (arr[start]) break
+    }
+    if (start === length) return []
+    for (var end = length; end > 0; end--) {
+      if (arr[end - 1]) break
+    }
+    return arr.slice(start, end)
+  }
+
+  // populate navigation
+  ;(function (data) {
+    var groupList = document.createElement('ol')
+    groupList.className = 'nav-list loaded'
+    data.forEach(function (group) {
+      var groupItem = document.createElement('li')
+      groupItem.className = group.url === window.location.pathname ? 'nav-li active' : 'nav-li'
+      groupItem.dataset.depth = '0'
+      var groupHeading = document.createElement('div')
+      groupHeading.className = 'flex align-center justify-justified'
+      var groupLink = document.createElement('a')
+      groupLink.className = 'flex grow strong link nav-link nav-heading js-nav-link'
+      groupLink.tabindex = '0'
+      var groupIcon = document.createElement('img')
+      groupIcon.className = 'icon no-pointer'
+      groupIcon.src = '/_/img/icons/' + group.name + '.svg'
+      groupLink.appendChild(groupIcon)
+      groupLink.appendChild(document.createTextNode(' '))
+      groupLink.appendChild(document.createTextNode(group.title))
+      groupHeading.appendChild(groupLink)
+      if (group.versions.length > 1) {
+        var currentVersion = group.versions[0].version
+        var versionButton = document.createElement('button')
+        versionButton.className = 'flex align-center shrink button versions'
+        versionButton.dataset.trigger = 'versions'
+        versionButton.dataset.triggerProduct = group.name
+        var versionLabel = document.createElement('span')
+        versionLabel.className = 'js-versions-text'
+        versionLabel.appendChild(document.createTextNode(currentVersion))
+        versionButton.appendChild(versionLabel)
+        versionButton.appendChild(document.createTextNode(' '))
+        var versionCaret = document.createElement('img')
+        // FIXME icon color is wrong; should match text color
+        versionCaret.src = '/_/img/icons/chevron.svg'
+        // FIXME update CSS to remove this hardcoded style
+        versionCaret.style.width = '15px'
+        versionButton.appendChild(versionCaret)
+        var versionMenu = document.createElement('div')
+        versionMenu.className = 'popover js-version-popover'
+        versionMenu.dataset.popover = 'versions'
+        versionMenu.dataset.popoverProduct = group.name
+        var currentVersionList = document.createElement('ol')
+        currentVersionList.className = 'ol'
+        var currentVersionHeading = document.createElement('li')
+        currentVersionHeading.className = 'li-heading'
+        currentVersionHeading.appendChild(document.createTextNode('Current version'))
+        currentVersionList.appendChild(currentVersionHeading)
+        var currentVersionItem = document.createElement('li')
+        currentVersionItem.className = 'flex align-center justify-justified li js-version'
+        currentVersionItem.dataset.product = group.name
+        currentVersionItem.dataset.version = currentVersion
+        currentVersionItem.appendChild(document.createTextNode(currentVersion))
+        currentVersionList.appendChild(currentVersionItem)
+        versionMenu.appendChild(currentVersionList)
+        var previousVersionsList = document.createElement('ol')
+        var previousVersionsHeading = document.createElement('li')
+        previousVersionsHeading.className = 'li-heading'
+        previousVersionsHeading.appendChild(document.createTextNode('Previous versions'))
+        previousVersionsList.appendChild(previousVersionsHeading)
+        group.versions.forEach(function (version, idx) {
+          if (idx) {
+            var previousVersionItem = document.createElement('li')
+            previousVersionItem.className = 'flex align-center justify-justified li js-version'
+            previousVersionItem.dataset.product = group.name
+            previousVersionItem.dataset.version = version.version
+            previousVersionItem.appendChild(document.createTextNode(version.version))
+            previousVersionsList.appendChild(previousVersionItem)
+          }
+          versionMenu.appendChild(previousVersionsList)
+        })
+        versionButton.appendChild(versionMenu)
+        groupHeading.appendChild(versionButton)
+      }
+      groupItem.appendChild(groupHeading)
+      group.versions.forEach(function (version) {
+        if (version.items.length) buildNavTree(groupItem, group.name, version.version, version.items, 1)
+      })
+      groupList.appendChild(groupItem)
+    })
+    document.querySelector('nav.nav').appendChild(groupList)
+  })(window.siteNavigationData || [])
+
   // navigation
   const nav = document.querySelector('.js-nav')
   const navLists = nav.querySelectorAll('.js-nav-list')
@@ -62,9 +210,9 @@
       let thisNavLi = thisWrapper.parentElement
       thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
       collapse = thisNavLi.classList.contains('active') || false
-      analytics.track('Toggled Nav', {
-        url: thisTarget.innerText,
-      })
+      //analytics.track('Toggled Nav', {
+      //  url: thisTarget.innerText,
+      //})
     } else {
       // if navigation via version select
       thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
@@ -146,10 +294,10 @@
         }
       }
     }
-    analytics.track('Version Pinned', {
-      product: thisProduct,
-      version: thisVersion,
-    })
+    //analytics.track('Version Pinned', {
+    //  product: thisProduct,
+    //  version: thisVersion,
+    //})
   }
 
   for (let i = 0; i < versionsTrigger.length; i++) {
@@ -220,11 +368,11 @@
   }
 
   // open current nav on load
-  window.addEventListener('DOMContentLoaded', (e) => {
-    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
-    if (thisProduct !== '') {
-      toggleNav(e, navLists, navListsHeights, thisProduct)
-    }
-    showNav()
-  })
+  //window.addEventListener('DOMContentLoaded', (e) => {
+  //  const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
+  //  if (thisProduct !== '') {
+  //    toggleNav(e, navLists, navListsHeights, thisProduct)
+  //  }
+  //  showNav()
+  //})
 })()

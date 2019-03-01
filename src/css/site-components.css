@@ -21,7 +21,8 @@
   background: url(../img/chevron.svg) no-repeat;
   background-position: right 0.5rem top 50%;
   background-size: auto 0.75em;
-  border: 1px solid transparent;
+  border: 1px solid #cacbcc;
+  border-radius: 22px;
   outline: none;
   cursor: pointer;
   padding: 0.35rem 1.5rem 0.35rem 0.5rem;
@@ -29,19 +30,22 @@
   z-index: 1;
 }
 
-.site-components .components-menu-toggle::-moz-focus-inner {
+
+.site-components .components-menu-toggle:focus {
   border: none;
 }
 
 
 .site-components .components-menu {
-  border: 1px solid transparent;
-  background-color: #f0f0f0;
+  border: 1px solid #e8e9ea;
+  background-color: white;
+  border-radius: 16px 16px 22px 22px;
   padding: 1.3rem 0.5rem 0.35rem;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
+
 }
 
 .site-components:not(.is-active) .components-menu {
@@ -50,7 +54,7 @@
 
 .site-components .component {
   display: block;
-  line-height: 1;
+  line-height: 2;
   padding-top: 0.6em;
 }
 

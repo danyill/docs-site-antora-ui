@@ -11,7 +11,7 @@ body {
 }
 
 .navbar {
-  background-color: white;
+  background-color: #fafafa;
   color: var(--color-navbar-text);
   font-size: 0.83333rem;
   height: var(--navbar-height);
@@ -21,7 +21,7 @@ body {
   width: 100%;
   word-wrap: break-word;
   z-index: 3;
-  box-shadow: 0px 1px 1px #eee;
+  box-shadow: 0px  4px 12px #eee;
 }
 
 .navbar a {

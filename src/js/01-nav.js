@@ -70,7 +70,7 @@
   // populate navigation
   ;(function (data) {
     var groupList = document.createElement('ol')
-    groupList.className = 'nav-list loaded'
+    groupList.className = 'nav-list'
     data.forEach(function (group) {
       var groupItem = document.createElement('li')
       groupItem.className = group.url === window.location.pathname ? 'nav-li active' : 'nav-li'
@@ -368,11 +368,6 @@
   }
 
   // open current nav on load
-  //window.addEventListener('DOMContentLoaded', (e) => {
-  //  const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
-  //  if (thisProduct !== '') {
-  //    toggleNav(e, navLists, navListsHeights, thisProduct)
-  //  }
-  //  showNav()
-  //})
+  const thisProduct = document.querySelector('meta[name="dcterms.subject"]').content
+  thisProduct ? toggleNav({ type: 'DOMContentLoaded' }, navLists, navListsHeights, thisProduct) : showNav()
 })()

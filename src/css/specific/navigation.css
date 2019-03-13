@@ -9,9 +9,6 @@
   padding: var(--lg) var(--md) var(--xl);
   position: fixed;
   top: 0;
-  -ms-transform: translateX(-275px);
-  transform: translateX(-275px); /* var(--nav-width) */
-  transition: transform var(--transition-speed-sm) var(--transition-timing);
   width: var(--nav-width);
   z-index: var(--z-nav-mobile);
 
@@ -23,12 +20,7 @@
     position: relative;
     position: sticky;
     top: 0;
-    transform: none;
     z-index: var(--z-nav);
-  }
-
-  &.active {
-    transform: translateX(0);
   }
 
   & ::selection {
@@ -62,7 +54,6 @@
   /* spacing between lists when active */
   & > .nav-list {
     opacity: 0;
-    transition: opacity var(--transition-speed-md) var(--transition-timing);
 
     &.loaded {
       opacity: 1;
@@ -77,15 +68,6 @@
 .nav-list {
   overflow: hidden;
 
-  & .parent {
-    max-height: 0;
-    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
-
-    /* for opacity only transition */
-    &.transition-opacity-only {
-      transition: opacity var(--transition-speed-md) var(--transition-timing);
-    }
-  }
   /* for product icons */
   & > .nav-li .nav-link,
   & > .nav-li .nav-heading {
@@ -96,16 +78,10 @@
     opacity: .6;
   }
 
-  & .nav-li {
-    transition: margin var(--transition-speed-md) var(--transition-timing);
-  }
-
   & > .nav-li.active {
-
     & .nav-link.nav-heading {
       color: var(--core-blue-3);
     }
-
     & .icon {
       filter: grayscale(0);
       opacity: 1;
@@ -194,17 +170,6 @@
 }
 
 /* nested lists withings headings */
-.nav-nested {
-
-  & + .nav-list {
-    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
-
-    & .nav-link {
-      padding-left: 45px;
-    }
-  }
-
-  &:not(.active):not(.expanded) + .nav-list {
-    max-height: 0;
-  }
+.nav-nested + .nav-list .nav-link {
+  padding-left: 45px;
 }

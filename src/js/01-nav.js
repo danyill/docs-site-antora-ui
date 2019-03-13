@@ -4,6 +4,7 @@
   function buildNavTree (parent, group, version, items, level) {
     var navList = document.createElement('ol')
     navList.className = level === 1 ? 'nav-list parent js-nav-list' : 'nav-list'
+    navList.style.maxHeight = 0
     navList.dataset.product = group
     navList.dataset.version = version
     items.forEach(function (item) {
@@ -11,6 +12,7 @@
       var active = item.url === currentUrl
       var navItem = document.createElement('li')
       navItem.className = active ? 'nav-li active' : 'nav-li'
+      if (active) navList.style.maxHeight = 'none'
       navItem.dataset.depth = level
       var navLink = document.createElement('a')
       navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
@@ -188,7 +190,6 @@
   }
 
   const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
-    let noTransition = false
     let thisTarget = e.target
     let thisList
     let thisIndex
@@ -207,7 +208,6 @@
       } else {
         thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
       }
-      noTransition = true
     } else if (thisTarget.classList.contains('js-nav-link')) {
       // if navigating via sidebar
       let thisWrapper = thisTarget.parentElement
@@ -220,22 +220,13 @@
     } else {
       // if navigation via version select
       thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
-      // used for disabling transition during version change
-      noTransition = true
     }
 
     for (let i = 0; i < navLists.length; i++) {
-      // if transition disabled on load, re-enable
-      if (noTransition) {
-        navLists[i].classList.add('transition-opacity-only')
-      } else if (navLists[i].classList.contains('transition-opacity-only')) {
-        navLists[i].classList.remove('transition-opacity-only')
-      }
-
       // make other elements inactive
       navLists[i].parentNode.classList.remove('active')
-      navLists[i].style.maxHeight = null
-      navLists[i].style.opacity = '0'
+      navLists[i].style.maxHeight = 0
+      navLists[i].style.opacity = 0
 
       // check if list matches active target
       if (navLists[i] === thisList) {
@@ -252,9 +243,8 @@
     // make current element active if not collapsing
     if (!collapse) {
       thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
-      thisList.style.opacity = '1'
+      thisList.style.opacity = 1
       thisList.parentNode.classList.add('active')
-      if (noTransition) thisList.classList.add('transition-opacity-only')
     }
 
     // finish load transition
@@ -264,21 +254,11 @@
     }
   }
 
-  // this scrolls the navbar to the current page…
-  // really this doesn't work great b/c the nav should not reload when the page changes (singe-page)
   const scrollToActive = (thisList) => {
-    const activeLinks = thisList.querySelectorAll('.nav-link.active')
-    for (let i = 0; i < activeLinks.length; i++) {
-      let thisList = activeLinks[i].parentNode
-      while (thisList.style.opacity === '1') {
-        thisList = thisList.parentNode
-      }
-      document.querySelector('.js-nav').scrollTo({
-        behavior: 'smooth',
-        top: thisList.offsetTop - (window.innerHeight / 2) + 65, // scroll to center; 65 is the header height
-      })
-      break
-    }
+    const activeLink = thisList.querySelector('.nav-link.active')
+    var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
+    var adjustment = activeLink.offsetTop + (activeLink.offsetHeight / 2) - midpoint
+    if (adjustment > 0) nav.scrollTop = adjustment
   }
 
   // version popovers

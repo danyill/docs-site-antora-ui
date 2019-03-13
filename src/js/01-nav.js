@@ -199,6 +199,10 @@
       // check if there's a pinned version
       const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
       if (loadVersion) {
+        if (thisVersion) {
+          localStorage.setItem(`ms-docs-${thisProduct}`, loadVersion)
+          setPin(thisProduct, document.querySelector(`[data-trigger-product="${thisProduct}"]`), thisVersion)
+        }
         thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
       } else {
         thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
@@ -368,6 +372,17 @@
   }
 
   // open current nav on load
-  const thisProduct = document.querySelector('meta[name="dcterms.subject"]').content
-  thisProduct ? toggleNav({ type: 'DOMContentLoaded' }, navLists, navListsHeights, thisProduct) : showNav()
+  const currentProduct = document.querySelector('meta[name="dcterms.subject"]').content
+  if (currentProduct) {
+    let currentVersion
+    for (let i = 0, l = versionsTrigger.length; i < l; i++) {
+      if (versionsTrigger[i].dataset.triggerProduct === currentProduct) {
+        currentVersion = document.querySelector('meta[name="dcterms.identifier"]').content
+        break
+      }
+    }
+    toggleNav({ type: 'DOMContentLoaded' }, navLists, navListsHeights, currentProduct, currentVersion)
+  } else {
+    showNav()
+  }
 })()

@@ -1,4 +1,4 @@
-;(() => {
+;(function () {
   'use strict'
 
   function relativize (from, to) {
@@ -151,8 +151,8 @@
     })
     nav.appendChild(groupList)
     // QUESTION can we do this during the build? (we'd have to append child to parent eagerly)
-    const activeItem = nav.querySelector('.nav-li.active')
-    let ancestor = activeItem
+    var activeItem = nav.querySelector('.nav-li.active')
+    var ancestor = activeItem
     while ((ancestor = ancestor.parentNode) && ancestor !== groupList) {
       if (ancestor.classList.contains('nav-li')) {
         ancestor.classList.add('active')
@@ -161,28 +161,29 @@
       }
     }
     if (activeItem.firstChild.classList.contains('nav-nested')) {
-      const activeNavSublist = activeItem.lastChild
+      var activeNavSublist = activeItem.lastChild
       activeNavSublist.style.display = ''
     }
   })(document.querySelector('nav.nav'), window.siteNavigationData || [])
 
   // navigation
-  const nav = document.querySelector('.js-nav')
-  const navLists = nav.querySelectorAll('.js-nav-list')
-  const navLinks = nav.querySelectorAll('.js-nav-link')
+  var nav = document.querySelector('.js-nav')
+  var navLists = nav.querySelectorAll('.js-nav-list')
+  var navLinks = nav.querySelectorAll('.js-nav-link')
+  var i, l
 
   // setup toggle events
-  for (let i = 0, l = navLinks.length; i < l; i++) {
-    navLinks[i].addEventListener('click', (e) => toggleNav(e, navLists))
-    navLinks[i].addEventListener('touchend', (e) => toggleNav(e, navLists))
+  for (i = 0, l = navLinks.length; i < l; i++) {
+    navLinks[i].addEventListener('click', function (e) { toggleNav(e, navLists) })
+    navLinks[i].addEventListener('touchend', function (e) { toggleNav(e, navLists) })
   }
 
-  const revealNav = () => {
+  function revealNav () {
     nav.querySelector('.nav-list').classList.add('loaded')
   }
 
-  const toggleNav = (e, navLists, thisProduct, thisVersion) => {
-    let thisList
+  function toggleNav (e, navLists, thisProduct, thisVersion) {
+    var thisList
 
     if (e.type === 'DOMContentLoaded') {
       // if navigating from link or location bar
@@ -197,9 +198,10 @@
       revealNav()
     } else if (e.target.classList.contains('js-nav-link')) {
       // if navigating via sidebar
-      const thisWrapper = e.target.parentElement
-      const thisNavLi = thisWrapper.parentElement
-      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      var thisWrapper = e.target.parentElement
+      var thisNavLi = thisWrapper.parentElement
+      console.log(thisWrapper)
+      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextSibling
       if (thisNavLi.classList.contains('active')) {
         thisList.style.display = 'none'
         thisNavLi.classList.remove('active')
@@ -217,7 +219,7 @@
 
       // make other versions inactive
       // TODO this could be more efficient
-      for (let i = 0, l = navLists.length; i < l; i++) {
+      for (var i = 0, l = navLists.length; i < l; i++) {
         if (navLists[i].parentNode === thisList.parentNode) {
           navLists[i].parentNode.classList.remove('active')
           navLists[i].style.display = 'none'
@@ -231,8 +233,8 @@
     }
   }
 
-  const scrollToActive = (thisList) => {
-    const activeLink = thisList.querySelector('.nav-link.active')
+  function scrollToActive (thisList) {
+    var activeLink = thisList.querySelector('.nav-link.active')
     var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
     var adjustment = activeLink.offsetTop + (activeLink.offsetHeight / 2) - midpoint
     if (adjustment > 0) nav.scrollTop = adjustment
@@ -240,16 +242,16 @@
 
   // version popovers
   // tippy plugin https://atomiks.github.io/tippyjs/
-  const versionsTrigger = document.querySelectorAll('[data-trigger="versions"]')
-  const versionsPopover = document.querySelectorAll('[data-popover="versions"]')
+  var versionsTrigger = document.querySelectorAll('[data-trigger="versions"]')
+  var versionsPopover = document.querySelectorAll('[data-popover="versions"]')
 
-  const setPin = (thisProduct, thisTrigger, thisVersion) => {
-    const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
+  function setPin (thisProduct, thisTrigger, thisVersion) {
+    var savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
     if (savedVersion) {
       thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
-      for (let i = 0, l = navLists.length; i < l; i++) {
-        const listProduct = navLists[i].dataset.product
-        const listVersion = navLists[i].dataset.version
+      for (var i = 0, l = navLists.length; i < l; i++) {
+        var listProduct = navLists[i].dataset.product
+        var listVersion = navLists[i].dataset.version
         if (thisProduct === listProduct && savedVersion === listVersion) {
           navLists[i].setAttribute('data-pinned', true)
         }
@@ -261,7 +263,7 @@
     //})
   }
 
-  for (let i = 0, l = versionsTrigger.length; i < l; i++) {
+  for (i = 0, l = versionsTrigger.length; i < l; i++) {
     tippy(versionsTrigger[i], {
       duration: [0, 150],
       flip: false,
@@ -290,17 +292,17 @@
     setPin(versionsTrigger[i].dataset.triggerProduct, versionsTrigger[i])
   }
 
-  const closePopovers = (instance) => {
-    const popper = document.querySelector('.tippy-popper')
+  function closePopovers (instance) {
+    var popper = document.querySelector('.tippy-popper')
     if (popper) popper._tippy.hide()
   }
 
   // changing versions
-  const changeVersion = (e) => {
-    const thisTippy = document.querySelector('.tippy-popper')._tippy
-    const thisTarget = e.target
-    const thisProduct = thisTarget.dataset.product
-    const thisVersion = thisTarget.dataset.version
+  function changeVersion (e) {
+    var thisTippy = document.querySelector('.tippy-popper')._tippy
+    var thisTarget = e.target
+    var thisProduct = thisTarget.dataset.product
+    var thisVersion = thisTarget.dataset.version
     // save version
     localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
     // update pins
@@ -312,27 +314,27 @@
     e.stopPropagation()
   }
 
-  const bindEvents = (popover) => {
-    const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0, l = versions.length; i < l; i++) {
+  function bindEvents (popover) {
+    var versions = popover.querySelectorAll('.js-version')
+    for (var i = 0, l = versions.length; i < l; i++) {
       versions[i].addEventListener('click', changeVersion)
       versions[i].addEventListener('touchend', changeVersion)
     }
   }
 
-  const unbindEvents = (popover) => {
-    const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0, l = versions.length; i < l; i++) {
+  function unbindEvents (popover) {
+    var versions = popover.querySelectorAll('.js-version')
+    for (var i = 0, l = versions.length; i < l; i++) {
       versions[i].removeEventListener('click', changeVersion)
       versions[i].removeEventListener('touchend', changeVersion)
     }
   }
 
   // open current nav on load
-  const currentProduct = document.querySelector('meta[name="dcterms.subject"]').content
+  var currentProduct = document.querySelector('meta[name="dcterms.subject"]').content
   if (currentProduct) {
-    let currentVersion
-    for (let i = 0, l = versionsTrigger.length; i < l; i++) {
+    var currentVersion
+    for (i = 0, l = versionsTrigger.length; i < l; i++) {
       if (versionsTrigger[i].dataset.triggerProduct === currentProduct) {
         currentVersion = document.querySelector('meta[name="dcterms.identifier"]').content
         break

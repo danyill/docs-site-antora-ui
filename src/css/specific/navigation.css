@@ -54,6 +54,7 @@
   /* spacing between lists when active */
   & > .nav-list {
     opacity: 0;
+    transition: opacity var(--transition-speed-md) var(--transition-timing);
 
     &.loaded {
       opacity: 1;

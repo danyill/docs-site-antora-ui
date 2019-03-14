@@ -1,31 +1,6 @@
 ;(() => {
   'use strict'
 
-  function buildNavTree (parent, group, version, items, level) {
-    var navList = document.createElement('ol')
-    navList.className = level === 1 ? 'nav-list parent js-nav-list' : 'nav-list'
-    navList.style.maxHeight = 0
-    navList.dataset.product = group
-    navList.dataset.version = version
-    items.forEach(function (item) {
-      var currentUrl = window.location.pathname
-      var active = item.url === currentUrl
-      var navItem = document.createElement('li')
-      navItem.className = active ? 'nav-li active' : 'nav-li'
-      if (active) navList.style.maxHeight = 'none'
-      navItem.dataset.depth = level
-      var navLink = document.createElement('a')
-      navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
-        (item.items ? ' nav-nested js-nav-nested' : '')
-      navLink.href = relativize(currentUrl, item.url)
-      navLink.innerHTML = item.content
-      navItem.appendChild(navLink)
-      if (item.items) buildNavTree(navItem, group, version, item.items, level + 1)
-      navList.appendChild(navItem)
-    })
-    parent.appendChild(navList)
-  }
-
   function relativize (from, to) {
     if (!from || to.charAt() === '#') return to
     var hash = ''
@@ -45,7 +20,7 @@
   function relativePath (from, to) {
     var fromParts = trimArray(from.split('/'))
     var toParts = trimArray(to.split('/'))
-    for (var i = 0, len = Math.min(fromParts.length, toParts.length), sharedPathLength = len; i < len; i++) {
+    for (var i = 0, l = Math.min(fromParts.length, toParts.length), sharedPathLength = l; i < l; i++) {
       if (fromParts[i] !== toParts[i]) {
         sharedPathLength = i
         break
@@ -69,19 +44,45 @@
     return arr.slice(start, end)
   }
 
+  function buildNavTree (nav, parent, group, version, items, level) {
+    var navList = document.createElement('ol')
+    navList.className = level === 1 ? 'nav-list parent js-nav-list' : 'nav-list'
+    navList.style.display = 'none'
+    navList.dataset.product = group
+    navList.dataset.version = version
+    items.forEach(function (item) {
+      var currentUrl = window.location.pathname
+      // FIXME prefer active group item over match anywhere else in tree (currently first encountered wins)
+      var active = !nav.foundActive && item.url === currentUrl ? (nav.foundActive = true) : false
+      var navItem = document.createElement('li')
+      navItem.className = active ? 'nav-li active' : 'nav-li'
+      navItem.dataset.depth = level
+      var navLink = document.createElement('a')
+      navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
+        (item.items ? ' nav-nested js-nav-nested' : '')
+      navLink.href = relativize(currentUrl, item.url)
+      navLink.innerHTML = item.content
+      navItem.appendChild(navLink)
+      if (item.items) buildNavTree(nav, navItem, group, version, item.items, level + 1)
+      navList.appendChild(navItem)
+    })
+    parent.appendChild(navList)
+  }
+
   // populate navigation
-  ;(function (data) {
+  ;(function (nav, data) {
     var groupList = document.createElement('ol')
     groupList.className = 'nav-list'
     data.forEach(function (group) {
       var groupItem = document.createElement('li')
-      groupItem.className = group.url === window.location.pathname ? 'nav-li active' : 'nav-li'
-      groupItem.dataset.depth = '0'
+      var active = !nav.foundActive && group.url === window.location.pathname ? (nav.foundActive = true) : false
+      groupItem.className = active ? 'nav-li active' : 'nav-li'
+      groupItem.dataset.depth = 0
       var groupHeading = document.createElement('div')
       groupHeading.className = 'flex align-center justify-justified'
       var groupLink = document.createElement('a')
       groupLink.className = 'flex grow strong link nav-link nav-heading js-nav-link'
-      groupLink.tabindex = '0'
+      groupLink.tabindex = 0
       var groupIcon = document.createElement('img')
       groupIcon.className = 'icon no-pointer'
       groupIcon.src = '/_/img/icons/' + group.name + '.svg'
@@ -144,113 +145,87 @@
       }
       groupItem.appendChild(groupHeading)
       group.versions.forEach(function (version) {
-        if (version.items.length) buildNavTree(groupItem, group.name, version.version, version.items, 1)
+        if (version.items.length) buildNavTree(nav, groupItem, group.name, version.version, version.items, 1)
       })
       groupList.appendChild(groupItem)
     })
-    document.querySelector('nav.nav').appendChild(groupList)
-  })(window.siteNavigationData || [])
+    nav.appendChild(groupList)
+    // QUESTION can we do this during the build? (we'd have to append child to parent eagerly)
+    const activeItem = nav.querySelector('.nav-li.active')
+    let ancestor = activeItem
+    while ((ancestor = ancestor.parentNode) && ancestor !== groupList) {
+      if (ancestor.classList.contains('nav-li')) {
+        ancestor.classList.add('active')
+      } else if (ancestor.classList.contains('nav-list')) {
+        ancestor.style.display = ''
+      }
+    }
+    if (activeItem.firstChild.classList.contains('nav-nested')) {
+      const activeNavSublist = activeItem.lastChild
+      activeNavSublist.style.display = ''
+    }
+  })(document.querySelector('nav.nav'), window.siteNavigationData || [])
 
   // navigation
   const nav = document.querySelector('.js-nav')
   const navLists = nav.querySelectorAll('.js-nav-list')
-  const navLink = nav.querySelectorAll('.js-nav-link')
-  let navListsHeights = []
-  let navListItems
-  let navListItemHeight
-
-  // calculate list height and set height on initial list
-  for (let i = 0; i < navLists.length; i++) {
-    // get all list items and reset height
-    navListItems = navLists[i].querySelectorAll('li')
-    navListItemHeight = 0
-
-    // get height of all list items
-    for (let x = 0; x < navListItems.length; x++) {
-      navListItemHeight += navListItems[x].offsetHeight
-      navListsHeights[i] = navListItemHeight
-    }
-
-    // set initial active list height
-    if (navLists[i].classList.contains('active')) {
-      navLists[i].style.transition = 'none'
-      navLists[i].style.maxHeight = `${navListsHeights[i]}px`
-    }
-  }
+  const navLinks = nav.querySelectorAll('.js-nav-link')
 
   // setup toggle events
-  for (let i = 0; i < navLink.length; i++) {
-    navLink[i].addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
-    navLink[i].addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
+  for (let i = 0, l = navLinks.length; i < l; i++) {
+    navLinks[i].addEventListener('click', (e) => toggleNav(e, navLists))
+    navLinks[i].addEventListener('touchend', (e) => toggleNav(e, navLists))
   }
 
-  const showNav = () => {
-    const nav = document.querySelector('.js-nav .nav-list')
-    if (!nav.classList.contains('loaded')) nav.classList.add('loaded')
+  const revealNav = () => {
+    nav.querySelector('.nav-list').classList.add('loaded')
   }
 
-  const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
-    let thisTarget = e.target
+  const toggleNav = (e, navLists, thisProduct, thisVersion) => {
     let thisList
-    let thisIndex
-    let collapse
 
     // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
-      // check if there's a pinned version
-      const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
-      if (loadVersion) {
-        if (thisVersion) {
-          localStorage.setItem(`ms-docs-${thisProduct}`, loadVersion)
-          setPin(thisProduct, document.querySelector(`[data-trigger-product="${thisProduct}"]`), thisVersion)
-        }
-        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
+      if (thisVersion) {
+        localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
+        setPin(thisProduct, document.querySelector(`[data-trigger-product="${thisProduct}"]`), thisVersion)
+        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
       } else {
-        thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+        thisList = nav.querySelector(`[data-product="${thisProduct}"]`)
       }
-    } else if (thisTarget.classList.contains('js-nav-link')) {
-      // if navigating via sidebar
-      let thisWrapper = thisTarget.parentElement
-      let thisNavLi = thisWrapper.parentElement
-      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
-      collapse = thisNavLi.classList.contains('active') || false
-      //analytics.track('Toggled Nav', {
-      //  url: thisTarget.innerText,
-      //})
-    } else {
-      // if navigation via version select
-      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
-    }
-
-    for (let i = 0; i < navLists.length; i++) {
-      // make other elements inactive
-      navLists[i].parentNode.classList.remove('active')
-      navLists[i].style.maxHeight = 0
-      navLists[i].style.opacity = 0
-
-      // check if list matches active target
-      if (navLists[i] === thisList) {
-        thisIndex = i
-      }
-    }
-
-    // close any open popovers
-    closePopovers()
-
-    // if there's no list, stop here
-    if (!thisList) return
-
-    // make current element active if not collapsing
-    if (!collapse) {
-      thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
-      thisList.style.opacity = 1
-      thisList.parentNode.classList.add('active')
-    }
-
-    // finish load transition
-    if (e.type === 'DOMContentLoaded') {
-      showNav()
       scrollToActive(thisList)
+      revealNav()
+    } else {
+      const thisTarget = e.target
+      let collapse
+      if (thisTarget.classList.contains('js-nav-link')) {
+        // if navigating via sidebar
+        const thisWrapper = thisTarget.parentElement
+        const thisNavLi = thisWrapper.parentElement
+        thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+        collapse = thisNavLi.classList.contains('active')
+        //analytics.track('Toggled Nav', {
+        //  url: thisTarget.innerText,
+        //})
+      } else {
+        // if navigation via version select
+        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      }
+
+      for (let i = 0, l = navLists.length; i < l; i++) {
+        // make other elements inactive
+        navLists[i].parentNode.classList.remove('active')
+        navLists[i].style.display = 'none'
+      }
+
+      // close any open popovers
+      closePopovers()
+
+      // make current element active if not collapsing
+      if (thisList && !collapse) {
+        thisList.style.display = ''
+        thisList.parentNode.classList.add('active')
+      }
     }
   }
 
@@ -270,9 +245,9 @@
     const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
     if (savedVersion) {
       thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
-      for (let i = 0; i < navLists.length; i++) {
-        const listProduct = navLists[i].getAttribute('data-product')
-        const listVersion = navLists[i].getAttribute('data-version')
+      for (let i = 0, l = navLists.length; i < l; i++) {
+        const listProduct = navLists[i].dataset.product
+        const listVersion = navLists[i].dataset.version
         if (thisProduct === listProduct && savedVersion === listVersion) {
           navLists[i].setAttribute('data-pinned', true)
         }
@@ -284,7 +259,7 @@
     //})
   }
 
-  for (let i = 0; i < versionsTrigger.length; i++) {
+  for (let i = 0, l = versionsTrigger.length; i < l; i++) {
     tippy(versionsTrigger[i], {
       duration: [0, 150],
       flip: false,
@@ -310,7 +285,7 @@
     })
 
     // if a version has been pinned
-    setPin(versionsTrigger[i].getAttribute('data-trigger-product'), versionsTrigger[i])
+    setPin(versionsTrigger[i].dataset.triggerProduct, versionsTrigger[i])
   }
 
   const closePopovers = (instance) => {
@@ -322,14 +297,14 @@
   const changeVersion = (e) => {
     const thisTippy = document.querySelector('.tippy-popper')._tippy
     const thisTarget = e.target
-    const thisProduct = thisTarget.getAttribute('data-product')
-    const thisVersion = thisTarget.getAttribute('data-version')
+    const thisProduct = thisTarget.dataset.product
+    const thisVersion = thisTarget.dataset.version
     // save version
     localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
     // update pins
     setPin(thisProduct, thisTippy.reference, thisVersion)
     // update nav
-    toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
+    toggleNav(e, navLists, thisProduct, thisVersion)
     // close the popover
     thisTippy.hide()
     e.stopPropagation()
@@ -337,7 +312,7 @@
 
   const bindEvents = (popover) => {
     const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0; i < versions.length; i++) {
+    for (let i = 0, l = versions.length; i < l; i++) {
       versions[i].addEventListener('click', changeVersion)
       versions[i].addEventListener('touchend', changeVersion)
     }
@@ -345,7 +320,7 @@
 
   const unbindEvents = (popover) => {
     const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0; i < versions.length; i++) {
+    for (let i = 0, l = versions.length; i < l; i++) {
       versions[i].removeEventListener('click', changeVersion)
       versions[i].removeEventListener('touchend', changeVersion)
     }
@@ -361,8 +336,8 @@
         break
       }
     }
-    toggleNav({ type: 'DOMContentLoaded' }, navLists, navListsHeights, currentProduct, currentVersion)
+    toggleNav({ type: 'DOMContentLoaded' }, navLists, currentProduct, currentVersion)
   } else {
-    showNav()
+    revealNav()
   }
 })()

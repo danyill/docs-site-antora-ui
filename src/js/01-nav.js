@@ -184,8 +184,8 @@
   const toggleNav = (e, navLists, thisProduct, thisVersion) => {
     let thisList
 
-    // when navigating on page load
     if (e.type === 'DOMContentLoaded') {
+      // if navigating from link or location bar
       if (thisVersion) {
         localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
         setPin(thisProduct, document.querySelector(`[data-trigger-product="${thisProduct}"]`), thisVersion)
@@ -195,37 +195,39 @@
       }
       scrollToActive(thisList)
       revealNav()
-    } else {
-      const thisTarget = e.target
-      let collapse
-      if (thisTarget.classList.contains('js-nav-link')) {
-        // if navigating via sidebar
-        const thisWrapper = thisTarget.parentElement
-        const thisNavLi = thisWrapper.parentElement
-        thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
-        collapse = thisNavLi.classList.contains('active')
-        //analytics.track('Toggled Nav', {
-        //  url: thisTarget.innerText,
-        //})
+    } else if (e.target.classList.contains('js-nav-link')) {
+      // if navigating via sidebar
+      const thisWrapper = e.target.parentElement
+      const thisNavLi = thisWrapper.parentElement
+      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
+      if (thisNavLi.classList.contains('active')) {
+        thisList.style.display = 'none'
+        thisNavLi.classList.remove('active')
       } else {
-        // if navigation via version select
-        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
-      }
-
-      for (let i = 0, l = navLists.length; i < l; i++) {
-        // make other elements inactive
-        navLists[i].parentNode.classList.remove('active')
-        navLists[i].style.display = 'none'
-      }
-
-      // close any open popovers
-      closePopovers()
-
-      // make current element active if not collapsing
-      if (thisList && !collapse) {
         thisList.style.display = ''
-        thisList.parentNode.classList.add('active')
+        thisNavLi.classList.add('active')
       }
+      closePopovers()
+      //analytics.track('Toggled Nav', {
+      //  url: thisTarget.innerText,
+      //})
+    } else {
+      // if navigating via version select
+      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+
+      // make other versions inactive
+      // TODO this could be more efficient
+      for (let i = 0, l = navLists.length; i < l; i++) {
+        if (navLists[i].parentNode === thisList.parentNode) {
+          navLists[i].parentNode.classList.remove('active')
+          navLists[i].style.display = 'none'
+        }
+      }
+
+      thisList.style.display = ''
+      thisList.parentNode.classList.add('active')
+
+      closePopovers()
     }
   }
 

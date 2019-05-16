@@ -184,7 +184,9 @@
       }
       groupItem.appendChild(groupHeading)
       group.versions.forEach(function (version) {
-        if (version.items.length) buildNavTree(nav, groupItem, group.name, version.version, version.items, 1)
+        // NOTE we only take the items of the first menu
+        var items = ((version.sets || [])[0] || {}).items || []
+        if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1)
       })
       groupList.appendChild(groupItem)
     })

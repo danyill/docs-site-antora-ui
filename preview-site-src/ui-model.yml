@@ -3,6 +3,19 @@ site:
   url: &home_url /home.html
   title: MuleSoft Documentation
   components:
+    general:
+      name: general
+      title: Home
+      url: *home_url
+      versions:
+      - version: master
+        url: *home_url
+        navigation:
+        - items:
+          - content: MuleSoft Documentation
+            url: *home_url
+          - content: Anypoint Platform Glossary
+            url: '#'
     access-management:
       name: access-management
       title: Access Management
@@ -83,19 +96,6 @@ site:
           - content: Creating an Anypoint Connector Project
             url: '#'
       latest: *component_version_latest
-    general:
-      name: general
-      title: Home
-      url: *home_url
-      versions:
-      - version: master
-        url: *home_url
-        navigation:
-        - items:
-          - content: MuleSoft Documentation
-            url: *home_url
-          - content: Anypoint Platform Glossary
-            url: '#'
 page:
   title: &page_title About Anypoint Connector DevKit
   url: &page_url /connector-devkit/3.8/index.html

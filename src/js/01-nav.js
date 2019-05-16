@@ -76,7 +76,7 @@
       navItem.dataset.depth = level
       if (item.items) {
         var navToggle = document.createElement('button')
-        navToggle.className = 'js-nav-toggle'
+        navToggle.className = 'js-subnav-toggle'
         navItem.appendChild(navToggle)
       }
       if (item.url) {
@@ -200,7 +200,7 @@
           ancestor.style.display = ''
         }
       }
-      if (activeItem.firstChild.classList.contains('js-nav-toggle')) {
+      if (activeItem.firstChild.classList.contains('js-subnav-toggle')) {
         activeItem.lastChild.style.display = ''
       }
     } else if (currentGroupItem) {
@@ -221,7 +221,7 @@
   }
 
   // FIXME integrate this logic / delegate to function
-  var navToggles = nav.querySelectorAll('.js-nav-toggle')
+  var navToggles = nav.querySelectorAll('.js-subnav-toggle')
   for (i = 0, l = navToggles.length; i < l; i++) {
     navToggles[i].addEventListener('click', function (e) {
       var navListParent = e.target.parentNode

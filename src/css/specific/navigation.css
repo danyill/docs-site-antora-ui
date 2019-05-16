@@ -7,6 +7,7 @@
   left: 0;
   overflow-y: auto;
   padding: var(--lg) var(--md) var(--xl);
+  transform: translateX(calc(-1 * var(--nav-width)));
   position: fixed;
   top: 0;
   width: var(--nav-width);
@@ -21,6 +22,10 @@
     position: sticky;
     top: 0;
     z-index: var(--z-nav);
+  }
+
+  &.active {
+    transform: translateX(0);
   }
 
   & ::selection {
@@ -166,7 +171,7 @@
   margin-left: 25px;
 }
 
-button.js-nav-toggle {
+button.js-subnav-toggle {
   background: none;
   border: 0;
   color: var(--aluminum-5);
@@ -184,6 +189,6 @@ button.js-nav-toggle {
   }
 }
 
-.nav-li.active > button.js-nav-toggle::before {
+.nav-li.active > button.js-subnav-toggle::before {
   content: "-";
 }

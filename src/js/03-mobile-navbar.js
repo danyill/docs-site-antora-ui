@@ -2,21 +2,20 @@
   'use strict'
 
   document.addEventListener('DOMContentLoaded', () => {
-    const body = document.body
-    const navToggle = body.querySelectorAll('.js-nav-toggle')
-    const nav = body.querySelector('.js-nav')
+    const navToggle = document.querySelectorAll('.js-nav-toggle')
+    const nav = document.querySelector('.js-nav')
     const backdrop = document.querySelector('.modal-backdrop')
 
     const openNav = (e) => {
       clickThru(e)
       nav.classList.add('active')
-      body.classList.add('no-scroll', 'mobile')
+      document.body.classList.add('no-scroll', 'mobile')
       backdrop.classList.add('show', 'mobile')
     }
 
     const closeNav = () => {
       nav.classList.remove('active')
-      body.classList.remove('no-scroll', 'mobile')
+      document.body.classList.remove('no-scroll', 'mobile')
       backdrop.classList.remove('show', 'mobile')
     }
 
@@ -26,17 +25,15 @@
       if (!e.target.href) e.preventDefault()
     }
 
-    // navtoggle listeners
     for (let i = 0; i < navToggle.length; i++) {
       navToggle[i].addEventListener('click', openNav)
       navToggle[i].addEventListener('touchend', openNav)
     }
 
-    // body listener
-    body.addEventListener('click', closeNav)
-    body.addEventListener('touchend', closeNav)
+    window.addEventListener('click', closeNav)
+    window.addEventListener('touchend', closeNav)
 
-    // prevent clicks on nav from closing
+    // prevent clicks inside nav from closing nav
     nav.addEventListener('click', clickThru)
     nav.addEventListener('touchend', clickThru)
   })

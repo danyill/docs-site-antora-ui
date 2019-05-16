@@ -13,7 +13,9 @@
       backdrop.classList.add('show', 'mobile')
     }
 
-    const closeNav = () => {
+    const closeNav = (e) => {
+      // NOTE quick hack to prevent click event from bubbling from version selection (despite being told not to)
+      if (e.target.classList.contains('js-version')) return
       nav.classList.remove('active')
       document.body.classList.remove('no-scroll', 'mobile')
       backdrop.classList.remove('show', 'mobile')
@@ -30,8 +32,8 @@
       navToggle[i].addEventListener('touchend', openNav)
     }
 
-    window.addEventListener('click', closeNav)
-    window.addEventListener('touchend', closeNav)
+    document.body.addEventListener('click', closeNav)
+    document.body.addEventListener('touchend', closeNav)
 
     // prevent clicks inside nav from closing nav
     nav.addEventListener('click', clickThru)

@@ -28,7 +28,7 @@ module.exports = (src, dest, preview) => {
         filter: '**/~typeface-*/files/*',
         url: (asset) => {
           const relpath = asset.pathname.substr(1)
-          const abspath = path.resolve('node_modules', relpath)
+          const abspath = require.resolve(relpath)
           const basename = path.basename(abspath)
           const destpath = path.join(dest, 'font', basename)
           if (!fs.existsSync(destpath)) {
@@ -77,11 +77,15 @@ module.exports = (src, dest, preview) => {
       .pipe(buffer())
       .pipe(uglify()),
 
-    vfs.src('js/vendor/*.min.js', opts),
+    vfs
+      .src([require.resolve('popper.js/dist/umd/popper.min.js'), require.resolve('tippy.js/umd/index.min.js')], opts)
+      .pipe(concat('js/vendor/tippy.js')),
+
+    //vfs.src('js/vendor/*.min.js', opts),
 
     vfs.src('css/site.css', opts).pipe(postcss(postcssPlugins)),
 
-    vfs.src('css/vendor/*.css', opts),
+    //vfs.src('css/vendor/*.css', opts),
 
     vfs.src('font/*.woff*(2)', opts),
 

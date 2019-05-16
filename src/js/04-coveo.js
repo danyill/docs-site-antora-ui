@@ -3,8 +3,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     // coveo setup
-    const body = document.body
-    const root = body.querySelector('.js-coveo')
+    const root = document.querySelector('.js-coveo')
     let coveoInit = false
 
     Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
@@ -16,13 +15,13 @@
     })
 
     // modal setup
-    const backdrop = body.querySelector('.modal-backdrop')
-    const nav = body.querySelector('.js-nav')
+    const backdrop = document.querySelector('.modal-backdrop')
+    const nav = document.querySelector('.js-nav')
 
     // show/hide coveo search
-    const searchTrigger = body.querySelector('.js-search-trigger')
-    const searchUI = body.querySelector('.js-search-ui')
-    const searchClose = body.querySelector('.js-search-close')
+    const searchTrigger = document.querySelector('.js-search-trigger')
+    const searchUI = document.querySelector('.js-search-ui')
+    const searchClose = document.querySelector('.js-search-close')
     const showCoveo = () => {
       if (!coveoInit) {
         Coveo.init(root)
@@ -30,36 +29,32 @@
       }
       backdrop.classList.add('show')
       backdrop.classList.remove('mobile')
-      body.classList.add('no-scroll')
-      body.classList.remove('mobile')
+      document.body.classList.add('no-scroll')
+      document.body.classList.remove('mobile')
       searchUI.classList.add('show')
       nav.classList.remove('active')
 
-      // hide any popovers
-      for (const popper of document.querySelectorAll('.tippy-popper')) {
-        const instance = popper._tippy
-        if (instance.state.visible) {
-          instance.hide()
-        }
-      }
+      tippy.hideAll()
 
       analytics.track('Clicked Open Search')
     }
-    const hideCoveo = () => {
+    const hideCoveo = (e) => {
+      // NOTE quick hack to prevent click event from bubbling from tippy popper (despite being told not to)
+      if (e.target.classList.contains('js-version')) return
       backdrop.classList.remove('show')
-      body.classList.remove('no-scroll')
+      document.body.classList.remove('no-scroll')
       searchUI.classList.remove('show')
     }
     const clickThru = (e) => e.stopPropagation()
 
     searchTrigger.addEventListener('click', showCoveo)
     searchTrigger.addEventListener('touchend', showCoveo)
-    body.addEventListener('click', hideCoveo)
-    body.addEventListener('touchend', hideCoveo)
+    window.addEventListener('click', hideCoveo)
+    window.addEventListener('touchend', hideCoveo)
     searchClose.addEventListener('click', hideCoveo)
     searchClose.addEventListener('touchend', hideCoveo)
     document.addEventListener('keydown', (e) => {
-      if (e.keyCode === 27) hideCoveo()
+      if (e.keyCode === 27) hideCoveo(e)
     })
 
     // prevent clicks on nav from closing

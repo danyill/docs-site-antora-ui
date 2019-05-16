@@ -255,7 +255,7 @@
         pinnedList.style.display = ''
         thisNavLi.classList.add('active')
       }
-      closePopovers()
+      tippy.hideAll()
       //analytics.track('Toggled Nav', {
       //  url: thisTarget.innerText,
       //})
@@ -275,7 +275,7 @@
       thisList.style.display = ''
       thisList.parentNode.classList.add('active')
 
-      closePopovers()
+      tippy.hideAll()
     }
   }
 
@@ -323,36 +323,35 @@
 
   for (i = 0, l = versionsTrigger.length; i < l; i++) {
     tippy(versionsTrigger[i], {
+      content: versionsPopover[i],
       duration: [0, 150],
       flip: false,
-      html: versionsPopover[i],
+      interactive: true,
       offset: '-40, 5',
       onHide (instance) {
-        this.classList.add('hide')
-        this.classList.remove('shown')
-        unbindEvents(this)
+        var popper = instance.popper
+        popper.classList.add('hide')
+        popper.classList.remove('shown')
+        unbindEvents(popper)
       },
       onShow (instance) {
-        closePopovers(instance)
-        this.classList.remove('hide')
-        bindEvents(this)
+        instance.hide()
+        var popper = instance.popper
+        popper.classList.remove('hide')
+        bindEvents(popper)
       },
       onShown (instance) {
-        this.classList.add('shown')
+        instance.popper.classList.add('shown')
       },
       placement: 'bottom',
       theme: 'popover-versions',
-      trigger: 'click touchend',
+      touchHold: true,
+      trigger: 'click',
       zIndex: 14, // same as z-nav-mobile
     })
 
     // if a version has been pinned
     setPin(versionsTrigger[i].dataset.triggerProduct, versionsTrigger[i])
-  }
-
-  function closePopovers (instance) {
-    var popper = document.querySelector('.tippy-popper')
-    if (popper) popper._tippy.hide()
   }
 
   // changing versions

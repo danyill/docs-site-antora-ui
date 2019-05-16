@@ -212,28 +212,17 @@
   var nav = document.querySelector('.js-nav')
   var navLists = nav.querySelectorAll('.js-nav-list')
   var navLinks = nav.querySelectorAll('.js-nav-link')
+  var navToggles = nav.querySelectorAll('.js-subnav-toggle')
   var i, l
 
-  // setup toggle events
   for (i = 0, l = navLinks.length; i < l; i++) {
     navLinks[i].addEventListener('click', function (e) { toggleNav(e, navLists) })
     navLinks[i].addEventListener('touchend', function (e) { toggleNav(e, navLists) })
   }
 
-  // FIXME integrate this logic / delegate to function
-  var navToggles = nav.querySelectorAll('.js-subnav-toggle')
   for (i = 0, l = navToggles.length; i < l; i++) {
-    navToggles[i].addEventListener('click', function (e) {
-      var navListParent = e.target.parentNode
-      var navList = navListParent.lastChild
-      if (navListParent.classList.contains('active')) {
-        navList.style.display = 'none'
-        navListParent.classList.remove('active')
-      } else {
-        navList.style.display = ''
-        navListParent.classList.add('active')
-      }
-    })
+    navToggles[i].addEventListener('click', function (e) { toggleSubnav(e) })
+    navToggles[i].addEventListener('touchend', function (e) { toggleSubnav(e) })
   }
 
   function revealNav () {
@@ -290,6 +279,18 @@
     }
   }
 
+  function toggleSubnav (e) {
+    var navListParent = e.target.parentNode
+    var navList = navListParent.lastChild
+    if (navListParent.classList.contains('active')) {
+      navList.style.display = 'none'
+      navListParent.classList.remove('active')
+    } else {
+      navList.style.display = ''
+      navListParent.classList.add('active')
+    }
+  }
+
   function scrollToActive (thisList) {
     var focusElement = thisList.querySelector('.nav-link.active') || thisList.previousSibling
     var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
@@ -341,7 +342,7 @@
       },
       placement: 'bottom',
       theme: 'popover-versions',
-      trigger: 'click',
+      trigger: 'click touchend',
       zIndex: 14, // same as z-nav-mobile
     })
 

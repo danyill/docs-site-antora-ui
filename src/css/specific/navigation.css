@@ -7,9 +7,9 @@
   left: 0;
   overflow-y: auto;
   padding: var(--lg) var(--md) var(--xl);
-  transform: translateX(calc(-1 * var(--nav-width)));
   position: fixed;
   top: 0;
+  transform: translateX(calc(-1 * var(--nav-width)));
   width: var(--nav-width);
   z-index: var(--z-nav-mobile);
 
@@ -21,6 +21,7 @@
     position: relative;
     position: sticky;
     top: 0;
+    transform: translateX(0);
     z-index: var(--z-nav);
   }
 

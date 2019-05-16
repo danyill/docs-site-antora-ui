@@ -74,7 +74,7 @@ module.exports = async (src, dest, siteSrc, siteDest, sink) => {
           const navigationData = Object.values(baseUiModel.site.components).map(({ name, title, versions }) => ({
             name,
             title,
-            versions: versions.map((v) => ({ version: v.version, items: v.navigation[0].items })),
+            versions: versions.map((v) => ({ version: v.version, sets: v.navigation })),
           }))
           const navigationDataSourceString = 'window.siteNavigationData = ' + inspect(
             navigationData, { depth: null, maxArrayLength: null, breakLength: 250 })

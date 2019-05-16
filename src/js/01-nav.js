@@ -1,6 +1,19 @@
 ;(function () {
   'use strict'
 
+  var pageProduct
+  var pageVersion
+  var pageUrl
+  if ((pageProduct = document.head.querySelector('meta[name=page-component]'))) {
+    pageProduct = pageProduct.getAttribute('content')
+    pageVersion = document.head.querySelector('meta[name=page-version]').getAttribute('content')
+    pageUrl = document.head.querySelector('meta[name=page-url]').getAttribute('content')
+  } else {
+    // QUESTION should we show the navigation on a 404 page?
+    return
+  }
+  var uiRootPath = document.head.querySelector('link[rel=stylesheet]').getAttribute('href').match(/^(.*\/|)_(?=\/)/)[0]
+
   function relativize (from, to) {
     if (!from || to.charAt() === '#') return to
     var hash = ''
@@ -46,36 +59,67 @@
 
   function buildNavTree (nav, parent, group, version, items, level) {
     var navList = document.createElement('ol')
-    navList.className = level === 1 ? 'nav-list parent js-nav-list' : 'nav-list'
-    navList.style.display = 'none'
-    navList.dataset.product = group
-    navList.dataset.version = version
+    if (level === 1) {
+      navList.className = 'nav-list parent js-nav-list'
+      if (!(group === pageProduct && version === pageVersion)) navList.style.display = 'none'
+      navList.dataset.product = group
+      navList.dataset.version = version
+    } else {
+      navList.className = 'nav-list parent js-nav-list'
+      navList.style.display = 'none'
+    }
     items.forEach(function (item) {
-      var currentUrl = window.location.pathname
       // FIXME prefer active group item over match anywhere else in tree (currently first encountered wins)
-      var active = !nav.foundActive && item.url === currentUrl ? (nav.foundActive = true) : false
+      var active = !nav.foundActive && item.url === pageUrl ? (nav.foundActive = true) : false
       var navItem = document.createElement('li')
       navItem.className = active ? 'nav-li active' : 'nav-li'
       navItem.dataset.depth = level
-      var navLink = document.createElement('a')
-      navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
-        (item.items ? ' nav-nested js-nav-nested' : '')
-      navLink.href = relativize(currentUrl, item.url)
-      navLink.innerHTML = item.content
-      navItem.appendChild(navLink)
+      if (item.items) {
+        var navToggle = document.createElement('button')
+        navToggle.className = 'js-nav-toggle'
+        navItem.appendChild(navToggle)
+      }
+      if (item.url) {
+        var navLink = document.createElement('a')
+        navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
+          (item.items ? ' nav-nested js-nav-nested' : '')
+        navLink.href = relativize(pageUrl, item.url)
+        navLink.innerHTML = item.content
+        navItem.appendChild(navLink)
+      } else {
+        var navHeading = document.createElement('span')
+        navHeading.className = 'flex grow align-center nav-heading' + (item.items ? ' nav-nested js-nav-nested' : '')
+        var navHeadingSpan = document.createElement('span')
+        navHeadingSpan.className = 'span'
+        navHeadingSpan.innerHTML = item.content
+        navHeading.appendChild(navHeadingSpan)
+        navItem.appendChild(navHeading)
+      }
       if (item.items) buildNavTree(nav, navItem, group, version, item.items, level + 1)
       navList.appendChild(navItem)
     })
     parent.appendChild(navList)
+    return navList
   }
 
   // populate navigation
   ;(function (nav, data) {
     var groupList = document.createElement('ol')
+    var currentGroupItem
     groupList.className = 'nav-list'
+    var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    chevron.classList.add('svg')
+    chevron.setAttribute('viewBox', '0 0 30 30')
+    chevron.setAttribute('width', '30')
+    chevron.setAttribute('height', '30')
+    var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    chevronPath.setAttribute('d',
+      'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z')
+    chevron.appendChild(chevronPath)
     data.forEach(function (group) {
       var groupItem = document.createElement('li')
-      var active = !nav.foundActive && group.url === window.location.pathname ? (nav.foundActive = true) : false
+      if (group.name === pageProduct) currentGroupItem = groupItem
+      var active = !nav.foundActive && group.url === pageUrl ? (nav.foundActive = true) : false
       groupItem.className = active ? 'nav-li active' : 'nav-li'
       groupItem.dataset.depth = 0
       var groupHeading = document.createElement('div')
@@ -85,7 +129,7 @@
       groupLink.tabindex = 0
       var groupIcon = document.createElement('img')
       groupIcon.className = 'icon no-pointer'
-      groupIcon.src = '/_/img/icons/' + group.name + '.svg'
+      groupIcon.src = uiRootPath + '/img/icons/' + group.name + '.svg'
       groupLink.appendChild(groupIcon)
       groupLink.appendChild(document.createTextNode(' '))
       groupLink.appendChild(document.createTextNode(group.title))
@@ -101,12 +145,7 @@
         versionLabel.appendChild(document.createTextNode(currentVersion))
         versionButton.appendChild(versionLabel)
         versionButton.appendChild(document.createTextNode(' '))
-        var versionCaret = document.createElement('img')
-        // FIXME icon color is wrong; should match text color
-        versionCaret.src = '/_/img/icons/chevron.svg'
-        // FIXME update CSS to remove this hardcoded style
-        versionCaret.style.width = '15px'
-        versionButton.appendChild(versionCaret)
+        versionButton.appendChild(chevron.cloneNode(true))
         var versionMenu = document.createElement('div')
         versionMenu.className = 'popover js-version-popover'
         versionMenu.dataset.popover = 'versions'
@@ -152,17 +191,20 @@
     nav.appendChild(groupList)
     // QUESTION can we do this during the build? (we'd have to append child to parent eagerly)
     var activeItem = nav.querySelector('.nav-li.active')
-    var ancestor = activeItem
-    while ((ancestor = ancestor.parentNode) && ancestor !== groupList) {
-      if (ancestor.classList.contains('nav-li')) {
-        ancestor.classList.add('active')
-      } else if (ancestor.classList.contains('nav-list')) {
-        ancestor.style.display = ''
+    if (activeItem) {
+      var ancestor = activeItem
+      while ((ancestor = ancestor.parentNode) && ancestor !== groupList) {
+        if (ancestor.classList.contains('nav-li')) {
+          ancestor.classList.add('active')
+        } else if (ancestor.classList.contains('nav-list')) {
+          ancestor.style.display = ''
+        }
       }
-    }
-    if (activeItem.firstChild.classList.contains('nav-nested')) {
-      var activeNavSublist = activeItem.lastChild
-      activeNavSublist.style.display = ''
+      if (activeItem.firstChild.classList.contains('js-nav-toggle')) {
+        activeItem.lastChild.style.display = ''
+      }
+    } else if (currentGroupItem) {
+      currentGroupItem.classList.add('active')
     }
   })(document.querySelector('nav.nav'), window.siteNavigationData || [])
 
@@ -178,35 +220,50 @@
     navLinks[i].addEventListener('touchend', function (e) { toggleNav(e, navLists) })
   }
 
+  // FIXME integrate this logic / delegate to function
+  var navToggles = nav.querySelectorAll('.js-nav-toggle')
+  for (i = 0, l = navToggles.length; i < l; i++) {
+    navToggles[i].addEventListener('click', function (e) {
+      var navListParent = e.target.parentNode
+      var navList = navListParent.lastChild
+      if (navListParent.classList.contains('active')) {
+        navList.style.display = 'none'
+        navListParent.classList.remove('active')
+      } else {
+        navList.style.display = ''
+        navListParent.classList.add('active')
+      }
+    })
+  }
+
   function revealNav () {
     nav.querySelector('.nav-list').classList.add('loaded')
   }
 
   function toggleNav (e, navLists, thisProduct, thisVersion) {
-    var thisList
-
+    // if navigating from the location bar
     if (e.type === 'DOMContentLoaded') {
-      // if navigating from link or location bar
-      if (thisVersion) {
-        localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
-        setPin(thisProduct, document.querySelector(`[data-trigger-product="${thisProduct}"]`), thisVersion)
-        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
-      } else {
-        thisList = nav.querySelector(`[data-product="${thisProduct}"]`)
+      if (thisProduct) {
+        var productVersionSelector = document.querySelector(`[data-trigger-product="${thisProduct}"]`)
+        if (productVersionSelector) {
+          localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
+          setPin(thisProduct, productVersionSelector, thisVersion)
+          scrollToActive(nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`))
+        } else {
+          scrollToActive(nav.querySelector(`[data-product="${thisProduct}"]`))
+        }
       }
-      scrollToActive(thisList)
       revealNav()
     } else if (e.target.classList.contains('js-nav-link')) {
       // if navigating via sidebar
       var thisWrapper = e.target.parentElement
       var thisNavLi = thisWrapper.parentElement
-      console.log(thisWrapper)
-      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextSibling
+      var pinnedList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextSibling
       if (thisNavLi.classList.contains('active')) {
-        thisList.style.display = 'none'
+        pinnedList.style.display = 'none'
         thisNavLi.classList.remove('active')
       } else {
-        thisList.style.display = ''
+        pinnedList.style.display = ''
         thisNavLi.classList.add('active')
       }
       closePopovers()
@@ -214,8 +271,8 @@
       //  url: thisTarget.innerText,
       //})
     } else {
-      // if navigating via version select
-      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      // if navigating via version selector
+      var thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
 
       // make other versions inactive
       // TODO this could be more efficient
@@ -234,9 +291,9 @@
   }
 
   function scrollToActive (thisList) {
-    var activeLink = thisList.querySelector('.nav-link.active')
+    var focusElement = thisList.querySelector('.nav-link.active') || thisList.previousSibling
     var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
-    var adjustment = activeLink.offsetTop + (activeLink.offsetHeight / 2) - midpoint
+    var adjustment = focusElement.offsetTop + (focusElement.offsetHeight / 2) - midpoint
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 
@@ -330,18 +387,5 @@
     }
   }
 
-  // open current nav on load
-  var currentProduct = document.querySelector('meta[name="dcterms.subject"]').content
-  if (currentProduct) {
-    var currentVersion
-    for (i = 0, l = versionsTrigger.length; i < l; i++) {
-      if (versionsTrigger[i].dataset.triggerProduct === currentProduct) {
-        currentVersion = document.querySelector('meta[name="dcterms.identifier"]').content
-        break
-      }
-    }
-    toggleNav({ type: 'DOMContentLoaded' }, navLists, currentProduct, currentVersion)
-  } else {
-    revealNav()
-  }
+  toggleNav({ type: 'DOMContentLoaded' }, navLists, pageProduct, pageVersion)
 })()

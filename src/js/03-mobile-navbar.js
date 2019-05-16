@@ -14,8 +14,6 @@
     }
 
     const closeNav = (e) => {
-      // NOTE quick hack to prevent click event from bubbling from version selection (despite being told not to)
-      if (e.target.classList.contains('js-version')) return
       nav.classList.remove('active')
       document.body.classList.remove('no-scroll', 'mobile')
       backdrop.classList.remove('show', 'mobile')

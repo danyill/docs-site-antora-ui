@@ -39,8 +39,6 @@
       analytics.track('Clicked Open Search')
     }
     const hideCoveo = (e) => {
-      // NOTE quick hack to prevent click event from bubbling from tippy popper (despite being told not to)
-      if (e.target.classList.contains('js-version')) return
       backdrop.classList.remove('show')
       document.body.classList.remove('no-scroll')
       searchUI.classList.remove('show')

@@ -329,23 +329,23 @@
       interactive: true,
       offset: '-40, 5',
       onHide (instance) {
-        var popper = instance.popper
-        popper.classList.add('hide')
-        popper.classList.remove('shown')
-        unbindEvents(popper)
+        instance.popper.classList.add('hide')
+        instance.popper.classList.remove('shown')
+      },
+      onHidden (instance) {
+        unbindEvents(instance.popper)
       },
       onShow (instance) {
         instance.hide()
-        var popper = instance.popper
-        popper.classList.remove('hide')
-        bindEvents(popper)
+        instance.popper.classList.remove('hide')
       },
       onShown (instance) {
+        bindEvents(instance.popper)
         instance.popper.classList.add('shown')
       },
       placement: 'bottom',
       theme: 'popover-versions',
-      touchHold: true,
+      touchHold: true, // maps touch as click (for some reason)
       trigger: 'click',
       zIndex: 14, // same as z-nav-mobile
     })
@@ -371,11 +371,16 @@
     e.stopPropagation()
   }
 
+  function cancelEvent (e) {
+    e.stopPropagation()
+  }
+
   function bindEvents (popover) {
     var versions = popover.querySelectorAll('.js-version')
     for (var i = 0, l = versions.length; i < l; i++) {
       versions[i].addEventListener('click', changeVersion)
-      versions[i].addEventListener('touchend', changeVersion)
+      // NOTE tippy emulates click event on touch device
+      versions[i].addEventListener('touchend', cancelEvent)
     }
   }
 
@@ -383,7 +388,7 @@
     var versions = popover.querySelectorAll('.js-version')
     for (var i = 0, l = versions.length; i < l; i++) {
       versions[i].removeEventListener('click', changeVersion)
-      versions[i].removeEventListener('touchend', changeVersion)
+      versions[i].removeEventListener('touchend', cancelEvent)
     }
   }
 

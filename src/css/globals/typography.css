@@ -1,9 +1,8 @@
 @font-face {
-  font-family: 'DIN Pro';
+  font-family: "DIN Pro";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/din-pro-regular.woff');
-  src: local('DINPro'), url('~typeface-din-pro-regular/files/din-pro-regular.woff') format('woff');
+  src: url(../font/din-pro-regular.woff) format("woff");
 }
 
 /* headings */

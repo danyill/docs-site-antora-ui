@@ -58,7 +58,7 @@ gulp.task('preview', ['build:preview'], () =>
 gulp.task('pack', ['build', 'lint'], () => pack(destDir, buildDir, bundleName))
 
 gulp.task('release', ['pack'], () =>
-  release(buildDir, bundleName, 'mulesoft', 'docs-site-antora-ui', process.env.GITHUB_TOKEN))
+  release(buildDir, bundleName, 'mulesoft', 'docs-site-antora-ui-sandbox', process.env.GITHUB_TOKEN))
 
 gulp.task('default', ['build'])
 

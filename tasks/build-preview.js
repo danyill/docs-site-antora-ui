@@ -3,6 +3,7 @@
 const asciidoctor = require('asciidoctor.js')()
 const fs = require('fs')
 const handlebars = require('handlebars')
+const { inspect } = require('util')
 const map = require('map-stream')
 const merge = require('merge-stream')
 const path = require('path')
@@ -49,8 +50,15 @@ module.exports = async (src, dest, siteSrc, siteDest, sink) => {
             uiModel.page.layout = doc.getAttribute('page-layout', 'default')
             uiModel.page.title = doc.getDocumentTitle()
             uiModel.page.contents = doc.convert()
+            // FIXME load a separate UI model for each page
             if (file.stem === 'home') {
-              uiModel.page.component = Object.assign({}, uiModel.page.component, { name: 'home' })
+              Object.assign(uiModel.page, {
+                url: '/home.html',
+                home: true,
+                version: 'master',
+                component: uiModel.site.components.general,
+                componentVersion: uiModel.site.components.general.versions[0],
+              })
             }
           }
           file.extname = '.html'
@@ -58,7 +66,22 @@ module.exports = async (src, dest, siteSrc, siteDest, sink) => {
           next(null, file)
         })
       ),
-    vfs.src('site-navigation-data.js', { base: siteSrc, cwd: siteSrc }),
+    vfs
+      // TODO remove need for empty file
+      .src('site-navigation-data.js', { base: siteSrc, cwd: siteSrc })
+      .pipe(
+        map((file, next) => {
+          const navigationData = Object.values(baseUiModel.site.components).map(({ name, title, versions }) => ({
+            name,
+            title,
+            versions: versions.map((v) => ({ version: v.version, items: v.navigation[0].items })),
+          }))
+          const navigationDataSourceString = 'window.siteNavigationData = ' + inspect(
+            navigationData, { depth: null, maxArrayLength: null, breakLength: 250 })
+          file.contents = Buffer.from(navigationDataSourceString)
+          next(null, file)
+        })
+      ),
   ]).pipe(vfs.dest(siteDest))
   if (sink) stream.pipe(sink())
   return stream

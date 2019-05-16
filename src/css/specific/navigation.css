@@ -5,7 +5,8 @@
   flex: 0 0 var(--nav-width);
   height: 100%;
   left: 0;
-  overflow-y: auto;
+  /*overflow-y: auto;*/
+  overflow-y: scroll;
   padding: var(--lg) var(--md) var(--xl);
   position: fixed;
   top: 0;

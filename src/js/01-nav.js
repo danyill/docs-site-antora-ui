@@ -83,7 +83,12 @@
         var navLink = document.createElement('a')
         navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
           (item.items ? ' nav-nested js-nav-nested' : '')
-        navLink.href = relativize(pageUrl, item.url)
+        if (item.urlType === 'external') {
+          navLink.href = item.url
+          navLink.target = '_blank'
+        } else {
+          navLink.href = relativize(pageUrl, item.url)
+        }
         navLink.innerHTML = item.content
         navItem.appendChild(navLink)
       } else {

@@ -16,6 +16,9 @@ site:
             url: *home_url
           - content: Anypoint Platform Glossary
             url: '#'
+          - content: Ecosia
+            url: https://ecosia.org
+            urlType: external
     access-management:
       name: access-management
       title: Access Management

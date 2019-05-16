@@ -5,7 +5,6 @@
   flex: 0 0 var(--nav-width);
   height: 100%;
   left: 0;
-  /*overflow-y: auto;*/
   overflow-y: scroll;
   padding: var(--lg) var(--md) var(--xl);
   position: fixed;
@@ -178,8 +177,9 @@ button.js-subnav-toggle {
   border: 0;
   color: var(--aluminum-5);
   cursor: pointer;
+  font-weight: var(--weight-bold);
   margin: 0;
-  padding: .5em;
+  padding: .5em 0;
   position: absolute;
   z-index: 1;
   &:focus {
@@ -188,6 +188,9 @@ button.js-subnav-toggle {
   }
   &::before {
     content: "+";
+    display: block;
+    text-align: center;
+    width: 1.5em;
   }
 }
 

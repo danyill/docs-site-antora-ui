@@ -51,7 +51,6 @@
     }
   }
 
-  /* spacing between lists when active */
   & > .nav-list {
     opacity: 0;
     transition: opacity var(--transition-speed-md) var(--transition-timing);
@@ -61,6 +60,7 @@
     }
   }
 
+  /* spacing between lists when active */
   & > .nav-list > .nav-li.active + .nav-li {
     margin-top: var(--md);
   }
@@ -76,7 +76,7 @@
   }
 
   & > .nav-li .nav-list .nav-heading {
-    opacity: .6;
+    color: var(--aluminum-5);
   }
 
   & > .nav-li.active {
@@ -146,23 +146,15 @@
   color: var(--steel-2);
 }
 
-/* nesting: level 1 */
-.nav-li[data-depth="1"] .nav-heading {
-  font-size: 12px;
+.nav-li[data-depth="1"] > .nav-heading {
   font-weight: var(--weight-bold);
-  margin-top: var(--md);
+  padding-top: .5em;
 
   & .span {
-    border-bottom: 1px solid rgba(0,0,0,.4);
+    border-bottom: 1px solid var(--aluminum-4);
     display: inline-block;
+    padding-bottom: .25em;
   }
-}
-
-/* nesting: level 2 */
-.nav-li[data-depth="2"] .nav-heading,
-.nav-heading[data-depth="3"],
-.nav-li[data-depth="3"] {
-  margin-left: var(--md);
 }
 
 /* collapsing margin for nested lists (note: this is why we don't use flexbox on list items) */
@@ -170,7 +162,28 @@
   margin-bottom: var(--md);
 }
 
-/* nested lists withings headings */
-.nav-nested + .nav-list .nav-link {
-  padding-left: 45px;
+.nav-nested + .nav-list {
+  margin-left: 25px;
+}
+
+button.js-nav-toggle {
+  background: none;
+  border: 0;
+  color: var(--aluminum-5);
+  cursor: pointer;
+  margin: 0;
+  padding: .5em;
+  position: absolute;
+  z-index: 1;
+  &:focus {
+    box-shadow: none;
+    outline: 0;
+  }
+  &::before {
+    content: "+";
+  }
+}
+
+.nav-li.active > button.js-nav-toggle::before {
+  content: "-";
 }

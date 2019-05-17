@@ -1,15 +1,15 @@
-;(() => {
+;(function () {
   'use strict'
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const gitHubLinks = document.querySelectorAll('.js-github')
-    const trackGitHub = () => {
+  document.addEventListener('DOMContentLoaded', function () {
+    var gitHubLinks = document.querySelectorAll('.js-github')
+    var trackGitHub = function () {
       analytics.track('Clicked GitHub Link', {
         url: window.location.href,
       })
     }
 
-    for (let i = 0; i < gitHubLinks.length; i++) {
+    for (var i = 0; i < gitHubLinks.length; i++) {
       gitHubLinks[i].addEventListener('click', trackGitHub)
       gitHubLinks[i].addEventListener('touchend', trackGitHub)
     }

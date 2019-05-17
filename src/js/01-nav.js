@@ -257,13 +257,13 @@
     // if navigating from the location bar
     if (e.type === 'DOMContentLoaded') {
       if (thisProduct) {
-        var productVersionSelector = document.querySelector(`[data-trigger-product="${thisProduct}"]`)
+        var productVersionSelector = document.querySelector('[data-trigger-product="' + thisProduct + '"]')
         if (productVersionSelector) {
-          localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
+          localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
           setPin(thisProduct, productVersionSelector, thisVersion)
-          scrollToActive(nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`))
+          scrollToActive(nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]'))
         } else {
-          scrollToActive(nav.querySelector(`[data-product="${thisProduct}"]`))
+          scrollToActive(nav.querySelector('[data-product="' + thisProduct + '"]'))
         }
       }
       revealNav()
@@ -285,7 +285,7 @@
       //})
     } else {
       // if navigating via version selector
-      var thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
+      var thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
 
       // make other versions inactive
       // TODO this could be more efficient
@@ -328,7 +328,7 @@
   var versionsPopover = document.querySelectorAll('[data-popover="versions"]')
 
   function setPin (thisProduct, thisTrigger, thisVersion) {
-    var savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
+    var savedVersion = localStorage.getItem('ms-docs-' + thisProduct)
     if (savedVersion) {
       thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
       for (var i = 0, l = navLists.length; i < l; i++) {
@@ -352,18 +352,18 @@
       flip: false,
       interactive: true,
       offset: '-40, 5',
-      onHide (instance) {
+      onHide: function (instance) {
         instance.popper.classList.add('hide')
         instance.popper.classList.remove('shown')
       },
-      onHidden (instance) {
+      onHidden: function (instance) {
         unbindEvents(instance.popper)
       },
-      onShow (instance) {
+      onShow: function (instance) {
         instance.hide()
         instance.popper.classList.remove('hide')
       },
-      onShown (instance) {
+      onShown: function (instance) {
         bindEvents(instance.popper)
         instance.popper.classList.add('shown')
       },
@@ -385,7 +385,7 @@
     var thisProduct = thisTarget.dataset.product
     var thisVersion = thisTarget.dataset.version
     // save version
-    localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
+    localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
     // update pins
     setPin(thisProduct, thisTippy.reference, thisVersion)
     // update nav

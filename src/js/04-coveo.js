@@ -1,28 +1,28 @@
-;(() => {
+;(function () {
   'use strict'
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', function () {
     // coveo setup
-    const root = document.querySelector('.js-coveo')
-    let coveoInit = false
+    var root = document.querySelector('.js-coveo')
+    var coveoInit = false
 
     Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
       restUri: 'https://platform.cloud.coveo.com/rest/search',
       accessToken: 'xx3ba020b0-d9b5-4339-bc0e-92fe79a681e7',
     })
-    root.addEventListener('buildingQuery', (e) => {
+    root.addEventListener('buildingQuery', function (e) {
       e.detail.queryBuilder.pipeline = 'doc-query-pipeline'
     })
 
     // modal setup
-    const backdrop = document.querySelector('.modal-backdrop')
-    const nav = document.querySelector('.js-nav')
+    var backdrop = document.querySelector('.modal-backdrop')
+    var nav = document.querySelector('.js-nav')
 
     // show/hide coveo search
-    const searchTrigger = document.querySelector('.js-search-trigger')
-    const searchUI = document.querySelector('.js-search-ui')
-    const searchClose = document.querySelector('.js-search-close')
-    const showCoveo = () => {
+    var searchTrigger = document.querySelector('.js-search-trigger')
+    var searchUI = document.querySelector('.js-search-ui')
+    var searchClose = document.querySelector('.js-search-close')
+    var showCoveo = function () {
       if (!coveoInit) {
         Coveo.init(root)
         coveoInit = true
@@ -38,12 +38,14 @@
 
       analytics.track('Clicked Open Search')
     }
-    const hideCoveo = (e) => {
+    var hideCoveo = function (e) {
       backdrop.classList.remove('show')
       document.body.classList.remove('no-scroll')
       searchUI.classList.remove('show')
     }
-    const clickThru = (e) => e.stopPropagation()
+    var clickThru = function (e) {
+      e.stopPropagation()
+    }
 
     searchTrigger.addEventListener('click', showCoveo)
     searchTrigger.addEventListener('touchend', showCoveo)
@@ -51,7 +53,7 @@
     window.addEventListener('touchend', hideCoveo)
     searchClose.addEventListener('click', hideCoveo)
     searchClose.addEventListener('touchend', hideCoveo)
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', function (e) {
       if (e.keyCode === 27) hideCoveo(e)
     })
 

@@ -1,31 +1,31 @@
-;(() => {
+;(function () {
   'use strict'
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const navToggle = document.querySelectorAll('.js-nav-toggle')
-    const nav = document.querySelector('.js-nav')
-    const backdrop = document.querySelector('.modal-backdrop')
+  document.addEventListener('DOMContentLoaded', function () {
+    var navToggle = document.querySelectorAll('.js-nav-toggle')
+    var nav = document.querySelector('.js-nav')
+    var backdrop = document.querySelector('.modal-backdrop')
 
-    const openNav = (e) => {
+    var openNav = function (e) {
       clickThru(e)
       nav.classList.add('active')
       document.body.classList.add('no-scroll', 'mobile')
       backdrop.classList.add('show', 'mobile')
     }
 
-    const closeNav = (e) => {
+    var closeNav = function (e) {
       nav.classList.remove('active')
       document.body.classList.remove('no-scroll', 'mobile')
       backdrop.classList.remove('show', 'mobile')
     }
 
-    const clickThru = (e) => {
+    var clickThru = function (e) {
       e.stopPropagation()
       // don't prevent link behavior if this is a link
       if (!e.target.href) e.preventDefault()
     }
 
-    for (let i = 0; i < navToggle.length; i++) {
+    for (var i = 0; i < navToggle.length; i++) {
       navToggle[i].addEventListener('click', openNav)
       navToggle[i].addEventListener('touchend', openNav)
     }

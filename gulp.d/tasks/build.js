@@ -1,6 +1,5 @@
 'use strict'
 
-const babel = require('gulp-babel')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
 const concat = require('gulp-concat')
@@ -50,12 +49,7 @@ module.exports = (src, dest, preview) => () => {
   return merge(
     vfs
       .src('js/+([0-9])-*.js', opts)
-      .pipe(
-        babel({
-          babelrc: false,
-          presets: ['@babel/env'],
-        })
-      )
+      .pipe(uglify())
       .pipe(concat('js/site.js')),
     vfs
       .src('js/vendor/*.js', Object.assign({ read: false }, opts))

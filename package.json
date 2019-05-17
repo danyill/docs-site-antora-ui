@@ -7,7 +7,7 @@
     "url": "https://github.com/mulesoft/docs-site-antora-ui-sandbox"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

@@ -18,7 +18,7 @@ pipeline {
     stage('Install') {
       when { allOf { environment name: 'GIT_BRANCH', value: 'master'; not { environment name: 'SKIP_CI', value: 'true' } } }
       steps {
-        nodejs('node8') {
+        nodejs('node10') {
           sh 'yarn'
         }
       }
@@ -30,7 +30,7 @@ pipeline {
           deleteDir()
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
-          nodejs('node8') {
+          nodejs('node10') {
             sh '$(npm bin)/gulp release'
           }
         }

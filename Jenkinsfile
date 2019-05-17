@@ -19,7 +19,7 @@ pipeline {
       when { allOf { environment name: 'GIT_BRANCH', value: 'master'; not { environment name: 'SKIP_CI', value: 'true' } } }
       steps {
         nodejs('node10') {
-          sh 'yarn'
+          sh 'npm install --quiet --no-progress --cache=.cache/npm --no-audit'
         }
       }
     }

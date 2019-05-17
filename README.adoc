@@ -14,7 +14,6 @@
 :uri-node: https://nodejs.org
 :uri-nvm: https://github.com/creationix/nvm
 :uri-nvm-install: {uri-nvm}#installation
-:uri-yarn: https://yarnpkg.com
 
 This project generates the next version of the UI for the MuleSoft documentation site.
 
@@ -59,7 +58,6 @@ To preview and bundle the UI, you need the following software on your computer:
 * {uri-git}[git] (command: `git`)
 * {uri-node}[Node 10] (command: `node`)
 * {uri-gulp}[Gulp CLI] (command: `gulp`)
-* {uri-yarn}[Yarn] (command: `yarn`)
 
 ==== git
 
@@ -73,7 +71,7 @@ If not, {uri-git-dl}[download and install] the git package for your system.
 
 Next, make sure that you have at least Node 10 installed.
 
- $ node --version
+ $ node -v
 
 If this command fails with an error, you don't have Node installed.
 If the command doesn't report a Node 10 version or better (e.g., v10.15.3), you don't have a suitable version of Node installed.
@@ -93,51 +91,44 @@ To make Node 10 the default in new terminals, type:
 
  $ nvm alias default 10
 
-Now that you have Node 10 installed, you can proceed with installing the Gulp CLI and Yarn.
+Now that you have Node 10 installed, you can proceed with installing the Gulp CLI and the project dependencies.
 
 ==== Gulp CLI
 
-Next, you'll need the Gulp command-line interface (CLI).
-This package provides the `gulp` command which executes the version of Gulp declared by the project.
+You'll need the Gulp command-line interface (CLI) to run the build.
+This package provides the `gulp` command which, in turn, executes the version of Gulp declared by the project.
 
 You should install the Gulp CLI globally (which resolves to a location in your user directory if you're using nvm) using the following command:
 
  $ npm install -g gulp-cli
 
-==== Yarn
-
-Finally, you'll need Yarn, which is the preferred package manager for the Node ecosystem.
-
-You should install Yarn globally (which resolves to a location in your user directory if you're using nvm) using the following command:
-
- $ npm install -g yarn
-
 Now that you have the prerequisites installed, you can fetch and build the default UI project.
 
 === Clone and Initialize the UI Project
 
-Clone the default UI project using git:
+Clone the UI project using git:
 
 [subs=attributes+]
  $ git clone {uri-project} &&
    cd "`basename $_`"
 
-The example above clones Antora's default UI project and then switches to the project folder on your filesystem.
-Stay in this project folder in order to initialize the project using Yarn.
+The example above clones the UI project and then switches to the project folder on your filesystem.
+Stay in this project folder when executing all subsequent commands.
 
-Use Yarn to install the project's dependencies.
-In your terminal, execute the following command (while inside the project folder):
+Use npm to install the project's dependencies inside the project.
+In your terminal, execute the following command:
 
- $ yarn
+ $ npm install
 
 This command installs the dependencies listed in [.path]_package.json_ into the [.path]_node_modules/_ folder inside the project.
-This folder does not get included in the UI bundle.
+This folder does not get included in the UI bundle and should _not_ be committed to the source control repository.
 
 === Preview the UI
 
 The UI project is configured to preview offline.
-That's what the files in the [.path]_preview-site-src/_ folder are for.
-This folder contains HTML file fragments that provide a representative sample of content from the site.
+The files in the [.path]_preview-site-src/_ folder provide the sample content that allow you to see the UI in action.
+In this folder, you'll primarily find pages written in AsciiDoc.
+These pages provide a representative sample and kitchen sink of content from the real site.
 
 To build the UI and preview it in a local web server, run the `preview` command:
 
@@ -150,7 +141,7 @@ You'll see a URL listed in the output of this command:
 [18:24:29] Running server
 ....
 
-Navigate to the URL to preview the site locally.
+Navigate to this URL to preview the site locally.
 
 While this command is running, any changes you make to the source files will be instantly reflected in the browser.
 This works by monitoring the project for changes, running the `build` task if a change is detected, and sending the updates to the browser.

@@ -1,10 +1,10 @@
 {
-  "name": "mulesoft-docs-ui",
+  "name": "mulesoft-docs-ui-sandbox",
   "description": "The project that produces the UI for the MuleSoft documentation site",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mulesoft/docs-site-antora-ui.git"
+    "url": "https://github.com/mulesoft/docs-site-antora-ui-sandbox"
   },
   "engines": {
     "node": ">= 8.0.0"

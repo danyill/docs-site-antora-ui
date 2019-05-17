@@ -1,5 +1,8 @@
 'use strict'
 
+const pkg = require('./package.json')
+const [ owner, repo ] = new URL(pkg.repository.url).pathname.slice(1).split('/')
+
 const connect = require('gulp-connect')
 const path = require('path')
 const gulp = require('gulp')
@@ -57,8 +60,7 @@ gulp.task('preview', ['build:preview'], () =>
 
 gulp.task('pack', ['build', 'lint'], () => pack(destDir, buildDir, bundleName))
 
-gulp.task('release', ['pack'], () =>
-  release(buildDir, bundleName, 'mulesoft', 'docs-site-antora-ui-sandbox', process.env.GITHUB_TOKEN))
+gulp.task('release', ['pack'], () => release(buildDir, bundleName, owner, repo, process.env.GITHUB_TOKEN))
 
 gulp.task('default', ['build'])
 

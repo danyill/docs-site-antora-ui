@@ -1,13 +1,10 @@
 'use strict'
 
-const fs = require('fs')
+const fs = require('fs-extra')
 const Octokit = require('@octokit/rest')
 const path = require('path')
-const { promisify } = require('util')
-const readFile = promisify(fs.readFile)
-const stat = promisify(fs.stat)
 
-module.exports = async (dest, bundleName, owner, repo, token) => {
+module.exports = (dest, bundleName, owner, repo, token) => async () => {
   const octokit = new Octokit({ auth: `token ${token}` })
   const {
     data: { tag_name: lastTagName },
@@ -17,9 +14,9 @@ module.exports = async (dest, bundleName, owner, repo, token) => {
   const message = `Release ${tagName}`
   const bundleFileBasename = `${bundleName}-bundle.zip`
   const bundleFile = path.join(dest, bundleFileBasename)
-  const readmeContent = await readFile('README.adoc', 'utf-8').then((contents) =>
-    contents.replace(/^(:current-release: ).+$/m, `$1${tagName}`)
-  )
+  const readmeContent = await fs
+    .readFile('README.adoc', 'utf-8')
+    .then((contents) => contents.replace(/^(:current-release: ).+$/m, `$1${tagName}`))
   const readmeBlob = await octokit.gitdata
     .createBlob({ owner, repo, content: readmeContent, encoding: 'utf-8' })
     .then((result) => result.data.sha)
@@ -53,7 +50,7 @@ module.exports = async (dest, bundleName, owner, repo, token) => {
     file: fs.createReadStream(bundleFile),
     name: bundleFileBasename,
     headers: {
-      'content-length': (await stat(bundleFile)).size,
+      'content-length': (await fs.stat(bundleFile)).size,
       'content-type': 'application/zip',
     },
   })

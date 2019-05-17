@@ -12,7 +12,10 @@
     // QUESTION should we show the navigation on a 404 page?
     return
   }
-  var uiRootPath = document.head.querySelector('link[rel=stylesheet]').getAttribute('href').match(/^(.*\/|)_(?=\/)/)[0]
+  var uiRootPath = document.head
+    .querySelector('link[rel=stylesheet]')
+    .getAttribute('href')
+    .match(/^(.*\/|)_(?=\/)/)[0]
 
   function relativize (from, to) {
     if (!from || to.charAt() === '#') return to
@@ -25,8 +28,10 @@
     if (from === to) {
       return hash || (to.charAt(to.length - 1) === '/' ? './' : to.substr(to.lastIndexOf('/') + 1))
     } else {
-      return (relativePath(from.slice(0, from.lastIndexOf('/')), to) || '.') +
+      return (
+        (relativePath(from.slice(0, from.lastIndexOf('/')), to) || '.') +
         (to.charAt(to.length - 1) === '/' ? '/' + hash : hash)
+      )
     }
   }
 
@@ -81,7 +86,9 @@
       }
       if (item.url) {
         var navLink = document.createElement('a')
-        navLink.className = 'flex shrink align-center link nav-link' + (active ? ' active' : '') +
+        navLink.className =
+          'flex shrink align-center link nav-link' +
+          (active ? ' active' : '') +
           (item.items ? ' nav-nested js-nav-nested' : '')
         if (item.urlType === 'external') {
           navLink.href = item.url
@@ -118,8 +125,10 @@
     chevron.setAttribute('width', '30')
     chevron.setAttribute('height', '30')
     var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    chevronPath.setAttribute('d',
-      'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z')
+    chevronPath.setAttribute(
+      'd',
+      'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z'
+    )
     chevron.appendChild(chevronPath)
     data.forEach(function (group) {
       var groupItem = document.createElement('li')
@@ -223,13 +232,21 @@
   var i, l
 
   for (i = 0, l = navLinks.length; i < l; i++) {
-    navLinks[i].addEventListener('click', function (e) { toggleNav(e, navLists) })
-    navLinks[i].addEventListener('touchend', function (e) { toggleNav(e, navLists) })
+    navLinks[i].addEventListener('click', function (e) {
+      toggleNav(e, navLists)
+    })
+    navLinks[i].addEventListener('touchend', function (e) {
+      toggleNav(e, navLists)
+    })
   }
 
   for (i = 0, l = navToggles.length; i < l; i++) {
-    navToggles[i].addEventListener('click', function (e) { toggleSubnav(e) })
-    navToggles[i].addEventListener('touchend', function (e) { toggleSubnav(e) })
+    navToggles[i].addEventListener('click', function (e) {
+      toggleSubnav(e)
+    })
+    navToggles[i].addEventListener('touchend', function (e) {
+      toggleSubnav(e)
+    })
   }
 
   function revealNav () {
@@ -301,7 +318,7 @@
   function scrollToActive (thisList) {
     var focusElement = thisList.querySelector('.nav-link.active') || thisList.previousSibling
     var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
-    var adjustment = focusElement.offsetTop + (focusElement.offsetHeight / 2) - midpoint
+    var adjustment = focusElement.offsetTop + focusElement.offsetHeight / 2 - midpoint
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 

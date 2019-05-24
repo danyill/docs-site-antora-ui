@@ -1,4 +1,4 @@
-def gitUrl = 'git@github.com:mulesoft/docs-site-antora-ui'
+def gitUrl = 'git@github.com:mulesoft/docs-site-antora-ui-sandbox'
 def gitBranch = 'master'
 def gitCredentialsId = 'mule-docs-agent-ssh-key'
 def githubCredentialsId = 'mule-docs-agent-github-token'
@@ -28,8 +28,8 @@ pipeline {
     stage('Install') {
       when { allOf { environment name: 'GIT_BRANCH', value: 'master'; not { environment name: 'SKIP_CI', value: 'true' } } }
       steps {
-        nodejs('node8') {
-          sh 'yarn'
+        nodejs('node10') {
+          sh 'npm install --quiet --no-progress --cache=.cache/npm --no-audit'
         }
       }
     }
@@ -40,7 +40,7 @@ pipeline {
           deleteDir()
         }
         withCredentials([string(credentialsId: githubCredentialsId, variable: 'GITHUB_TOKEN')]) {
-          nodejs('node8') {
+          nodejs('node10') {
             sh '$(npm bin)/gulp release'
           }
         }

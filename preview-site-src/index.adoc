@@ -1,278 +1,312 @@
-= Monitoring Statistics
+= About Anypoint Connector DevKit
+:keywords: devkit, development, features, architecture
+:experimental:
 
-[abstract]
-From the *Data Bucket* menu, information and statistics about buckets and nodes is displayed for the entire Couchbase Server cluster.
-The information is aggregated from all the server nodes within the configured cluster for the selected bucket.
-
-From the menu:Couchbase Web Console[Buckets] menu, click the menu:Statistics[] link for each bucket.
-
-Bucket Selection::
-The [.ui]*Buckets* selection list lets you select which of the buckets configured on your cluster is to be used as the basis for the graph display.
-The statistics shown are aggregated over the whole cluster for the selected bucket.
-
-Interval Selection::
-Periodic Selection::
-+
---
-The [.ui]*Interval* selection at the top of the main graph changes interval display for all graphs displayed on the page.
-
-As the selected interval increases, the amount of statistical data displayed will depend on how long your cluster has been running.
---
-
-== Individual Bucket Monitoring
-
-Bucket monitoring within the Couchbase Web Console has been updated to show additional detailed information.
-
-<<summary_stats,Summary>>::
-The summary section provides a quick overview of the cluster activity.
-
-<<server_stats,Server Resources>>::
-This section provides information on the server resources across the cluster.
-
-== Admonition Blocks
-
-[TIP]
-This oughta do it!
+The *Anypoint Connector DevKit*, or simply *DevKit*, enables the development of link:#[Anypoint Connectors].
+An *Anypoint Connector* is an extension module to the MuleSoft Anypoint Platform that facilitates communication between third-party systems/APIs and Mule applications.
 
 [NOTE]
-Oh, you've been down _this_ road before.
+====
+*Anypoint Connector DevKit 3.9 is the latest version of DevKit*, offering connector end user support in a few aspects of Mule app design in Studio.
+Requirements and suggestions for writing connector code using DevKit have not changed since version 3.8.
 
-[WARNING]
-Watch out!
-
-[CAUTION]
-I wouldn't try that if I were you.
+link:#[Anypoint Connector DevKit 3.9.x Release Notes]
+====
 
 [IMPORTANT]
-Don't forget this step!
+*DevKit version number* does not follow Mule versioning.
+*DevKit 3.8*-built connectors work with *Mule 3.5.3 onward*.
 
-.Key Points to Remember
-[TIP]
-====
-* Write
-* This
-* Down
+== Developing Connectors with DevKit
 
-If you installed the CLI and the default site generator globally, you can upgrade both of them with the same command.
+This is what you need to develop *DevKit-based Anypoint Connectors* on your system with your instance of Anypoint Studio.
 
- $ npm i -g @antora/cli @antora/site-generator-default
-====
+. See detailed instructions link:#[here] on how to install: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html[Java JDK version 8], https://maven.apache.org/download.cgi[Apache Maven], https://www.mulesoft.com/lp/dl/studio[Anypoint Studio], and link:#[Anypoint DevKit Plugin] to build and test your connector.
+You can develop a connector using Windows, Mac, or Linux.
+. _New Connector:_
+ ** link:#[Create Anypoint Connector Project]
 
-[#summary_stats]
-== Bucket Monitoring -- Summary Statistics
++
+_Existing Connector:_
+* Click "File > Import > Anypoint Studio > Anypoint Connector Project from External Location", choose a URL or a .zip file, and complete the wizard to locate and import the project.
++
+See also link:#[Creating a SOAP Connector].
 
-The summary section is designed to provide a quick overview of the cluster activity.
+. link:#[Determine resource access] - Each resource has a different access method, such as REST, SOAP, FTP, or the Java SDK features.
+. link:#[Choose an authentication mechanism] - Mule supports OAuth V1 or V2, and username and password authentication (known as link:#[connection management]), which can be used for protocols such as API Key, SAML, NTLM, Kerberos, or LDAP.
+. link:#[Choose the connector's data model] - Models can be static Java objects or dynamic objects.
+You can use link:#[DataSense] - Determine what information the target resource expects.
+. link:#[Add connector @ attribute annotations] - Create code for your connector containing the @ attributes that Mule uses to designate the important parts of your connector.
+. link:#[Code tests] - Tests can be unit tests, functional tests, and Studio interoperability tests.
+. link:#[Document your connector] - MuleSoft provides a template that helps you fill in the blanks to create documentation to help your staff and others understand the features and use of your connector.
+. link:#[Package your connector].
 
-image::stats-summary.png[]
+== DevKit Features
 
-The following statistics are available:
+Features DevKit provides:
 
-.Summary statistics
-[cols="1,3"]
-|===
-| Statistic | Description
+* Visual design and implementation using Anypoint Studio with an Eclipse-based interface that simplifies and speeds up development.
+* Maven support.
+* Connector packaging tools.
+* Authentication support for multiple types of authentication, including OAuth and username and password authentication.
+* DataSense support to acquire remote metadata.
+* Extensive testing capability.
+* Examples, training, and support to simplify development startup.
+* Batch, Query Pagination, and DataSense Query Language support.
 
-| ops per second
-| The total number of operations per second on this bucket.
+DevKit is a annotations-based tool, with a wide set of available annotations to support its features.
+For a complete list of DevKit annotations, see the http://mulesoft.github.io/mule-devkit/[Annotation Reference].
 
-| cache miss ratio
-| Ratio of reads per second to this bucket which required a read from disk rather than RAM.
+== What is a Connector?
 
-|===
+An Anypoint Connector is an extension module that eases the interaction between a Mule application and external resources, such as databases or APIs, through REST, SOAP, or the Java SDK.
 
-The `stale=false` view query argument has been enhanced.
-When an application sends a query that has the `stale` parameter set to false, the application receives all recent changes to the documents, including changes that haven't yet been persisted to disk.
+As reusable components that hide API complexity from the integration developer, custom connectors facilitate integration with SaaS and on-premises web services, applications, and data sources.
+Connectors built using Anypoint DevKit in Anypoint Studio, running Mule runtime environments, act as extensions of Anypoint Platform.
 
-[caption="Best practice"]
-TIP: For better scalability and throughput, we recommend that you set the value of the `stale` parameter to `ok`.
-With the stream-based views, data returned when `stale` is set to `ok` is closer to the key-value data, even though it might not include all of it.
+=== Connector Architecture
 
-[#server_stats]
-== Monitoring Server Resources
+Connectors operate within Mule applications, which are built up from Mule Flows, and external resources, which are the targeted resources.
 
-The *Server Resources* statistics section displays the resource information on this server including swap usage, free RAM, CPU utilization percentage,and FTS RAM used.
+image::devkitoverviewarchitecture.png[DevKit Architecture Overview]
 
-.A source block that is forced to wrap
-[source,java]
-----
-// Query (fluent API)
-Observable<AsyncN1qlQueryResult> theAirline = bucket.async()
-    .query(
-        N1qlQuery.simple(select("name").from("travel_sample").as("Airline").where(x("id").eq(5209)))
-    );
-return thisAirline;
-----
+A Mule connector has two operational sides.
+The Mule-facing side communicates with a resource’s target-facing client side to enable content to travel between the Mule applications, and the external target-facing resource.
 
-[#vbucket_stats]
-== Monitoring `vBucket` Resources
+==== Mule-Facing Functionality
 
-[cols="1,3"]
-|===
-| Statistic | Description
+From the Mule-facing side, a connector consists of:
 
-| new items per sec.
-a|
-Number of new items created in vBuckets within the specified state.
+Main Java class::
+Java code that you annotate with the `@Connector` attribute.
+See the http://mulesoft.github.io/mule-devkit/[Anypoint DevKit API Reference] for information about Anypoint Connector DevKit annotations.
+See http://en.wikipedia.org/wiki/Java_annotation[Java annotations] for information on how annotations work.
 
-NOTE: The new items per second is not valid for the Pending state.
+Connector attributes::
+Properties of the `@Connector` class that you annotate with the `@Configurable` attribute.
 
-| ejections per sec.
-| Number of items ejected per second within the vBuckets of the specified state.
-|===
+Methods::
+Functionality that you annotate with the `@Processor` attribute.
 
-[#disk_stats]
-== Monitoring Disk Queues
+Additional annotations define authentication-related functionality, such as connection management.
+Annotations allow you to control the layout of the Anypoint Studio dialogues for the connector as well.
+The data model and exceptions that either raise or propagate are also Mule-facing classes.
 
-The *Disk Queues* statistics section displays the information for data being placed into the disk queue.
+DevKit generates a scaffold connector when you create your Anypoint Connector project in Studio.
+This scaffold connector includes the `@Connector` class, the `@Configurable` attributes, the `@Processor` methods, and authentication logic to build out your connector.
 
-[#dcp_stats]
-== Monitoring DCP Queues
+==== Target-Facing Functionality
 
-[#dcp_queues,cols="1,3"]
-|===
-| Statistic | Description
+The target facing or client facing side of a connector depends on the client technology that enables access to the resource.
+This functionality consists of a class library and one or more classes that `@Connector` classes use to access client functionality.
+This functionality is called the client class.
 
-| DCP connections
-| Number of internal replication DCP connections in this bucket.
+The client class in turn generally depends on other classes to actually implement calls to the targeted resource.
+Depending on your target, some of these classes may be generated or provided for you.
+For example, if you have a Java client library, or are working with a SOAP or REST services, most of the client code is implemented there.
+In other cases, you have to write the code yourself.
 
-| DCP senders
-| Number of replication senders for this bucket.
+== Coding a Connector
 
-| DCP receivers
-| Number of replication receivers for this bucket.
-|===
+DevKit lets you build connectors from scratch.
+Before creating your own connector, check the https://www.anypoint.mulesoft.com/exchange/?type=connector[Anypoint Exchange] for available connectors.
+The connectors page also lists Community open source connectors that let you contribute to the growing community of public connector development.
 
-[#view_stats]
-== Monitoring View Statistics
+=== Connector Data Model
 
-The *View Stats* show information about individual design documents within the selected bucket.
+The data model for the connector consists of the objects passed into and out of the exposed operations.
+While many Web services accept and return XML or JSON data, a proper Mule connector must translate the data format the client uses into Java objects – either POJOs or key-value maps which represent the data objects sent to, and returned from, the target.
+(Returning raw XML or JSON responses to Mule is one marker for an immature, improperly implemented connector.)
 
-[#index_stats]
-== Monitoring Index Statistics
+=== REST Versus SOAP
 
-The INDEX STATS section provides statistics about the GSI Indexes.
-Statistics are provided per each individual index.
+REST simplifies access to HTTP using POST, GET, PUT, and DELETE calls to provide access to creating, getting, putting, and deleting information on a resource.
 
-Select `United States of America` from the menu.
+SOAP is a traditional means of communicating with a resource and requires a WSDL file, which is an XML file that specifies all aspects of a Java class’s structure, methods, properties, and documentation.
+SOAP is an industry standard with tools for governance, building, and schema information.
+DevKit provides a tools that helps building a connector using a WSDL file.
 
-[#memcached_stats]
-== Memcached Buckets
+=== DevKit 3.8 Default Connector Project Classes
 
-For Memcached buckets, Web Console displays a separate group of statistics:
+The following is an example of the starting `@Connector` and `@Configuration` classes that DevKit 3.8 creates:
 
-* Situation 1
-.. Client 1 queries view with `stale=false`
-.. Client 1 waits until server updates the index
-.. Client 2 queries view with `stale=false` while re-indexing from Client 1 still in progress
-.. Client 2 will wait until existing index process triggered by Client 1 completes.
-Client 2 gets updated index.
-* Situation 2
-.. Client 1 queries view with `stale=false`
-.. Client 1 waits until server updates the index
-.. Client 2 queries view with `stale=ok` while re-indexing from Client 1 in progress
-.. Client 2 will get the existing index
-* Situation 3
-.. Client 1 queries view with `stale=false`
-.. Client 1 waits until server updates the index
-.. Client 2 queries view with `stale=update_after`
-.. If re-indexing from Client 1 not done, Client 2 gets the existing index.
-If re-indexing from Client 1 is done, Client 2 gets this updated index and triggers re-indexing.
-
-Index updates may be stacked if multiple clients request the view be updated before the information is returned (`stale=false`).
-For `stale=update_after` queries, there is no stacking, since all updates occur after the query has been accessed.
-
-=== Sequential accesses
-
-. Client 1 queries view with stale=ok
-. Client 2 queries view with stale=false
-. View gets updated
-. Client 1 queries a second time view with stale=ok
-. Client 1 gets the updated view version
-
-==== View operations
-
-All views within Couchbase operate as follows:
-
-* Views are updated as the document data is updated in memory.
-** Documents that are stored with an expiry are not automatically removed until the background expiry process removes them from the database.
-This means that expired documents may still exist within the index.
-*** Views are scoped within a design document, with each design document part of a single bucket.
-**** View names must be specified using one or more UTF-8 characters.
-You cannot have a blank view name.
-***** Document IDs that are not UTF-8 encodable are automatically filtered and not included in any view.
-The filtered documents are logged so that they can be identified.
-***** If you have a long view request, use POST instead of GET.
-** Views can only access documents defined within their corresponding bucket.
-You cannot access or aggregate data from multiple buckets within a given view.
-*** Views are created as part of a design document, and each design document exists within the corresponding named bucket.
-
-=== Automated index updates
-
-If `replicaUpdateMinChanges` is set to 0 (zero), then automatic updates are disabled for replica indexes.
-The trigger level can be configured both globally and for individual design documents for all indexes using the REST API.
-
-NOTE: The `ddocs` allow you to set `updateMinChanges` or `replicaUpdateMinChanges` only via options.
-The `updateInterval` can only be set for the whole cluster.
-
-To obtain the current view update daemon settings, access a node within the cluster on the administration port using the URL `\http://nodename:8091/settings/viewUpdateDaemon`:
-
-----
-GET http://Administrator:Password@nodename:8091/settings/viewUpdateDaemon
+[source,java,linenums]
 ----
 
-----
-POST http://nodename:8091/settings/viewUpdateDaemon
-updateInterval=10000&updateMinChanges=7000
-----
+package org.mule.modules.newconnector;
 
-[source,json]
-----
-{
-   "_id": "_design/myddoc",
-   "views": {
-      "view1": {
-          "map": "function(doc, meta) { if (doc.value) { emit(doc.value, meta.id);} }"
-      }
-   },
-   "options": {
-       "updateMinChanges": 1000,
-       "replicaUpdateMinChanges": 20000
-   }
+import org.mule.api.annotations.Config;
+import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.Processor;
+
+import org.mule.modules.connpom.config.ConnectorConfig;
+
+@Connector(name="connpom", friendlyName="Connpom")
+public class ConnpomConnector {
+
+    @Config
+    ConnectorConfig config;
+
+    /**
+     * Custom processor
+     *
+     * @param friend Name to be used to generate a greeting message.
+     * @return A greeting message
+     */
+    @Processor
+    public String greet(String friend) {
+        /*
+         * MESSAGE PROCESSOR CODE GOES HERE
+         */
+        return config.getGreeting() + " " + friend + ". " + config.getReply();
+    }
+
+    public ConnectorConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(ConnectorConfig config) {
+        this.config = config;
+    }
+
 }
 ----
 
-You can set this information when creating and updating design documents through the design document REST API.
-To perform this operation using the `curl` tool:
+The DevKit 3.8 `@Configuration` class is as follows:
 
-[source,console]
+[source,java,linenums]
 ----
-$ curl -X POST -v -d 'updateInterval=7000&updateMinChanges=7000' \
-    'http://Administrator:Password@192.168.0.72:8091/settings/viewUpdateDaemon'
+package org.mule.modules.newconnector.config;
+
+import org.mule.api.annotations.components.Configuration;
+import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.param.Default;
+
+@Configuration(friendlyName = "Configuration")
+public class ConnectorConfig {
+
+    /**
+     * Greeting message
+     */
+    @Configurable
+    @Default("Hello")
+    private String greeting;
+
+    /**
+     * Reply message
+     */
+    @Configurable
+    @Default("How are you?")
+    private String reply;
+
+    /**
+     * Set greeting message
+     *
+     * @param greeting the greeting message
+     */
+    public void setGreeting(String greeting) {
+        this.greeting = greeting;
+    }
+
+    /**
+     * Get greeting message
+     */
+    public String getGreeting() {
+        return this.greeting;
+    }
+
+    /**
+     * Set reply
+     *
+     * @param reply the reply
+     */
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
+    /**
+     * Get reply
+     */
+    public String getReply() {
+        return this.reply;
+    }
+
+}
 ----
 
-Partial-set development views are not automatically rebuilt.
+=== DevKit 3.8 Default pom.xml
 
-=== Couchbase Kafka Connector 3.2.3 GA (2018-02-20)
+The `pom.xml` file for a DevKit 3.8 project.
+The `<parent>` section shows DevKit's group ID `org.mule.tools.devkit`.
 
-Options are "DISABLED", "ENABLED", and "FORCED".
-
-Issues resolved in this release:
-
-* https://issues.couchbase.com/browse/KAFKAC-89[KAFKAC-89]: [ENHANCEMENT] Enable NOOP for dead connection detection (Patrik Nordebo)
-* https://issues.couchbase.com/browse/KAFKAC-82[KAFKAC-82]: [FEATURE] Implement log redaction for Kafka Connector
-* https://issues.couchbase.com/browse/KAFKAC-90[KAFKAC-90]: [FEATURE] Source: Add config settings to enable compression
-
-[source,xml]
+[source,xml,linenums]
 ----
-<dependency>
-    <groupId>com.couchbase.client</groupId>
-    <artifactId>kafka-connect-couchbase</artifactId>
-    <version>3.2.3</version>
-</dependency>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.mule.modules</groupId>
+    <artifactId>newconnector-connector</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>mule-module</packaging>
+    <name>Mule Newconnector Anypoint Connector</name>
+
+    <parent>
+        <groupId>org.mule.tools.devkit</groupId>
+        <artifactId>mule-devkit-parent</artifactId>
+        <version>3.8.0</version>
+    </parent>
+
+    <properties>
+        <category>Community</category>
+        <licensePath>LICENSE.md</licensePath>
+        <devkit.studio.package.skip>false</devkit.studio.package.skip>
+    </properties>
+    <repositories>
+        <repository>
+            <id>mulesoft-releases</id>
+            <name>MuleSoft Releases Repository</name>
+            <url>http://repository.mulesoft.org/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+</project>
 ----
 
-http://packages.couchbase.com/clients/kafka/3.2.3/kafka-connect-couchbase-3.2.3.zip[kafka-connect-couchbase-3.2.3.zip]
+== Connector Features DevKit Supports
 
-== `spec.volumeClaimTemplates.metadata`
+*Authentication Types*
 
-This section demonstrates what happens when the section title does not have any natural wrap opportunities.
+* link:#[Connection Management] (username and password authentication)
+* link:#[OAuth V1]
+* link:#[OAuth V2]
+* Other authentication schemes:  link:#[Authentication Methods]
+
+*API Types*
+
+* link:#[SOAP APIs]
+* link:#[Java SDKs]
+
+*Data Processing and Retrieval*
+
+* link:#[DataSense]
+* link:#[DataSense Query Language]
+* link:#[Query Pagination]
+* link:#[Batch]
+* link:#[Anypoint Studio Support]
+
+*Connector Development Lifecycle*
+
+* link:#[Setting Up a Connector Project]
+* link:#[Writing Connector Code]
+* link:#[Writing Connector Tests]
+* link:#[Documenting a Connector Project]
+* link:#[Packaging a Connector]
+
+== See Also
+
+* link:#[Connector Development]
+* link:#[Anypoint Connectors]
+* https://www.anypoint.mulesoft.com/exchange/?type=connector[Connectors on Exchange]
+* http://blogs.mulesoft.com/dev/anypoint-studio-dev/change-the-studio-category-of-your-devkit-component/[Blog post on how to change the DevKit extension category]
+* link:#[DataSense-Enabled Connectors]

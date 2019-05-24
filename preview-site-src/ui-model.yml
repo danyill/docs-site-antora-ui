@@ -1,21 +1,24 @@
 antoraVersion: '1.1.0'
 site:
-  url: /home.html
+  url: &home_url /home.html
   title: MuleSoft Documentation
   components:
-    home:
+    general:
       name: general
       title: Home
-      url: '#'
+      url: *home_url
       versions:
-        - version: master
-          url: '#'
-          navigation:
-          - items:
-            - content: Getting Started
-              url: '#'
-            - content: About Crowd Release
-              url: '#'
+      - version: master
+        url: *home_url
+        navigation:
+        - items:
+          - content: MuleSoft Documentation
+            url: *home_url
+          - content: Anypoint Platform Glossary
+            url: '#'
+          - content: Ecosia
+            url: https://ecosia.org
+            urlType: external
     access-management:
       name: access-management
       title: Access Management
@@ -25,24 +28,13 @@ site:
         url: '#'
         navigation:
         - items:
+          - content: About Access Management
+            url: '#'
           - content: Managing Your Account
             url: '#'
-            items:
-              - content: Overview
-                url: '#'
-              - content: Methods
-                url: '#'
-              - content: OAuth v1
-                url: '#'
-              - content: OAuth v2
-                url: '#'
-              - content: Connection Management
-                url: '#'
-              - content: No Authentication
-                url: '#'
-              - content: HTTP Authentication
-                url: '#'
           - content: Organization
+            url: '#'
+          - content: Business Groups
             url: '#'
           - content: Users
             url: '#'
@@ -53,163 +45,79 @@ site:
     connector-devkit: &component
       name: connector-devkit
       title: Connector DevKit
-      url: /connector-devkit/3.7/index.html
+      url: '#'
       versions:
       - &component_version_latest
+        version: '3.9'
+        url: '#'
+        navigation:
+        - items:
+          - content: About Anypoint Connector DevKit
+            url: '#'
+          - content: Getting Started with Anypoint Connector Development
+            url: '#'
+          - content: Creating an Anypoint Connector Project
+            url: '#'
+      - &component_version
         version: '3.8'
-        url: '#'
+        url: /connector-devkit/3.8/index.html
         navigation:
         - items:
-          - content: Overview
+          - content: About Anypoint Connector DevKit
+            url: /connector-devkit/3.8/index.html
+            #url: '#'
+          - content: Getting Started with Anypoint Connector Development
+            # NOTE comment out url to make this a heading
             url: '#'
-          - content: Setting Up Your Development Environment
+            items:
+            - content: Setting Up Your Development Environment
+              url: '#'
+              items:
+              - content: Windows
+                url: '#'
+              - content: Linux
+                url: '#'
+              - content: macOS
+                url: '#'
+            - content: Anypoint Connector DevKit Tutorial
+              url: '#'
+              #url: /connector-devkit/3.8/index.html
+            - content: Connector Project Structure
+              url: '#'
+            - content: DevKit Java Annotation Reference
+              url: '#'
+          - content: Creating an Anypoint Connector Project
             url: '#'
-          - content: Connector Project Structure
+      - version: '3.7'
+        url: /connector-devkit/3.7/index.html
+        navigation:
+        - items:
+          - content: About Anypoint Connector DevKit
             url: /connector-devkit/3.7/index.html
-          - content: Creating a Project
-            items:
-            - content: Overview
-              url: '#'
-            - content: Setting up API Access
-              url: '#'
-            - content: Connection Strategies
-              url: '#'
-            - content: Authentication
-              items:
-              - content: Overview
-                url: '#'
-              - content: Methods
-                url: '#'
-              - content: OAuth v1
-                url: '#'
-              - content: OAuth v2
-                url: '#'
-              - content: Connection Management
-                url: '#'
-              - content: No Authentication
-                url: '#'
-              - content: HTTP Authentication
-                url: '#'
-      - &component_version
-        version: '3.7'
-        url: '#'
-        navigation:
-        - items:
-          - content: Overview
+          - content: Getting Started with Anypoint Connector Development
             url: '#'
-          - content: Setting Up Your Development Environment
+          - content: Creating an Anypoint Connector Project
             url: '#'
-          - content: Connector Project Structure
-            url: /connector-devkit/3.7/index.html
-          - content: Creating a Project (v3.7)
-            items:
-            - content: Overview
-              url: '#'
-            - content: Setting up API Access
-              url: '#'
-            - content: Connection Strategies
-              url: '#'
-            - content: Authentication (v3.7)
-              items:
-              - content: Overview
-                url: '#'
-              - content: Methods
-                url: '#'
-              - content: OAuth v1
-                url: '#'
-              - content: OAuth v2
-                url: '#'
-              - content: Connection Management
-                url: '#'
-              - content: No Authentication
-                url: '#'
-              - content: HTTP Authentication
-                url: '#'
-      - version: '3.6'
-        url: '#'
-        navigation:
-        - items:
-          - content: Overview
-            url: '#'
-          - content: Setting Up Your Development Environment
-            url: '#'
-          - content: Connector Project Structure
-            url: /connector-devkit/3.6/index.html
-          - content: Creating a Project (v3.6)
-            items:
-            - content: Overview
-              url: '#'
-            - content: Setting up API Access
-              url: '#'
-            - content: Connection Strategies
-              url: '#'
-            - content: Authentication (v3.6)
-              items:
-              - content: Overview
-                url: '#'
-              - content: Methods
-                url: '#'
-              - content: OAuth v1
-                url: '#'
-              - content: OAuth v2
-                url: '#'
-              - content: Connection Management
-                url: '#'
-              - content: No Authentication
-                url: '#'
-              - content: HTTP Authentication
-                url: '#'
       latest: *component_version_latest
-    studio: &component
-      name: studio
-      title: Studio
-      url: /studio/7.2/index.html
-      versions:
-      - &component_version_latest
-        version: '7.2'
-        url: '#'
-        navigation:
-        - items:
-          - content: Overview
-            url: '#'
-          - content: Download and Install Studio
-            url: '#'
-          - content: Creating a Project
-            url: '#'
-            items:
-              - content: APIKit
-                url: '#'
-              - content: Debugging
-                url: '#'
-      - &component_version
-        version: '7.1'
-        url: '#'
-        navigation:
-        - items:
-          - content: Overview (v7.1)
-            url: '#'
-          - content: Download and Install Studio (v7.1)
-            url: '#'
 page:
-  title: &page_title Home
-  url: &page_url /general/index.html
+  title: &page_title About Anypoint Connector DevKit
+  url: &page_url /connector-devkit/3.8/index.html
   component: *component
   componentVersion: *component_version
-  version: '3.7'
+  version: '3.8'
   module: ROOT
   home: false
   editUrl: https://github.com/mulesoft/docs-site-antora-ui/edit/master/preview-site-src/index.adoc
   versions:
+  - version: '3.9'
+    url: '#'
   - version: '3.8'
     url: '#'
   - version: '3.7'
-    url: '#'
-  - version: '3.6'
-    url: '#'
-  - version: '3.5'
     missing: true
     url: '#'
   breadcrumbs:
   - content: *page_title
     url: *page_url
+  # FIXME navigation should be reference to navigation for current component version
   navigation: []

@@ -1,72 +1,77 @@
-= Welcome to the new Couchbase Docs!
-:page-layout: home
-:!sectids:
+= MuleSoft Documentation
+:linkattrs:
+:experimental:
 
-The new documentation site, now in Beta, is a huge leap forward in our content strategy.
-As we work out the kinks, we'd love to get your feedback on what we're doing well, and what we could be doing better.
-To let us know, please use the btn:[Feedback?] button at the bottom-right corner of any page, or send an email to docs@couchbase.com.
-We look forward to hearing from you!
+Use Anypoint Platform to build a structured application network that connects applications, data, and devices with reusable APIs.
 
-[.hint]
-Looking for the old documentation site?
-You can find it over at the https://developer.couchbase.com[Developer Portal].
+== Explore Anypoint Exchange
 
-[.personas.blades.conceal-title]
-== {empty}
+The APIs you build in MuleSoft to integrate applications and services are, by design, reusable and built with enterprise security in mind.
+You can discover these APIs, as well as connectors, samples, and templates in
+https://www.anypoint.mulesoft.com/exchange/[Exchange^].
 
-[.blade]
-=== Couchbase for Administrators
+RAML fragments, custom packages, videos, links to documentation, and other assets are also available.
 
-If you are a Couchbase administrator wanting to configure, deploy, and manage Couchbase Data Platform
+== Design and Build Integrations
 
-* xref:server:install:get-started.adoc[Deployment Options]
-* xref:server:security:security-intro.adoc[Security]
-* xref:server:backup-restore:backup-restore.adoc[Backup and Restore]
+Anypoint Studio is an Eclipse-based IDE that helps you create Mule apps and APIs, and Design Center is the cloud-based tool.
 
-[.blade]
-=== Couchbase for Developers
+|===
+| Creating Mule Apps | Creating APIs
 
-If you are a Couchbase user wanting to develop on an existing installation
+| link:#[Building Mule Apps in Anypoint Studio] | link:#[Importing APIs from Design Center to Anypoint Studio]
+| link:#[Building Apps in Design Center]  | link:#[Creating APIs in Design Center]
+|===
 
-* xref:java-sdk::start-using-sdk.adoc[Quick Install]
-* xref:java-sdk:common:sample-application.adoc[Sample Application]
-* xref:java-sdk:common:core-operations.adoc[CRUD]
+Studio 7 includes link:#[Mule Runtime (Mule) 4], the runtime environment where you deploy Mule apps and APIs.
+Earlier versions of Studio include link:#[Mule 3].
 
-[.blade]
-=== Couchbase for SQL Developers
+|===
+| Mule 3 | Mule 4
 
-If you are a Couchbase user wanting to understand how to develop queries
+| link:#[Connectors for Mule 3] | link:#[Connectors for Mule 4]
+| link:#[DataWeave 1 for Mule 3]  | link:#[DataWeave 2 for Mule 4]
+| link:#[APIkit 3] | link:#[APIkit 4]
+| link:#[Connector DevKit] | link:#[Mule SDKs]
+|===
 
-* xref:server:getting-started:do-a-quick-install.adoc[Quick Install]
-* xref:server:getting-started:try-a-query.adoc[Try a N1QL Query]
-* xref:server:n1ql:n1ql-language-reference/index.adoc[N1QL Language Reference]
+You can test and run the apps and APIs you build from Studio or Design Center.
 
-[.browse.tiles]
-== Browse Documentation
+== Deploy Integrations
 
-[.tile]
-.Server
-* xref:server:n1ql:n1ql-language-reference/index.adoc[N1QL]
-* xref:server:fts:full-text-intro.adoc[Full Text Search]
-* xref:server:analytics:introduction.adoc[Analytics (Developer Preview)]
-* xref:server:eventing:eventing-Introduction.adoc[Eventing]
-* xref:server:sdk:overview.adoc[SDKs]
+* link:#[Choosing a deployment strategy]
+* link:#[Installing Standalone Mule 3]
+* link:#[Installing Standalone Mule 4]
 
-[.tile]
-.Couchbase Mobile
-* https://developer.couchbase.com/documentation/mobile/current/couchbase-lite/index.html[Lite]
-* https://developer.couchbase.com/documentation/mobile/current/guides/sync-gateway/index.html[Sync Gateway]
+== Test Integrations
 
-[.tile]
-.Couchbase Cloud
-* https://info.couchbase.com/rs/302-GJY-034/images/10min_to_Cloud_vF.pdf[Public Cloud]
-* xref:operator::overview.adoc[Autonomous Operator]
+* link:#[Testing with MUnit]
+* link:#[Troubleshooting]
 
-[.tile]
-.Connectors
-* xref:server:connectors:elasticsearch/overview.adoc[Elasticsearch]
-* xref:server:connectors:hadoop-1.2/hadoop.adoc[Hadoop]
-* xref:server:connectors:kafka/kafka-intro.adoc[Kafka]
-* xref:server:connectors:spark-2.2/spark-intro.adoc[Spark]
-* xref:server:connectors:talend/talend.adoc[Talend]
-* xref:server:connectors:odbc-jdbc-drivers.adoc[SQL (ODBC/JDBC)]
+== Manage Integrations
+
+* link:#[Anypoint Monitoring]
+* link:#[API Functional Monitoring]
+* link:#[Runtime Monitoring]
+
+== Manage Anypoint Platform Features
+
+* link:#[Design Center]
+* link:#[API Manager]
+* link:#[Access Management]
+
+== More Resources
+
+* link:#[Release Notes]
+* http://developer.mulesoft.com[MuleSoft developer site^]
+* https://training.mulesoft.com/[Training^]
+
+== Contributing to the Documentation
+
+To contribute to this documentation, select btn:[Edit in Github] on the page you wish to modify, and submit a pull request to the git repo.
+Your improvements to MuleSoft documentation are appreciated by the entire community.
+Thank you!
+
+== Archived Documentation
+
+When an older version of a product is no longer supported, including products with end-of-life status, the documentation moves to an https://docs.archive.mulesoft.com/[archive site^].

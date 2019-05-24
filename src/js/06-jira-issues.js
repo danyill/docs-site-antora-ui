@@ -1,8 +1,8 @@
-;(() => {
+;(function () {
   'use strict'
 
   // track not helpful
-  const trackNotHelpful = () => {
+  var trackNotHelpful = function () {
     analytics.track('Clicked Helpful No', {
       title: document.title,
       url: window.location.href,
@@ -11,13 +11,13 @@
 
   // open jira dialog
   window.ATL_JQ_PAGE_PROPS = {
-    'triggerFunction': (showCollectorDialog) => {
-      document.querySelector('.js-jira').addEventListener('click', (e) => {
+    triggerFunction: function (showCollectorDialog) {
+      document.querySelector('.js-jira').addEventListener('click', function (e) {
         e.preventDefault()
         showCollectorDialog()
         trackNotHelpful()
       })
-      document.querySelector('.js-jira').addEventListener('touchend', (e) => {
+      document.querySelector('.js-jira').addEventListener('touchend', function (e) {
         e.preventDefault()
         showCollectorDialog()
         trackNotHelpful()
@@ -29,9 +29,9 @@
   }
 
   // saying thanks
-  const thanksSection = document.querySelector('.js-thanks-section')
-  const thanksTrigger = thanksSection.querySelector('.js-thanks')
-  const sayThanks = () => {
+  var thanksSection = document.querySelector('.js-thanks-section')
+  var thanksTrigger = thanksSection.querySelector('.js-thanks')
+  var sayThanks = function () {
     thanksSection.classList.add('flip')
     analytics.track('Clicked Helpful Yes', {
       title: document.title,
@@ -39,7 +39,7 @@
     })
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', function () {
     thanksTrigger.addEventListener('click', sayThanks)
     thanksTrigger.addEventListener('touchend', sayThanks)
   })

@@ -1,4 +1,4 @@
-;(() => {
+;(function () {
   'use strict'
 
   var doc = document.querySelector('.doc')
@@ -21,7 +21,7 @@
       if (child.nodeName !== 'A') target.appendChild(child.cloneNode(true))
       return target
     }, document.createElement('a'))
-    links[link.href = '#' + heading.id] = link
+    links[(link.href = '#' + heading.id)] = link
     var listItem = document.createElement('li')
     listItem.appendChild(link)
     accum.appendChild(listItem)
@@ -45,17 +45,17 @@
         if (child.nodeName !== 'A') target.appendChild(child.cloneNode(true))
         return target
       }, document.createElement('option'))
-      option.value = `#${heading.id}`
+      option.value = '#' + heading.id
       accum.appendChild(option)
       return accum
     }, document.createElement('select'))
 
-    const selectWrap = document.createElement('div')
+    var selectWrap = document.createElement('div')
     selectWrap.classList.add('select-wrapper')
     selectWrap.appendChild(options)
 
     // create jump to label
-    const jumpTo = document.createElement('option')
+    var jumpTo = document.createElement('option')
     jumpTo.innerHTML = 'Jump to…'
     jumpTo.setAttribute('disabled', true)
     options.insertBefore(jumpTo, options.firstChild)
@@ -63,9 +63,8 @@
 
     // jump on change
     options.addEventListener('change', function (e) {
-      let thisOptions = e.currentTarget.options
-      let thisValue = thisOptions[thisOptions.selectedIndex].value
-      window.location.hash = `${thisValue}`
+      var thisOptions = e.currentTarget.options
+      window.location.hash = thisOptions[thisOptions.selectedIndex].value
     })
 
     // add to page

@@ -267,6 +267,10 @@
           thisList = nav.querySelector('[data-product="' + thisProduct + '"]')
         }
         scrollToActive(thisList)
+        // NOTE scroll to active again on load in case images shifted the layout
+        window.addEventListener('load', function () {
+          scrollToActive(thisList)
+        })
       }
       revealNav()
     } else if (e.target.classList.contains('js-nav-link')) {
@@ -319,7 +323,8 @@
 
   function scrollToActive (thisList) {
     var focusElement = thisList.querySelector('.nav-link.active') || thisList.previousSibling
-    var midpoint = (nav.offsetHeight - nav.offsetTop) / 2
+    var navRect = nav.getBoundingClientRect()
+    var midpoint = (navRect.height - navRect.top) / 2
     var adjustment = focusElement.offsetTop + focusElement.offsetHeight / 2 - midpoint
     if (adjustment > 0) nav.scrollTop = adjustment
   }

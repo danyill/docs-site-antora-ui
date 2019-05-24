@@ -3,15 +3,16 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     // coveo setup
+    var config = document.querySelector('script[src$="/vendor/coveo.js"]').dataset
     var root = document.querySelector('.js-coveo')
-    var coveoInit = false
+    var coveoInit
 
     Coveo.SearchEndpoint.endpoints['default'] = new Coveo.SearchEndpoint({
       restUri: 'https://platform.cloud.coveo.com/rest/search',
-      accessToken: 'xx3ba020b0-d9b5-4339-bc0e-92fe79a681e7',
+      accessToken: config.accessToken,
     })
     root.addEventListener('buildingQuery', function (e) {
-      e.detail.queryBuilder.pipeline = 'doc-query-pipeline'
+      e.detail.queryBuilder.pipeline = config.queryPipeline
     })
 
     // modal setup

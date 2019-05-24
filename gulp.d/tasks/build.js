@@ -59,8 +59,13 @@ module.exports = (src, dest, preview) => () => {
           if (file.relative.endsWith('.bundle.js')) {
             file.contents = browserify(file.relative, { basedir: src, detectGlobals: false }).bundle()
             file.path = file.path.slice(0, file.path.length - 10) + '.js'
+            next(null, file)
+          } else {
+            fs.readFile(file.path, 'UTF-8').then((contents) => {
+              file.contents = Buffer.from(contents)
+              next(null, file)
+            })
           }
-          next(null, file)
         })
       )
       .pipe(buffer())

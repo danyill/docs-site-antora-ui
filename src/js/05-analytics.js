@@ -1,6 +1,8 @@
 ;(function () {
   'use strict'
 
+  var analytics = window.analytics || { track: function () {} }
+
   document.addEventListener('DOMContentLoaded', function () {
     var gitHubLinks = document.querySelectorAll('.js-github')
     var trackGitHub = function () {

@@ -4,6 +4,8 @@
   var pageProduct
   var pageVersion
   var pageUrl
+  var analytics = window.analytics || { track: function () {} }
+
   if ((pageProduct = document.head.querySelector('meta[name=page-component]'))) {
     pageProduct = pageProduct.getAttribute('content')
     pageVersion = document.head.querySelector('meta[name=page-version]').getAttribute('content')
@@ -286,9 +288,9 @@
         thisNavLi.classList.add('active')
       }
       tippy.hideAll()
-      //analytics.track('Toggled Nav', {
-      //  url: thisTarget.innerText,
-      //})
+      analytics.track('Toggled Nav', {
+        url: e.target.innerText,
+      })
     } else {
       // if navigating via version selector
       thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
@@ -346,10 +348,10 @@
         }
       }
     }
-    //analytics.track('Version Pinned', {
-    //  product: thisProduct,
-    //  version: thisVersion,
-    //})
+    analytics.track('Version Pinned', {
+      product: thisProduct,
+      version: thisVersion,
+    })
   }
 
   for (i = 0, l = versionsTrigger.length; i < l; i++) {

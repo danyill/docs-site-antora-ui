@@ -1,6 +1,7 @@
 ;(function () {
   'use strict'
 
+  var analytics = window.analytics || { track: function () {} }
   // track not helpful
   var trackNotHelpful = function () {
     analytics.track('Clicked Helpful No', {

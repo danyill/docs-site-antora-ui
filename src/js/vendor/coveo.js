@@ -1,6 +1,8 @@
 ;(function () {
   'use strict'
 
+  var analytics = window.analytics || { track: function () {} }
+
   document.addEventListener('DOMContentLoaded', function () {
     // coveo setup
     var config = document.querySelector('script[src$="/vendor/coveo.js"]').dataset

@@ -5,7 +5,7 @@ const https = require('https')
 const path = require('path')
 
 const HEADER_ENDPOINT_URL = 'https://www.mulesoft.com/api/header?searchbox=false'
-const HEADER_TEMPLATE_RELPATH = 'header.hbs'
+const HEADER_TEMPLATE_RELPATH = 'header-content.hbs'
 const FOOTER_ENDPOINT_URL = 'https://www.mulesoft.com/api/footer'
 const FOOTER_TEMPLATE_RELPATH = 'footer-content.hbs'
 const DEPENDENCIES_ENDPOINT_URL = 'https://www.mulesoft.com/api/dependencies'
@@ -38,7 +38,7 @@ function getDependencies (url, partialsDir) {
       response.on('end', () => {
         let { scripts, styles } = JSON.parse(body.join('')).data
         scripts = scripts.reduce((accum, src) => {
-          accum.push(`<script src="${src}"></script>`)
+          accum.push(`<script async src="${src}"></script>`)
           return accum
         }, [])
         styles = styles.reduce((accum, href) => {

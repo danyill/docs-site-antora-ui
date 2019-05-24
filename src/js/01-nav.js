@@ -254,17 +254,19 @@
   }
 
   function toggleNav (e, navLists, thisProduct, thisVersion) {
+    var thisList
     // if navigating from the location bar
-    if (e.type === 'DOMContentLoaded') {
+    if (!e) {
       if (thisProduct) {
         var productVersionSelector = document.querySelector('[data-trigger-product="' + thisProduct + '"]')
         if (productVersionSelector) {
           localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
           setPin(thisProduct, productVersionSelector, thisVersion)
-          scrollToActive(nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]'))
+          thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
         } else {
-          scrollToActive(nav.querySelector('[data-product="' + thisProduct + '"]'))
+          thisList = nav.querySelector('[data-product="' + thisProduct + '"]')
         }
+        scrollToActive(thisList)
       }
       revealNav()
     } else if (e.target.classList.contains('js-nav-link')) {
@@ -285,7 +287,7 @@
       //})
     } else {
       // if navigating via version selector
-      var thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
+      thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
 
       // make other versions inactive
       // TODO this could be more efficient
@@ -416,5 +418,5 @@
     }
   }
 
-  toggleNav({ type: 'DOMContentLoaded' }, navLists, pageProduct, pageVersion)
+  toggleNav(undefined, navLists, pageProduct, pageVersion)
 })()

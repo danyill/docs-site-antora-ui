@@ -58,11 +58,9 @@
   }
 
   & > .nav-list {
-    opacity: 0;
-    transition: opacity var(--transition-speed-md) var(--transition-timing);
-
+    visibility: hidden;
     &.loaded {
-      opacity: 1;
+      visibility: visible;
     }
   }
 

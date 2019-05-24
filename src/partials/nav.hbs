@@ -7,20 +7,19 @@
       Search docs
     </button>
   </div>
+  {{!--
   <ol class="nav-list">
-    {{!-- show home and release notes at top --}}
     {{#each site.components}}
     {{#if (or  (eq ./name 'general') (eq ./name 'release-notes'))}}
     {{> nav-item}}
     {{/if}}
     {{/each}}
-
-    {{!-- everything else --}}
     {{#each site.components}}
     {{#unless (or  (eq ./name 'general') (eq ./name 'release-notes'))}}
     {{> nav-item}}
     {{/unless}}
     {{/each}}
   </ol>
+  --}}
   {{/if}}
 </nav>

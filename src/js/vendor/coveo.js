@@ -5,7 +5,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     // coveo setup
-    var config = document.querySelector('script[src$="/vendor/coveo.js"]').dataset
+    var config = document.getElementById('coveo-script').dataset
     var root = document.querySelector('.js-coveo')
     var coveoInit
 

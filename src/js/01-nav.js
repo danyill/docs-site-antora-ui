@@ -14,10 +14,7 @@
     // QUESTION should we show the navigation on a 404 page?
     return
   }
-  var uiRootPath = document.head
-    .querySelector('link[rel=stylesheet]')
-    .getAttribute('href')
-    .match(/^(.*\/|)_(?=\/)/)[0]
+  var uiRootPath = document.getElementById('site-script').dataset.uiRootPath
 
   function relativize (from, to) {
     if (!from || to.charAt() === '#') return to

@@ -33,8 +33,6 @@
       groupLink.appendChild(document.createTextNode(' '))
       groupLink.appendChild(document.createTextNode(group.title))
       groupHeading.appendChild(groupLink)
-      groupLink.addEventListener('click', toggleNav)
-      groupLink.addEventListener('touchend', toggleNav)
       if (group.versions.length > 1) {
         var currentVersion = group.versions[0].version
         var versionButton = document.createElement('button')
@@ -112,13 +110,20 @@
         setPin(group.name, versionButton)
       }
       groupItem.appendChild(groupHeading)
-      group.versions.forEach(function (version) {
-        // NOTE we only take the items of the first menu
-        var items = ((version.sets || [])[0] || {}).items || []
-        if (items.length) {
-          buildNavTree(nav, groupItem, group.name, version.version, items, 1, page)
+      if (currentGroupItem) {
+        groupLink.addEventListener('click', toggleNav)
+        groupLink.addEventListener('touchend', toggleNav)
+        buildNavForGroup(nav, groupItem, group, page)
+      } else {
+        var buildNavForGroupAndToggle = function (e) {
+          groupLink.removeEventListener(e.type, buildNavForGroupAndToggle)
+          buildNavForGroup(nav, groupItem, group, page)
+          toggleNav(e)
+          groupLink.addEventListener(e.type, toggleNav)
         }
-      })
+        groupLink.addEventListener('click', buildNavForGroupAndToggle)
+        groupLink.addEventListener('touchend', buildNavForGroupAndToggle)
+      }
       groupList.appendChild(groupItem)
     })
     nav.appendChild(groupList)
@@ -139,6 +144,14 @@
     } else if (currentGroupItem) {
       currentGroupItem.classList.add('active')
     }
+  }
+
+  function buildNavForGroup (nav, groupItem, group, page) {
+    group.versions.forEach(function (version) {
+      // NOTE we're only considering the items in the first menu
+      var items = ((version.sets || [])[0] || {}).items || []
+      if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1, page)
+    })
   }
 
   function buildNavTree (nav, parent, group, version, items, level, page) {

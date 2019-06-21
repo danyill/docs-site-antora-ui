@@ -27,6 +27,7 @@
       }
       groupItem.className = active ? 'nav-li active' : 'nav-li'
       groupItem.dataset.depth = 0
+      groupItem.dataset.product = group.name
       var groupHeading = document.createElement('div')
       groupHeading.className = 'flex align-center justify-justified'
       var groupLink = document.createElement('a')
@@ -91,7 +92,7 @@
           var buildNavForGroupAndInitVersionSelector = function () {
             versionButton.removeEventListener('click', buildNavForGroupAndInitVersionSelector)
             versionButton.removeEventListener('touchend', buildNavForGroupAndInitVersionSelector)
-            buildNavForGroup(nav, groupItem, group, page, { active: path.active, current: [groupItem] })
+            buildNavForGroupLazy(group, page)
             initVersionSelector(versionButton, versionMenu).show()
           }
           versionButton.addEventListener('click', buildNavForGroupAndInitVersionSelector)
@@ -108,7 +109,7 @@
         var buildNavForGroupAndToggle = function (e) {
           groupLink.removeEventListener('click', buildNavForGroupAndToggle)
           groupLink.removeEventListener('touchend', buildNavForGroupAndToggle)
-          buildNavForGroup(nav, groupItem, group, page, { active: path.active, current: [groupItem] })
+          buildNavForGroupLazy(group, page)
           toggleNav(e)
           groupLink.addEventListener('click', toggleNav)
           groupLink.addEventListener('touchend', toggleNav)
@@ -128,6 +129,12 @@
     } else {
       pageGroupItem.classList.add('active')
     }
+  }
+
+  function buildNavForGroupLazy (group, page) {
+    var nav = document.querySelector('nav.js-nav')
+    var groupItem = nav.querySelector('.nav-li[data-product="' + group.name + '"]')
+    buildNavForGroup(nav, groupItem, group, page)
   }
 
   function buildNavForGroup (nav, groupItem, group, page, path) {
@@ -153,7 +160,7 @@
     items.forEach(function (item) {
       var navItem = document.createElement('li')
       var active
-      if (!path.active.length && item.url === page.url && group === page.product && version === page.version) {
+      if (path && !path.active.length && item.url === page.url && group === page.product && version === page.version) {
         active = true
         path.current.concat(navItem).forEach(function (activeItem) { path.active.push(activeItem) })
       }
@@ -190,7 +197,7 @@
         navItem.appendChild(navHeading)
       }
       if (item.items) {
-        buildNavTree(nav, navItem, group, version, item.items, level + 1, page, {
+        buildNavTree(nav, navItem, group, version, item.items, level + 1, page, path && {
           active: path.active,
           current: path.current.concat(navItem),
         })
@@ -206,13 +213,13 @@
     var thisList
     if (!e) { // if navigating from the location bar
       if (thisProduct) {
-        var productVersionSelector = document.querySelector('[data-trigger-product="' + thisProduct + '"]')
+        var productVersionSelector = nav.querySelector('[data-trigger-product="' + thisProduct + '"]')
         if (productVersionSelector) {
           localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
           setPinnedVersion(thisProduct, productVersionSelector, thisVersion)
-          thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
+          thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
         } else {
-          thisList = nav.querySelector('[data-product="' + thisProduct + '"]')
+          thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"]')
         }
         scrollToActive(nav, thisList)
         // NOTE scroll to active again on load in case images shifted the layout
@@ -236,7 +243,7 @@
       tippy.hideAll()
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText })
     } else { // if navigating via version selector
-      thisList = nav.querySelector('[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
+      thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
       // make other versions inactive
       // FIXME this could be more efficient
       var navLists = nav.querySelectorAll('.js-nav-list')
@@ -397,21 +404,22 @@
     return arr.slice(start, end)
   }
 
-  var pageProductMeta
-  if ((pageProductMeta = document.head.querySelector('meta[name=page-component]'))) {
-    var pageProduct = pageProductMeta.getAttribute('content')
-    var pageVersion = document.head.querySelector('meta[name=page-version]').getAttribute('content')
-    var nav = document.querySelector('nav.js-nav')
-    buildNav(
-      nav,
-      window.siteNavigationData || [],
-      {
-        product: pageProduct,
-        version: pageVersion,
-        url: document.head.querySelector('meta[name=page-url]').getAttribute('content'),
+  function getPage () {
+    var pageProductMeta, head
+    if ((pageProductMeta = (head = document.head).querySelector('meta[name=page-component]'))) {
+      return {
+        product: pageProductMeta.getAttribute('content'),
+        version: head.querySelector('meta[name=page-version]').getAttribute('content'),
+        url: head.querySelector('meta[name=page-url]').getAttribute('content'),
         uiRootPath: document.getElementById('site-script').dataset.uiRootPath,
       }
-    )
-    toggleNav(undefined, pageProduct, pageVersion, nav)
+    }
+  }
+
+  var page = getPage()
+  if (page) {
+    var nav = document.querySelector('nav.js-nav')
+    buildNav(nav, window.siteNavigationData || [], page)
+    toggleNav(undefined, page.product, page.version, nav)
   }
 })()

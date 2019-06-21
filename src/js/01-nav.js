@@ -2,26 +2,24 @@
   'use strict'
 
   function buildNav (nav, data, page, path) {
-    path = path || { active: [], current: [] }
     var groupList = document.createElement('ol')
     groupList.className = 'nav-list'
     var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    chevron.classList.add('svg')
+    chevron.setAttribute('class', 'svg') // className property is read-only on an SVG
     chevron.setAttribute('viewBox', '0 0 30 30')
     chevron.setAttribute('width', '30')
     chevron.setAttribute('height', '30')
-    var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    var chevronPath = document.createElementNS(chevron.namespaceURI, 'path')
     chevronPath.setAttribute(
       'd',
       'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z'
     )
     chevron.appendChild(chevronPath)
-    var pageGroupItem
-    data.forEach(function (group) {
-      var pageGroup = group.name === page.product
+    var pageGroup, pageGroupItem
+    data.forEach(function (group, groupIdx) {
       var groupItem = document.createElement('li')
       var active
-      if (pageGroup) {
+      if ((pageGroup = group.name === page.product)) {
         pageGroupItem = groupItem
         !path.active.length && group.url === page.url && (active = true) && path.active.push(groupItem)
       }
@@ -72,8 +70,8 @@
         previousVersionsHeading.className = 'li-heading'
         previousVersionsHeading.appendChild(document.createTextNode('Previous versions'))
         previousVersionsList.appendChild(previousVersionsHeading)
-        group.versions.forEach(function (version, idx) {
-          if (idx) {
+        group.versions.forEach(function (version, versionIdx) {
+          if (versionIdx) {
             var previousVersionItem = document.createElement('li')
             previousVersionItem.className = 'flex align-center justify-justified li js-version'
             previousVersionItem.dataset.product = group.name
@@ -85,7 +83,7 @@
         })
         versionButton.appendChild(versionMenu)
         groupHeading.appendChild(versionButton)
-        setPinnedVersion(group.name, versionButton)
+        setPinnedVersion(versionButton, group.name)
         if (pageGroup) {
           initVersionSelector(versionButton, versionMenu)
         } else {
@@ -105,6 +103,7 @@
         groupLink.addEventListener('touchend', toggleNav)
         buildNavForGroup(nav, groupItem, group, page, { active: path.active, current: [groupItem] })
         initVersionSelector(versionButton, versionMenu)
+        delete data[groupIdx]
       } else {
         var buildNavForGroupAndToggle = function (e) {
           groupLink.removeEventListener('click', buildNavForGroupAndToggle)
@@ -204,8 +203,7 @@
       }
       navList.appendChild(navItem)
     })
-    parent.appendChild(navList)
-    return navList
+    return parent.appendChild(navList)
   }
 
   function toggleNav (e, thisProduct, thisVersion, nav) {
@@ -213,14 +211,14 @@
     var thisList
     if (!e) { // if navigating from the location bar
       if (thisProduct) {
+        var listQuery = '.nav-list[data-product="' + thisProduct + '"]'
         var productVersionSelector = nav.querySelector('[data-trigger-product="' + thisProduct + '"]')
         if (productVersionSelector) {
           localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
-          setPinnedVersion(thisProduct, productVersionSelector, thisVersion)
-          thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
-        } else {
-          thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"]')
+          setPinnedVersion(productVersionSelector, thisProduct, thisVersion)
+          listQuery += '[data-version="' + thisVersion + '"]'
         }
+        thisList = nav.querySelector(listQuery)
         scrollToActive(nav, thisList)
         // NOTE scroll to active again on load in case images shifted the layout
         window.addEventListener('load', function scrollToActiveOnLoad () {
@@ -244,8 +242,7 @@
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText })
     } else { // if navigating via version selector
       thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
-      // make other versions inactive
-      // FIXME this could be more efficient
+      // FIXME make other versions inactive; this could be more efficient
       var navLists = nav.querySelectorAll('.js-nav-list')
       for (var i = 0, l = navLists.length; i < l; i++) {
         if (navLists[i].parentNode === thisList.parentNode) {
@@ -279,7 +276,7 @@
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 
-  function setPinnedVersion (thisProduct, thisTrigger, thisVersion) {
+  function setPinnedVersion (thisTrigger, thisProduct, thisVersion) {
     var savedVersion = localStorage.getItem('ms-docs-' + thisProduct)
     if (savedVersion) {
       // FIXME could we pass in navLists (or nav?)
@@ -333,7 +330,7 @@
     var thisProduct = thisTarget.dataset.product
     var thisVersion = thisTarget.dataset.version
     localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
-    setPinnedVersion(thisProduct, thisTippy.reference, thisVersion)
+    setPinnedVersion(thisTippy.reference, thisProduct, thisVersion)
     toggleNav(e, thisProduct, thisVersion)
     thisTippy.hide()
     e.stopPropagation()
@@ -419,7 +416,7 @@
   var page = getPage()
   if (page) {
     var nav = document.querySelector('nav.js-nav')
-    buildNav(nav, window.siteNavigationData || [], page)
+    buildNav(nav, window.siteNavigationData || [], page, { active: [], current: [] })
     toggleNav(undefined, page.product, page.version, nav)
   }
 })()

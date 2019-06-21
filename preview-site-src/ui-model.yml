@@ -64,16 +64,18 @@ site:
         navigation:
         - items:
           - content: About Anypoint Connector DevKit
-            url: /connector-devkit/3.8/index.html
-            #url: '#'
+            #url: /connector-devkit/3.8/index.html
+            url: '#'
           - content: Getting Started with Anypoint Connector Development
             # NOTE comment out url to make this a heading
             url: '#'
             items:
             - content: Setting Up Your Development Environment
-              url: '#'
+              url: /connector-devkit/3.8/index.html
+              #url: '#'
               items:
               - content: Windows
+                #url: /connector-devkit/3.8/index.html
                 url: '#'
               - content: Linux
                 url: '#'

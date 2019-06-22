@@ -16,12 +16,14 @@
     )
     chevron.appendChild(chevronPath)
     var pageGroup, pageGroupItem
-    data.forEach(function (group, groupIdx) {
+    data.splice(0, data.length).forEach(function (group) {
       var groupItem = document.createElement('li')
-      var active
+      var active, groupData
       if ((pageGroup = group.name === page.product)) {
         pageGroupItem = groupItem
         !path.active.length && group.url === page.url && (active = true) && path.active.push(groupItem)
+      } else {
+        groupData = JSON.stringify(group)
       }
       groupItem.className = active ? 'nav-li active' : 'nav-li'
       groupItem.dataset.depth = 0
@@ -29,7 +31,7 @@
       var groupHeading = document.createElement('div')
       groupHeading.className = 'flex align-center justify-justified'
       var groupLink = document.createElement('a')
-      groupLink.className = 'flex grow strong link nav-link nav-heading js-nav-link'
+      groupLink.className = 'flex grow strong link nav-link nav-heading'
       var groupIcon = document.createElement('img')
       groupIcon.className = 'icon no-pointer'
       groupIcon.src = page.uiRootPath + '/img/icons/' + group.name + '.svg'
@@ -40,18 +42,15 @@
         var currentVersion = group.versions[0].version
         var versionButton = document.createElement('button')
         versionButton.className = 'flex align-center shrink button versions'
-        versionButton.dataset.trigger = 'versions'
-        versionButton.dataset.triggerProduct = group.name
+        versionButton.dataset.product = group.name
         var versionLabel = document.createElement('span')
-        versionLabel.className = 'js-versions-text'
+        versionLabel.className = 'version-label'
         versionLabel.appendChild(document.createTextNode(currentVersion))
         versionButton.appendChild(versionLabel)
         versionButton.appendChild(document.createTextNode(' '))
         versionButton.appendChild(chevron.cloneNode(true))
         var versionMenu = document.createElement('div')
-        versionMenu.className = 'popover js-version-popover'
-        versionMenu.dataset.popover = 'versions'
-        versionMenu.dataset.popoverProduct = group.name
+        versionMenu.className = 'popover version-popover'
         var currentVersionList = document.createElement('ol')
         currentVersionList.className = 'ol'
         var currentVersionHeading = document.createElement('li')
@@ -59,7 +58,7 @@
         currentVersionHeading.appendChild(document.createTextNode('Current version'))
         currentVersionList.appendChild(currentVersionHeading)
         var currentVersionItem = document.createElement('li')
-        currentVersionItem.className = 'flex align-center justify-justified li js-version'
+        currentVersionItem.className = 'flex align-center justify-justified li version'
         currentVersionItem.dataset.product = group.name
         currentVersionItem.dataset.version = currentVersion
         currentVersionItem.appendChild(document.createTextNode(currentVersion))
@@ -73,7 +72,7 @@
         group.versions.forEach(function (version, versionIdx) {
           if (versionIdx) {
             var previousVersionItem = document.createElement('li')
-            previousVersionItem.className = 'flex align-center justify-justified li js-version'
+            previousVersionItem.className = 'flex align-center justify-justified li version'
             previousVersionItem.dataset.product = group.name
             previousVersionItem.dataset.version = version.version
             previousVersionItem.appendChild(document.createTextNode(version.version))
@@ -83,15 +82,15 @@
         })
         versionButton.appendChild(versionMenu)
         groupHeading.appendChild(versionButton)
-        setPinnedVersion(versionButton, group.name)
+        setPinnedVersion(versionButton, group.name, undefined, groupItem)
         if (pageGroup) {
           initVersionSelector(versionButton, versionMenu)
         } else {
           var buildNavForGroupAndInitVersionSelector = function () {
             versionButton.removeEventListener('click', buildNavForGroupAndInitVersionSelector)
             versionButton.removeEventListener('touchend', buildNavForGroupAndInitVersionSelector)
-            buildNavForGroupLazy(group, page)
-            initVersionSelector(versionButton, versionMenu).show()
+            buildNavForGroupLazy(groupData)
+            initVersionSelector(versionButton, versionMenu, true)
           }
           versionButton.addEventListener('click', buildNavForGroupAndInitVersionSelector)
           versionButton.addEventListener('touchend', buildNavForGroupAndInitVersionSelector)
@@ -103,12 +102,11 @@
         groupLink.addEventListener('touchend', toggleNav)
         buildNavForGroup(nav, groupItem, group, page, { active: path.active, current: [groupItem] })
         initVersionSelector(versionButton, versionMenu)
-        delete data[groupIdx]
       } else {
         var buildNavForGroupAndToggle = function (e) {
           groupLink.removeEventListener('click', buildNavForGroupAndToggle)
           groupLink.removeEventListener('touchend', buildNavForGroupAndToggle)
-          buildNavForGroupLazy(group, page)
+          buildNavForGroupLazy(groupData)
           toggleNav(e)
           groupLink.addEventListener('click', toggleNav)
           groupLink.addEventListener('touchend', toggleNav)
@@ -130,10 +128,13 @@
     }
   }
 
-  function buildNavForGroupLazy (group, page) {
-    var nav = document.querySelector('nav.js-nav')
+  function buildNavForGroupLazy (groupData) {
+    var nav = getNav()
+    var start = +new Date()
+    var group = JSON.parse(groupData)
+    console.log(+new Date() - start)
     var groupItem = nav.querySelector('.nav-li[data-product="' + group.name + '"]')
-    buildNavForGroup(nav, groupItem, group, page)
+    buildNavForGroup(nav, groupItem, group, getPage())
   }
 
   function buildNavForGroup (nav, groupItem, group, page, path) {
@@ -148,7 +149,7 @@
 
   function buildNavTree (nav, parent, group, version, items, level, page, path) {
     var navList = document.createElement('ol')
-    navList.className = 'nav-list parent js-nav-list'
+    navList.className = 'nav-list parent'
     if (level === 1) {
       if (!(group === page.product && version === page.version)) navList.style.display = 'none'
       navList.dataset.product = group
@@ -167,7 +168,7 @@
       navItem.dataset.depth = level
       if (item.items) {
         var navToggle = document.createElement('button')
-        navToggle.className = 'js-subnav-toggle'
+        navToggle.className = 'subnav-toggle'
         navItem.appendChild(navToggle)
         navToggle.addEventListener('click', toggleSubnav)
         navToggle.addEventListener('touchend', toggleSubnav)
@@ -177,7 +178,7 @@
         navLink.className =
           'flex shrink align-center link nav-link' +
           (active ? ' active' : '') +
-          (item.items ? ' nav-nested js-nav-nested' : '')
+          (item.items ? ' nav-nested' : '')
         if (item.urlType === 'external') {
           navLink.href = item.url
           navLink.target = '_blank'
@@ -188,7 +189,7 @@
         navItem.appendChild(navLink)
       } else {
         var navHeading = document.createElement('span')
-        navHeading.className = 'flex grow align-center nav-heading' + (item.items ? ' nav-nested js-nav-nested' : '')
+        navHeading.className = 'flex grow align-center nav-heading' + (item.items ? ' nav-nested' : '')
         var navHeadingSpan = document.createElement('span')
         navHeadingSpan.className = 'span'
         navHeadingSpan.innerHTML = item.content
@@ -207,14 +208,13 @@
   }
 
   function toggleNav (e, thisProduct, thisVersion, nav) {
-    nav = nav || document.querySelector('nav.js-nav')
-    var thisList
-    if (!e) { // if navigating from the location bar
+    nav = nav || getNav()
+    var thisList, groupItem
+    if (!e) { // on page load (when navigating from the location bar)
       if (thisProduct) {
         var listQuery = '.nav-list[data-product="' + thisProduct + '"]'
-        var productVersionSelector = nav.querySelector('[data-trigger-product="' + thisProduct + '"]')
+        var productVersionSelector = nav.querySelector('button[data-product="' + thisProduct + '"]')
         if (productVersionSelector) {
-          localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
           setPinnedVersion(productVersionSelector, thisProduct, thisVersion)
           listQuery += '[data-version="' + thisVersion + '"]'
         }
@@ -227,31 +227,21 @@
         })
       }
       nav.querySelector('.nav-list').classList.add('loaded')
-    } else if (e.target.classList.contains('js-nav-link')) { // if navigating via sidebar
-      var thisWrapper = e.target.parentElement
-      var thisNavLi = thisWrapper.parentElement
-      var pinnedList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextSibling
-      if (thisNavLi.classList.contains('active')) {
-        pinnedList.style.display = 'none'
-        thisNavLi.classList.remove('active')
-      } else {
-        pinnedList.style.display = ''
-        thisNavLi.classList.add('active')
-      }
+    } else if (e.target.classList.contains('nav-link')) { // when toggling a group in the sidebar
+      var groupHeadingWrapper = e.target.parentNode
+      groupItem = groupHeadingWrapper.parentNode
+      var pinnedNavList =
+        groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
+        groupHeadingWrapper.nextElementSibling
+      pinnedNavList.style.display = groupItem.classList.toggle('active') ? '' : 'none'
       tippy.hideAll()
-      window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText })
-    } else { // if navigating via version selector
-      thisList = nav.querySelector('.nav-list[data-product="' + thisProduct + '"][data-version="' + thisVersion + '"]')
-      // FIXME make other versions inactive; this could be more efficient
-      var navLists = nav.querySelectorAll('.js-nav-list')
-      for (var i = 0, l = navLists.length; i < l; i++) {
-        if (navLists[i].parentNode === thisList.parentNode) {
-          navLists[i].parentNode.classList.remove('active')
-          navLists[i].style.display = 'none'
-        }
-      }
-      thisList.style.display = ''
-      thisList.parentNode.classList.add('active')
+      window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
+    } else if (thisProduct && thisVersion) { // when changing the selected version
+      groupItem = nav.querySelector('.nav-li[data-product="' + thisProduct + '"]')
+      var navLists = groupItem.querySelectorAll('.nav-list')
+      for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
+      groupItem.querySelector('.nav-list[data-version="' + thisVersion + '"]').style.display = ''
+      groupItem.classList.add('active')
       tippy.hideAll()
     }
   }
@@ -276,30 +266,27 @@
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 
-  function setPinnedVersion (thisTrigger, thisProduct, thisVersion) {
-    var savedVersion = localStorage.getItem('ms-docs-' + thisProduct)
-    if (savedVersion) {
-      // FIXME could we pass in navLists (or nav?)
-      var navLists = document.querySelectorAll('nav.js-nav .js-nav-list')
-      thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
-      for (var i = 0, l = navLists.length; i < l; i++) {
-        var thisNavList = navLists[i]
-        var listProduct = thisNavList.dataset.product
-        var listVersion = thisNavList.dataset.version
-        if (thisProduct === listProduct && savedVersion === listVersion) {
-          thisNavList.dataset.pinned = true
-        }
-      }
+  function setPinnedVersion (thisTrigger, thisProduct, thisVersion, groupItem) {
+    var analytics
+    if (thisVersion) {
+      localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
+      analytics = window.analytics
+    } else if (!(thisVersion = localStorage.getItem('ms-docs-' + thisProduct))) {
+      return
     }
-    window.analytics && window.analytics.track('Version Pinned', { product: thisProduct, version: thisVersion })
+    (groupItem || thisTrigger.parentNode.parentNode).dataset.pinnedVersion = thisVersion
+    thisTrigger.querySelector('.version-label').textContent = thisVersion
+    analytics && analytics.track('Version Pinned', { product: thisProduct, version: thisVersion })
   }
 
-  function initVersionSelector (versionButton, versionMenu) {
+  function initVersionSelector (versionButton, versionMenu, show) {
     return tippy(versionButton, {
       content: versionMenu,
+      role: 'menu',
       duration: [0, 150],
       flip: false,
       interactive: true,
+      showOnInit: show,
       offset: '-40, 5',
       onHide: function (instance) {
         instance.popper.classList.add('hide')
@@ -324,30 +311,28 @@
     })
   }
 
-  function changeVersion (e) {
+  function switchVersion (e) {
     var thisTippy = document.querySelector('.tippy-popper')._tippy
-    var thisTarget = e.target
-    var thisProduct = thisTarget.dataset.product
-    var thisVersion = thisTarget.dataset.version
-    localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
+    var thisProduct = e.target.dataset.product
+    var thisVersion = e.target.dataset.version
     setPinnedVersion(thisTippy.reference, thisProduct, thisVersion)
     toggleNav(e, thisProduct, thisVersion)
     thisTippy.hide()
-    e.stopPropagation()
+    cancelEvent(e)
   }
 
   function bindVersionEvents (popover) {
-    var versions = popover.querySelectorAll('.js-version')
+    var versions = popover.querySelectorAll('.version')
     for (var i = 0, l = versions.length; i < l; i++) {
-      versions[i].addEventListener('click', changeVersion)
+      versions[i].addEventListener('click', switchVersion)
       versions[i].addEventListener('touchend', cancelEvent)
     }
   }
 
   function unbindVersionEvents (popover) {
-    var versions = popover.querySelectorAll('.js-version')
+    var versions = popover.querySelectorAll('.version')
     for (var i = 0, l = versions.length; i < l; i++) {
-      versions[i].removeEventListener('click', changeVersion)
+      versions[i].removeEventListener('click', switchVersion)
       versions[i].removeEventListener('touchend', cancelEvent)
     }
   }
@@ -413,9 +398,13 @@
     }
   }
 
+  function getNav () {
+    return document.querySelector('nav.nav')
+  }
+
   var page = getPage()
   if (page) {
-    var nav = document.querySelector('nav.js-nav')
+    var nav = getNav()
     buildNav(nav, window.siteNavigationData || [], page, { active: [], current: [] })
     toggleNav(undefined, page.product, page.version, nav)
   }

@@ -19,7 +19,7 @@
 
     // modal setup
     var backdrop = document.querySelector('.modal-backdrop')
-    var nav = document.querySelector('.js-nav')
+    var nav = document.querySelector('nav.nav')
 
     // show/hide coveo search
     var searchTrigger = document.querySelector('.js-search-trigger')

@@ -12,12 +12,11 @@
   outline: 0;
 }
 
-/* initial and hidden state */
-.js-version-popover {
+.version-popover {
   display: none;
 }
 
-.tippy-popper .js-version-popover {
+.tippy-popper .version-popover {
   display: block;
 }
 

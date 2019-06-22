@@ -2,8 +2,8 @@
   'use strict'
 
   document.addEventListener('DOMContentLoaded', function () {
-    var navToggle = document.querySelectorAll('.js-nav-toggle')
-    var nav = document.querySelector('.js-nav')
+    var navToggle = document.querySelector('.nav-toggle')
+    var nav = document.querySelector('nav.nav')
     var backdrop = document.querySelector('.modal-backdrop')
 
     var openNav = function (e) {
@@ -25,10 +25,8 @@
       if (!e.target.href) e.preventDefault()
     }
 
-    for (var i = 0; i < navToggle.length; i++) {
-      navToggle[i].addEventListener('click', openNav)
-      navToggle[i].addEventListener('touchend', openNav)
-    }
+    navToggle.addEventListener('click', openNav)
+    navToggle.addEventListener('touchend', openNav)
 
     document.body.addEventListener('click', closeNav)
     document.body.addEventListener('touchend', closeNav)

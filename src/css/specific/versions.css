@@ -1,15 +1,15 @@
 .versions {
   align-self: start;
   border: 1px solid var(--aluminum-4);
-  border-radius: 22px;
+  border-radius: 1em;
   color: var(--aluminum-5);
   font-size: 12px;
   font-weight: var(--weight-normal);
-  height: 22px;
+  height: 1.75em;
   margin-right: 3px;
   padding: 0 2px 0 6px;
   position: relative;
-  top: 6px;
+  top: .7em;
 
   &:hover {
     border-color: var(--aluminum-5);

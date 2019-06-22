@@ -170,7 +170,7 @@
   margin-left: 25px;
 }
 
-button.js-subnav-toggle {
+button.subnav-toggle {
   background: none;
   border: 0;
   color: var(--aluminum-5);
@@ -192,6 +192,6 @@ button.js-subnav-toggle {
   }
 }
 
-.nav-li.active > button.js-subnav-toggle::before {
+.nav-li.active > button.subnav-toggle::before {
   content: "-";
 }

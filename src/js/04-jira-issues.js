@@ -1,13 +1,10 @@
 ;(function () {
   'use strict'
 
-  var analytics = window.analytics || { track: function () {} }
+  var analytics = window.analytics
   // track not helpful
   var trackNotHelpful = function () {
-    analytics.track('Clicked Helpful No', {
-      title: document.title,
-      url: window.location.href,
-    })
+    analytics && analytics.track('Clicked Helpful No', { title: document.title, url: window.location.href })
   }
 
   // open jira dialog
@@ -34,14 +31,9 @@
   var thanksTrigger = thanksSection.querySelector('.js-thanks')
   var sayThanks = function () {
     thanksSection.classList.add('flip')
-    analytics.track('Clicked Helpful Yes', {
-      title: document.title,
-      url: window.location.href,
-    })
+    analytics && analytics.track('Clicked Helpful Yes', { title: document.title, url: window.location.href })
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    thanksTrigger.addEventListener('click', sayThanks)
-    thanksTrigger.addEventListener('touchend', sayThanks)
-  })
+  thanksTrigger.addEventListener('click', sayThanks)
+  thanksTrigger.addEventListener('touchend', sayThanks)
 })()

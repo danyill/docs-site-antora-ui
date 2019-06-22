@@ -80,7 +80,7 @@
         })
         versionButton.appendChild(versionMenu)
         groupHeading.appendChild(versionButton)
-        setPinnedVersion(versionButton, group.name, undefined, groupItem)
+        setPinnedVersion(versionButton, { product: group.name }, groupItem)
         if (pageGroup) {
           initVersionSelector(versionButton, versionMenu)
         } else {
@@ -198,42 +198,41 @@
     return parent.appendChild(navList)
   }
 
-  function toggleNav (e, thisProduct, thisVersion, nav) {
-    nav = nav || getNav()
-    var thisList, groupItem
+  function toggleNav (e, selected, nav) {
+    var groupItem
     if (!e) {
       // on page load (when navigating from the location bar)
-      var navList = nav.querySelector('.nav-list')
-      if (thisProduct) {
-        var listQuery = '.nav-list[data-product="' + thisProduct + '"]'
-        var productVersionSelector = nav.querySelector('button[data-product="' + thisProduct + '"]')
+      if (selected) {
+        var navListQuery = '.nav-list[data-product="' + selected.product + '"]'
+        var productVersionSelector = nav.querySelector('button[data-product="' + selected.product + '"]')
         if (productVersionSelector) {
-          setPinnedVersion(productVersionSelector, thisProduct, thisVersion)
-          listQuery += '[data-version="' + thisVersion + '"]'
+          setPinnedVersion(productVersionSelector, selected)
+          navListQuery += '[data-version="' + selected.version + '"]'
         }
-        ;(thisList = nav.querySelector(listQuery)) && scrollToActive(nav, thisList)
-        window.addEventListener('load', function scrollToActiveOnLoad () {
-          window.removeEventListener('load', scrollToActiveOnLoad)
-          thisList && scrollToActive(nav, thisList) // scroll again in case images caused layout to shift
-        })
+        var navList = nav.querySelector(navListQuery)
+        if (navList) {
+          scrollToActive(nav, navList)
+          window.addEventListener('load', function scrollToActiveOnLoad () {
+            window.removeEventListener('load', scrollToActiveOnLoad)
+            scrollToActive(nav, navList) // scroll again in case images caused layout to shift
+          })
+        }
       }
-      navList.classList.add('is-loaded')
+      nav.querySelector('.nav-list').classList.add('is-loaded')
     } else if (e.target.classList.contains('nav-link')) {
       // when toggling a group in the sidebar
       var groupHeadingWrapper = e.target.parentNode
       groupItem = groupHeadingWrapper.parentNode
-      thisList =
-        groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
-        groupHeadingWrapper.nextSibling
-      thisList.style.display = groupItem.classList.toggle('active') ? '' : 'none'
+      ;(groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
+        groupHeadingWrapper.nextSibling).style.display = groupItem.classList.toggle('active') ? '' : 'none'
       tippy.hideAll()
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
-    } else if (thisProduct && thisVersion) {
+    } else if (selected) {
       // when changing the selected version
-      groupItem = nav.querySelector('.nav-li[data-product="' + thisProduct + '"]')
+      groupItem = nav.querySelector('.nav-li[data-product="' + selected.product + '"]')
       var navLists = groupItem.querySelectorAll('.nav-list[data-product]')
       for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
-      groupItem.querySelector('.nav-list[data-version="' + thisVersion + '"]').style.display = ''
+      groupItem.querySelector('.nav-list[data-version="' + selected.version + '"]').style.display = ''
       groupItem.classList.add('active')
       tippy.hideAll()
     }
@@ -259,17 +258,17 @@
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 
-  function setPinnedVersion (thisTrigger, thisProduct, thisVersion, groupItem) {
-    var analytics
-    if (thisVersion) {
-      localStorage.setItem('ms-docs-' + thisProduct, thisVersion)
+  function setPinnedVersion (thisButton, pinned, groupItem) {
+    var analytics, pinnedVersion
+    if ((pinnedVersion = pinned.version)) {
+      localStorage.setItem('ms-docs-' + pinned.product, pinnedVersion)
       analytics = window.analytics
-    } else if (!(thisVersion = localStorage.getItem('ms-docs-' + thisProduct))) {
+    } else if (!(pinnedVersion = localStorage.getItem('ms-docs-' + pinned.product))) {
       return
     }
-    ;(groupItem || thisTrigger.parentNode.parentNode).dataset.pinnedVersion = thisVersion
-    thisTrigger.querySelector('.version-label').textContent = thisVersion
-    analytics && analytics.track('Version Pinned', { product: thisProduct, version: thisVersion })
+    ;(groupItem || thisButton.parentNode.parentNode).dataset.pinnedVersion = pinnedVersion
+    thisButton.querySelector('.version-label').textContent = pinnedVersion
+    analytics && analytics.track('Version Pinned', { product: pinned.product, version: pinnedVersion })
   }
 
   function initVersionSelector (versionButton, versionMenu, show) {
@@ -306,10 +305,9 @@
 
   function switchVersion (e) {
     var thisTippy = document.querySelector('.tippy-popper')._tippy
-    var thisProduct = e.target.dataset.product
-    var thisVersion = e.target.dataset.version
-    setPinnedVersion(thisTippy.reference, thisProduct, thisVersion)
-    toggleNav(e, thisProduct, thisVersion)
+    var selected = { product: e.target.dataset.product, version: e.target.dataset.version }
+    setPinnedVersion(thisTippy.reference, selected)
+    toggleNav(e, selected, getNav())
     thisTippy.hide()
     cancelEvent(e)
   }
@@ -399,6 +397,6 @@
   if (page) {
     var nav = getNav()
     buildNav(nav, window.siteNavigationData || [], page, { active: [], current: [] })
-    toggleNav(undefined, page.product, page.version, nav)
+    toggleNav(undefined, page, nav)
   }
 })()

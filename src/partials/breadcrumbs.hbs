@@ -11,10 +11,10 @@
   {{/if}}
   {{/with}}
   {{#each page.breadcrumbs}}
-  {{#if (and ./url (eq ./urlType 'internal'))~}}
+  {{#if (eq ./urlType 'internal')}}
   <li class="flex align-center li">
     <a class="link" href="{{{relativize ./url}}}">{{{./content}}}</a>
-  {{~/if}}
+  {{/if}}
   {{/each}}
 </ol>
 {{/if}}

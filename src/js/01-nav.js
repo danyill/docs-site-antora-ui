@@ -231,7 +231,7 @@
     } else if (thisProduct && thisVersion) {
       // when changing the selected version
       groupItem = nav.querySelector('.nav-li[data-product="' + thisProduct + '"]')
-      var navLists = groupItem.querySelectorAll('.nav-list')
+      var navLists = groupItem.querySelectorAll('.nav-list[data-product]')
       for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
       groupItem.querySelector('.nav-list[data-version="' + thisVersion + '"]').style.display = ''
       groupItem.classList.add('active')

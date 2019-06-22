@@ -23,7 +23,7 @@ function getHbs (url, to) {
       const body = []
       response.on('data', (d) => body.push(d))
       response.on('end', () => {
-        fs.writeFileSync(to, JSON.parse(body.join('')).data)
+        fs.writeFileSync(to, JSON.parse(body.join('')).data.replace(/ ?<!--.*?-->/g, '') + '\n')
         resolve()
       })
     })
@@ -45,8 +45,8 @@ function getDependencies (url, partialsDir) {
           accum.push(`<link rel="stylesheet" href="${href}" type="text/css">`)
           return accum
         }, [])
-        fs.writeFileSync(path.join(partialsDir, 'marketing-scripts.hbs'), scripts.join(''))
-        fs.writeFileSync(path.join(partialsDir, 'marketing-styles.hbs'), styles.join(''))
+        fs.writeFileSync(path.join(partialsDir, 'marketing-scripts.hbs'), scripts.join('') + '\n')
+        fs.writeFileSync(path.join(partialsDir, 'marketing-styles.hbs'), styles.join('') + '\n')
         resolve()
       })
     })

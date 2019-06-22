@@ -22,7 +22,7 @@ module.exports = (src, dest, preview) => () => {
   const opts = { base: src, cwd: src }
   const sourcemaps = preview || process.env.SOURCEMAPS === 'true'
   const postcssPlugins = [
-    postcssImport(),
+    postcssImport,
     postcssUrl([
       {
         filter: '**/~typeface-*/files/*',
@@ -36,7 +36,7 @@ module.exports = (src, dest, preview) => () => {
         },
       },
     ]),
-    postcssCalc(),
+    postcssCalc,
     postcssPresetEnv({
       autoprefixer: { browsers: ['last 2 versions'] },
       features: {
@@ -58,7 +58,9 @@ module.exports = (src, dest, preview) => () => {
         // see https://gulpjs.org/recipes/browserify-multiple-destination.html
         map((file, enc, next) => {
           if (file.relative.endsWith('.bundle.js')) {
-            file.contents = browserify(file.relative, { basedir: src, detectGlobals: false }).bundle()
+            file.contents = browserify(file.relative, { basedir: src, detectGlobals: false })
+              .plugin('browser-pack-flat/plugin')
+              .bundle()
             file.path = file.path.slice(0, file.path.length - 10) + '.js'
             next(null, file)
           } else {
@@ -81,7 +83,7 @@ module.exports = (src, dest, preview) => () => {
       )
       .pipe(concat('js/vendor/tippy.js')),
     vfs.src('css/site.css', { ...opts, sourcemaps }).pipe(postcss(postcssPlugins)),
-    vfs.src('font/*.woff*(2)', opts),
+    vfs.src('font/*.{ttf,woff*(2)}', opts),
     vfs
       .src('img/**/*.{jpg,ico,png,svg}', opts)
       .pipe(

@@ -132,8 +132,8 @@
   }
 
   function buildNavForGroup (nav, groupItem, group, page, path) {
-    if (groupItem.classList.contains('loaded')) return
-    groupItem.classList.add('loaded')
+    if (groupItem.classList.contains('is-loaded')) return
+    groupItem.classList.add('is-loaded')
     group.versions.forEach(function (version) {
       var items = ((version.sets || [])[0] || {}).items || [] // only consider items in first menu
       if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1, page, path)
@@ -217,7 +217,7 @@
           thisList && scrollToActive(nav, thisList) // scroll again in case images caused layout to shift
         })
       }
-      navList.classList.add('loaded')
+      navList.classList.add('is-loaded')
     } else if (e.target.classList.contains('nav-link')) {
       // when toggling a group in the sidebar
       var groupHeadingWrapper = e.target.parentNode

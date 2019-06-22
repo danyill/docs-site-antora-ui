@@ -1,5 +1,6 @@
 'use strict'
 
+const autoprefixer = require('autoprefixer')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
 const concat = require('gulp-concat')
@@ -12,9 +13,11 @@ const ospath = require('path')
 const path = ospath.posix
 const postcss = require('gulp-postcss')
 const postcssCalc = require('postcss-calc')
+const postcssCustomMedia = require('postcss-custom-media')
 const postcssImport = require('postcss-import')
-const postcssPresetEnv = require('postcss-preset-env')
+const postcssNesting = require('postcss-nesting')
 const postcssUrl = require('postcss-url')
+const postcssVar = require('postcss-custom-properties')
 const uglify = require('gulp-uglify')
 const vfs = require('vinyl-fs')
 
@@ -36,14 +39,11 @@ module.exports = (src, dest, preview) => () => {
         },
       },
     ]),
+    postcssCustomMedia,
+    postcssNesting,
+    postcssVar({ preserve: preview ? 'preserve-computed' : false }),
     postcssCalc,
-    postcssPresetEnv({
-      autoprefixer: { browsers: ['last 2 versions'] },
-      features: {
-        'custom-media-queries': true,
-        'nesting-rules': true,
-      },
-    }),
+    autoprefixer,
     preview ? () => {} : cssnano({ preset: 'default' }),
   ]
 

@@ -9,9 +9,13 @@
   "engines": {
     "node": ">= 10.0.0"
   },
+  "browserslist": [
+    "last 2 versions"
+  ],
   "devDependencies": {
     "@octokit/rest": "~16.28",
     "asciidoctor.js": "1.5.9",
+    "autoprefixer": "~9.6",
     "browser-pack-flat": "~3.4",
     "browserify": "~16.2",
     "cssnano": "~4.1",
@@ -23,7 +27,6 @@
     "eslint-plugin-standard": "~4.0",
     "fs-extra": "~8.0",
     "gulp": "~4.0",
-    "gulp-babel": "~8.0",
     "gulp-concat": "~2.6",
     "gulp-connect": "~5.7",
     "gulp-eslint": "~5.0",
@@ -36,11 +39,11 @@
     "highlight.js": "~9.15",
     "js-yaml": "~3.13",
     "merge-stream": "~2.0",
-    "postcss": "~7.0",
     "postcss-calc": "~7.0",
+    "postcss-custom-media": "~7.0",
+    "postcss-custom-properties": "~8.0",
     "postcss-import": "~12.0",
-    "postcss-preset-env": "~6.6",
-    "postcss-syntax": "~0.36",
+    "postcss-nesting": "~7.0",
     "postcss-url": "~8.0",
     "prettier-eslint": "~9.0",
     "require-directory": "~2.1",

@@ -121,8 +121,13 @@
         it.classList.add('active')
         if (it.parentNode.classList.contains('parent')) it.parentNode.style.display = ''
       })
-    } else {
+    } else if (pageGroupItem) {
       pageGroupItem.classList.add('active')
+    } else {
+      var notice = document.createElement('div')
+      notice.className = 'nav-list nav-heading'
+      notice.appendChild(document.createTextNode('Site navigation data not found.'))
+      nav.replaceChild(notice, groupList)
     }
   }
 
@@ -130,8 +135,7 @@
     if (groupItem.classList.contains('loaded')) return
     groupItem.classList.add('loaded')
     group.versions.forEach(function (version) {
-      // NOTE only consider items in the first menu
-      var items = ((version.sets || [])[0] || {}).items || []
+      var items = ((version.sets || [])[0] || {}).items || [] // only consider items in first menu
       if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1, page, path)
     })
   }
@@ -200,6 +204,7 @@
     nav = nav || getNav()
     var thisList, groupItem
     if (!e) { // on page load (when navigating from the location bar)
+      var navList = nav.querySelector('.nav-list')
       if (thisProduct) {
         var listQuery = '.nav-list[data-product="' + thisProduct + '"]'
         var productVersionSelector = nav.querySelector('button[data-product="' + thisProduct + '"]')
@@ -207,22 +212,19 @@
           setPinnedVersion(productVersionSelector, thisProduct, thisVersion)
           listQuery += '[data-version="' + thisVersion + '"]'
         }
-        thisList = nav.querySelector(listQuery)
-        scrollToActive(nav, thisList)
-        // NOTE scroll to active again on load in case images shifted the layout
+        (thisList = nav.querySelector(listQuery)) && scrollToActive(nav, thisList)
         window.addEventListener('load', function scrollToActiveOnLoad () {
           window.removeEventListener('load', scrollToActiveOnLoad)
-          scrollToActive(nav, thisList)
+          thisList && scrollToActive(nav, thisList) // scroll again in case images caused layout to shift
         })
       }
-      nav.querySelector('.nav-list').classList.add('loaded')
+      navList.classList.add('loaded')
     } else if (e.target.classList.contains('nav-link')) { // when toggling a group in the sidebar
       var groupHeadingWrapper = e.target.parentNode
       groupItem = groupHeadingWrapper.parentNode
-      var pinnedNavList =
-        groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
-        groupHeadingWrapper.nextElementSibling
-      pinnedNavList.style.display = groupItem.classList.toggle('active') ? '' : 'none'
+      thisList = groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
+        groupHeadingWrapper.nextSibling
+      thisList.style.display = groupItem.classList.toggle('active') ? '' : 'none'
       tippy.hideAll()
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
     } else if (thisProduct && thisVersion) { // when changing the selected version

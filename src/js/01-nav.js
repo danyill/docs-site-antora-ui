@@ -155,7 +155,9 @@
       var active
       if (path && !path.active.length && item.url === page.url && group === page.product && version === page.version) {
         active = true
-        path.current.concat(navItem).forEach(function (activeItem) { path.active.push(activeItem) })
+        path.current.concat(navItem).forEach(function (activeItem) {
+          path.active.push(activeItem)
+        })
       }
       navItem.className = active ? 'nav-li active' : 'nav-li'
       navItem.dataset.depth = level
@@ -169,9 +171,7 @@
       if (item.url) {
         var navLink = document.createElement('a')
         navLink.className =
-          'flex shrink align-center link nav-link' +
-          (active ? ' active' : '') +
-          (item.items ? ' nav-nested' : '')
+          'flex shrink align-center link nav-link' + (active ? ' active' : '') + (item.items ? ' nav-nested' : '')
         if (item.urlType === 'external') {
           navLink.href = item.url
           navLink.target = '_blank'
@@ -190,10 +190,8 @@
         navItem.appendChild(navHeading)
       }
       if (item.items) {
-        buildNavTree(nav, navItem, group, version, item.items, level + 1, page, path && {
-          active: path.active,
-          current: path.current.concat(navItem),
-        })
+        var nestedPath = path && { active: path.active, current: path.current.concat(navItem) }
+        buildNavTree(nav, navItem, group, version, item.items, level + 1, page, nestedPath)
       }
       navList.appendChild(navItem)
     })
@@ -203,7 +201,8 @@
   function toggleNav (e, thisProduct, thisVersion, nav) {
     nav = nav || getNav()
     var thisList, groupItem
-    if (!e) { // on page load (when navigating from the location bar)
+    if (!e) {
+      // on page load (when navigating from the location bar)
       var navList = nav.querySelector('.nav-list')
       if (thisProduct) {
         var listQuery = '.nav-list[data-product="' + thisProduct + '"]'
@@ -212,22 +211,25 @@
           setPinnedVersion(productVersionSelector, thisProduct, thisVersion)
           listQuery += '[data-version="' + thisVersion + '"]'
         }
-        (thisList = nav.querySelector(listQuery)) && scrollToActive(nav, thisList)
+        ;(thisList = nav.querySelector(listQuery)) && scrollToActive(nav, thisList)
         window.addEventListener('load', function scrollToActiveOnLoad () {
           window.removeEventListener('load', scrollToActiveOnLoad)
           thisList && scrollToActive(nav, thisList) // scroll again in case images caused layout to shift
         })
       }
       navList.classList.add('loaded')
-    } else if (e.target.classList.contains('nav-link')) { // when toggling a group in the sidebar
+    } else if (e.target.classList.contains('nav-link')) {
+      // when toggling a group in the sidebar
       var groupHeadingWrapper = e.target.parentNode
       groupItem = groupHeadingWrapper.parentNode
-      thisList = groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
+      thisList =
+        groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
         groupHeadingWrapper.nextSibling
       thisList.style.display = groupItem.classList.toggle('active') ? '' : 'none'
       tippy.hideAll()
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
-    } else if (thisProduct && thisVersion) { // when changing the selected version
+    } else if (thisProduct && thisVersion) {
+      // when changing the selected version
       groupItem = nav.querySelector('.nav-li[data-product="' + thisProduct + '"]')
       var navLists = groupItem.querySelectorAll('.nav-list')
       for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
@@ -265,7 +267,7 @@
     } else if (!(thisVersion = localStorage.getItem('ms-docs-' + thisProduct))) {
       return
     }
-    (groupItem || thisTrigger.parentNode.parentNode).dataset.pinnedVersion = thisVersion
+    ;(groupItem || thisTrigger.parentNode.parentNode).dataset.pinnedVersion = thisVersion
     thisTrigger.querySelector('.version-label').textContent = thisVersion
     analytics && analytics.track('Version Pinned', { product: thisProduct, version: thisVersion })
   }

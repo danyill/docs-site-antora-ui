@@ -18,12 +18,10 @@
     var pageGroup, pageGroupItem
     data.splice(0, data.length).forEach(function (group) {
       var groupItem = document.createElement('li')
-      var active, groupData
+      var active
       if ((pageGroup = group.name === page.product)) {
         pageGroupItem = groupItem
         !path.active.length && group.url === page.url && (active = true) && path.active.push(groupItem)
-      } else {
-        groupData = JSON.stringify(group)
       }
       groupItem.className = active ? 'nav-li active' : 'nav-li'
       groupItem.dataset.depth = 0
@@ -89,7 +87,7 @@
           var buildNavForGroupAndInitVersionSelector = function () {
             versionButton.removeEventListener('click', buildNavForGroupAndInitVersionSelector)
             versionButton.removeEventListener('touchend', buildNavForGroupAndInitVersionSelector)
-            buildNavForGroupLazy(groupData)
+            buildNavForGroup(nav, groupItem, group, page)
             initVersionSelector(versionButton, versionMenu, true)
           }
           versionButton.addEventListener('click', buildNavForGroupAndInitVersionSelector)
@@ -106,7 +104,7 @@
         var buildNavForGroupAndToggle = function (e) {
           groupLink.removeEventListener('click', buildNavForGroupAndToggle)
           groupLink.removeEventListener('touchend', buildNavForGroupAndToggle)
-          buildNavForGroupLazy(groupData)
+          buildNavForGroup(nav, groupItem, group, page)
           toggleNav(e)
           groupLink.addEventListener('click', toggleNav)
           groupLink.addEventListener('touchend', toggleNav)
@@ -128,20 +126,11 @@
     }
   }
 
-  function buildNavForGroupLazy (groupData) {
-    var nav = getNav()
-    var start = +new Date()
-    var group = JSON.parse(groupData)
-    console.log(+new Date() - start)
-    var groupItem = nav.querySelector('.nav-li[data-product="' + group.name + '"]')
-    buildNavForGroup(nav, groupItem, group, getPage())
-  }
-
   function buildNavForGroup (nav, groupItem, group, page, path) {
     if (groupItem.classList.contains('loaded')) return
     groupItem.classList.add('loaded')
     group.versions.forEach(function (version) {
-      // NOTE we're only considering the items in the first menu
+      // NOTE only consider items in the first menu
       var items = ((version.sets || [])[0] || {}).items || []
       if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1, page, path)
     })

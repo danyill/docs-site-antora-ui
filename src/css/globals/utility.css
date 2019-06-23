@@ -10,18 +10,6 @@ vars for reference:
 @custom-media --xl (min-width: 1350px);
 @custom-media --marketing (max-width: 992px);
 
-/* utility classes */
 .no-pointer {
   pointer-events: none;
-}
-
-/* keyframes */
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
 }

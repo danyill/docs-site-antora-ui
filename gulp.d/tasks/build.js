@@ -42,7 +42,7 @@ module.exports = (src, dest, preview) => () => {
     postcssCustomMedia,
     postcssNesting,
     postcssVar({ preserve: preview ? 'preserve-computed' : false }),
-    postcssCalc,
+    preview ? postcssCalc : () => {},
     autoprefixer,
     preview ? () => {} : cssnano({ preset: 'default' }),
   ]
@@ -82,7 +82,17 @@ module.exports = (src, dest, preview) => () => {
         })
       )
       .pipe(concat('js/vendor/tippy.js')),
-    vfs.src('css/site.css', { ...opts, sourcemaps }).pipe(postcss(postcssPlugins)),
+    vfs
+      .src('css/site.css', { ...opts, sourcemaps })
+      .pipe(postcss(postcssPlugins))
+      .pipe(
+        preview
+          ? map()
+          : map((file, enc, next) => {
+            file.contents = Buffer.from(file.contents.toString().replace(/(\*\/|}(?!}))/g, '$1\n'))
+            next(null, file)
+          })
+      ),
     vfs.src('font/*.{ttf,woff*(2)}', opts),
     vfs
       .src('img/**/*.{jpg,ico,png,svg}', opts)

@@ -82,6 +82,7 @@
           initVersionSelector(versionButton, versionMenu)
         } else {
           var buildNavForProductAndInitVersionSelector = function () {
+            if (dragging) return
             versionButton.removeEventListener('click', buildNavForProductAndInitVersionSelector)
             versionButton.removeEventListener('touchend', buildNavForProductAndInitVersionSelector)
             buildNavForProduct(nav, navItem, product, page)
@@ -99,6 +100,7 @@
         initVersionSelector(versionButton, versionMenu)
       } else {
         var buildNavForProductAndToggle = function (e) {
+          if (dragging) return
           productLink.removeEventListener('click', buildNavForProductAndToggle)
           productLink.removeEventListener('touchend', buildNavForProductAndToggle)
           buildNavForProduct(nav, navItem, product, page)
@@ -216,8 +218,15 @@
           })
         }
       }
+      nav.addEventListener('touchstart', function () {
+        dragging = false
+      })
+      nav.addEventListener('touchmove', function () {
+        dragging = true
+      })
       nav.querySelector('.nav-list').classList.add('is-loaded')
     } else if (e.target.classList.contains('nav-link')) {
+      if (dragging) return
       // when toggling a product in the sidebar
       navListQuery = (navItem = e.target.parentNode.parentNode).dataset.pinnedVersion
         ? '.nav-list[data-version="' + navItem.dataset.pinnedVersion + '"]'
@@ -237,6 +246,7 @@
   }
 
   function toggleSubnav (e) {
+    if (dragging) return
     var navListParent = e.target.parentNode
     var navList = navListParent.lastChild
     if (navListParent.classList.contains('active')) {
@@ -270,7 +280,7 @@
   }
 
   function initVersionSelector (versionButton, versionMenu, show) {
-    return tippy(versionButton, {
+    tippy(versionButton, {
       content: versionMenu,
       role: 'menu',
       duration: [0, 150],
@@ -292,6 +302,16 @@
       onShown: function (instance) {
         bindVersionEvents(instance.popper)
         instance.popper.classList.add('shown')
+        if (instance.state.touchClose) {
+          instance.state.touchClose = +new Date()
+        } else {
+          instance.state.touchClose = +new Date()
+          instance.reference.addEventListener('touchend', function () {
+            if (+new Date() - instance.state.touchClose > instance.props.duration[1] && instance.state.isShown) {
+              instance.hide()
+            }
+          })
+        }
       },
       placement: 'bottom',
       theme: 'popover-versions',
@@ -391,10 +411,10 @@
     return document.querySelector('nav.nav')
   }
 
+  var dragging, nav
   var page = getPage()
   if (page) {
-    var nav = getNav()
-    buildNav(nav, window.siteNavigationData || [], page, { active: [], current: [] })
+    buildNav((nav = getNav()), window.siteNavigationData || [], page, { active: [], current: [] })
     toggleNav(undefined, page, nav)
   }
 })()

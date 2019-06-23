@@ -1,4 +1,4 @@
-antoraVersion: '1.1.0'
+antoraVersion: '2.0.0'
 site:
   url: &home_url /home.html
   title: MuleSoft Documentation
@@ -121,5 +121,4 @@ page:
   breadcrumbs:
   - content: *page_title
     url: *page_url
-  # FIXME navigation should be reference to navigation for current component version
-  navigation: []
+    urlType: internal

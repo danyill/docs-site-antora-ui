@@ -2,45 +2,44 @@
   'use strict'
 
   function buildNav (nav, data, page, path) {
-    var groupList = document.createElement('ol')
-    groupList.className = 'nav-list'
+    var navList = document.createElement('ol')
+    navList.className = 'nav-list'
     var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     chevron.setAttribute('class', 'svg') // className property is read-only on an SVG
     chevron.setAttribute('viewBox', '0 0 30 30')
     chevron.setAttribute('width', '30')
     chevron.setAttribute('height', '30')
-    var chevronPath = document.createElementNS(chevron.namespaceURI, 'path')
-    chevronPath.setAttribute(
-      'd',
-      'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z'
-    )
-    chevron.appendChild(chevronPath)
-    var pageGroup, pageGroupItem
-    data.splice(0, data.length).forEach(function (group) {
-      var groupItem = document.createElement('li')
+    var svgPath = document.createElementNS(chevron.namespaceURI, 'path')
+    svgPath.setAttribute('d', 'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z')
+    chevron.appendChild(svgPath)
+    var pageNavItem
+    data.splice(0, data.length).forEach(function (product) {
+      var productName = product.name
+      var productForPage = productName === page.product
+      var navItem = document.createElement('li')
       var active
-      if ((pageGroup = group.name === page.product)) {
-        pageGroupItem = groupItem
-        !path.active.length && group.url === page.url && (active = true) && path.active.push(groupItem)
+      if (productForPage) {
+        pageNavItem = navItem
+        !path.active.length && product.url === page.url && (active = true) && path.active.push(navItem)
       }
-      groupItem.className = active ? 'nav-li active' : 'nav-li'
-      groupItem.dataset.depth = 0
-      groupItem.dataset.product = group.name
-      var groupHeading = document.createElement('div')
-      groupHeading.className = 'flex align-center justify-justified'
-      var groupLink = document.createElement('a')
-      groupLink.className = 'flex grow strong link nav-link nav-heading'
-      var groupIcon = document.createElement('img')
-      groupIcon.className = 'icon no-pointer'
-      groupIcon.src = page.uiRootPath + '/img/icons/' + group.name + '.svg'
-      groupLink.appendChild(groupIcon)
-      groupLink.appendChild(document.createTextNode(' ' + group.title))
-      groupHeading.appendChild(groupLink)
-      if (group.versions.length > 1) {
-        var currentVersion = group.versions[0].version
+      navItem.className = active ? 'nav-li active' : 'nav-li'
+      navItem.dataset.depth = 0
+      navItem.dataset.product = productName
+      var productHeading = document.createElement('div')
+      productHeading.className = 'flex align-center justify-justified'
+      var productLink = document.createElement('a')
+      productLink.className = 'flex grow strong link nav-link nav-heading'
+      var productIcon = document.createElement('img')
+      productIcon.className = 'icon no-pointer'
+      productIcon.src = page.uiRootPath + '/img/icons/' + productName + '.svg'
+      productLink.appendChild(productIcon)
+      productLink.appendChild(document.createTextNode(' ' + product.title))
+      productHeading.appendChild(productLink)
+      if (product.versions.length > 1) {
+        var currentVersion = product.versions[0].version
         var versionButton = document.createElement('button')
         versionButton.className = 'flex align-center shrink button versions'
-        versionButton.dataset.product = group.name
+        versionButton.dataset.product = productName
         var versionLabel = document.createElement('span')
         versionLabel.className = 'version-label'
         versionLabel.appendChild(document.createTextNode(currentVersion))
@@ -57,7 +56,7 @@
         currentVersionList.appendChild(currentVersionHeading)
         var currentVersionItem = document.createElement('li')
         currentVersionItem.className = 'flex align-center justify-justified li version'
-        currentVersionItem.dataset.product = group.name
+        currentVersionItem.dataset.product = productName
         currentVersionItem.dataset.version = currentVersion
         currentVersionItem.appendChild(document.createTextNode(currentVersion))
         currentVersionList.appendChild(currentVersionItem)
@@ -67,85 +66,83 @@
         previousVersionsHeading.className = 'li-heading'
         previousVersionsHeading.appendChild(document.createTextNode('Previous versions'))
         previousVersionsList.appendChild(previousVersionsHeading)
-        group.versions.forEach(function (version, versionIdx) {
-          if (versionIdx) {
-            var previousVersionItem = document.createElement('li')
-            previousVersionItem.className = 'flex align-center justify-justified li version'
-            previousVersionItem.dataset.product = group.name
-            previousVersionItem.dataset.version = version.version
-            previousVersionItem.appendChild(document.createTextNode(version.version))
-            previousVersionsList.appendChild(previousVersionItem)
-          }
-          versionMenu.appendChild(previousVersionsList)
+        product.versions.slice(1).forEach(function (version) {
+          var previousVersionItem = document.createElement('li')
+          previousVersionItem.className = 'flex align-center justify-justified li version'
+          previousVersionItem.dataset.product = productName
+          previousVersionItem.dataset.version = version.version
+          previousVersionItem.appendChild(document.createTextNode(version.version))
+          previousVersionsList.appendChild(previousVersionItem)
         })
+        versionMenu.appendChild(previousVersionsList)
         versionButton.appendChild(versionMenu)
-        groupHeading.appendChild(versionButton)
-        setPinnedVersion(versionButton, { product: group.name }, groupItem)
-        if (pageGroup) {
+        productHeading.appendChild(versionButton)
+        setPinnedVersion(versionButton, { product: productName }, navItem)
+        if (productForPage) {
           initVersionSelector(versionButton, versionMenu)
         } else {
-          var buildNavForGroupAndInitVersionSelector = function () {
-            versionButton.removeEventListener('click', buildNavForGroupAndInitVersionSelector)
-            versionButton.removeEventListener('touchend', buildNavForGroupAndInitVersionSelector)
-            buildNavForGroup(nav, groupItem, group, page)
+          var buildNavForProductAndInitVersionSelector = function () {
+            versionButton.removeEventListener('click', buildNavForProductAndInitVersionSelector)
+            versionButton.removeEventListener('touchend', buildNavForProductAndInitVersionSelector)
+            buildNavForProduct(nav, navItem, product, page)
             initVersionSelector(versionButton, versionMenu, true)
           }
-          versionButton.addEventListener('click', buildNavForGroupAndInitVersionSelector)
-          versionButton.addEventListener('touchend', buildNavForGroupAndInitVersionSelector)
+          versionButton.addEventListener('click', buildNavForProductAndInitVersionSelector)
+          versionButton.addEventListener('touchend', buildNavForProductAndInitVersionSelector)
         }
       }
-      groupItem.appendChild(groupHeading)
-      if (pageGroup) {
-        groupLink.addEventListener('click', toggleNav)
-        groupLink.addEventListener('touchend', toggleNav)
-        buildNavForGroup(nav, groupItem, group, page, { active: path.active, current: [groupItem] })
+      navItem.appendChild(productHeading)
+      if (productForPage) {
+        productLink.addEventListener('click', toggleNav)
+        productLink.addEventListener('touchend', toggleNav)
+        buildNavForProduct(nav, navItem, product, page, { active: path.active, current: [navItem] })
         initVersionSelector(versionButton, versionMenu)
       } else {
-        var buildNavForGroupAndToggle = function (e) {
-          groupLink.removeEventListener('click', buildNavForGroupAndToggle)
-          groupLink.removeEventListener('touchend', buildNavForGroupAndToggle)
-          buildNavForGroup(nav, groupItem, group, page)
+        var buildNavForProductAndToggle = function (e) {
+          productLink.removeEventListener('click', buildNavForProductAndToggle)
+          productLink.removeEventListener('touchend', buildNavForProductAndToggle)
+          buildNavForProduct(nav, navItem, product, page)
           toggleNav(e)
-          groupLink.addEventListener('click', toggleNav)
-          groupLink.addEventListener('touchend', toggleNav)
+          productLink.addEventListener('click', toggleNav)
+          productLink.addEventListener('touchend', toggleNav)
         }
-        groupLink.addEventListener('click', buildNavForGroupAndToggle)
-        groupLink.addEventListener('touchend', buildNavForGroupAndToggle)
+        productLink.addEventListener('click', buildNavForProductAndToggle)
+        productLink.addEventListener('touchend', buildNavForProductAndToggle)
       }
-      groupList.appendChild(groupItem)
+      navList.appendChild(navItem)
     })
-    nav.appendChild(groupList)
-    // NOTE we could do this when navigation is built if we appended children to parent eagerly
+    nav.appendChild(navList)
+    // NOTE we could mark active when navigation is built if we appended children to parent eagerly
     if (path.active.length) {
       path.active.forEach(function (it) {
         it.classList.add('active')
         if (it.parentNode.classList.contains('parent')) it.parentNode.style.display = ''
       })
-    } else if (pageGroupItem) {
-      pageGroupItem.classList.add('active')
+    } else if (pageNavItem) {
+      pageNavItem.classList.add('active')
     } else {
       var notice = document.createElement('div')
       notice.className = 'nav-list nav-heading'
       notice.appendChild(document.createTextNode('Site navigation data not found.'))
-      nav.replaceChild(notice, groupList)
+      nav.replaceChild(notice, navList)
     }
   }
 
-  function buildNavForGroup (nav, groupItem, group, page, path) {
-    if (groupItem.classList.contains('is-loaded')) return
-    groupItem.classList.add('is-loaded')
-    group.versions.forEach(function (version) {
+  function buildNavForProduct (nav, navItem, product, page, path) {
+    if (navItem.classList.contains('is-loaded')) return
+    navItem.classList.add('is-loaded')
+    product.versions.forEach(function (version) {
       var items = ((version.sets || [])[0] || {}).items || [] // only consider items in first menu
-      if (items.length) buildNavTree(nav, groupItem, group.name, version.version, items, 1, page, path)
+      if (items.length) buildNavTree(nav, navItem, product.name, version.version, items, 1, page, path)
     })
   }
 
-  function buildNavTree (nav, parent, group, version, items, level, page, path) {
+  function buildNavTree (nav, parent, productName, version, items, level, page, path) {
     var navList = document.createElement('ol')
     navList.className = 'nav-list parent'
     if (level === 1) {
-      if (!(group === page.product && version === page.version)) navList.style.display = 'none'
-      navList.dataset.product = group
+      if (!(productName === page.product && version === page.version)) navList.style.display = 'none'
+      navList.dataset.product = productName
       navList.dataset.version = version
     } else if (!parent.classList.contains('active')) {
       navList.style.display = 'none'
@@ -153,11 +150,12 @@
     items.forEach(function (item) {
       var navItem = document.createElement('li')
       var active
-      if (path && !path.active.length && item.url === page.url && group === page.product && version === page.version) {
-        active = true
-        path.current.concat(navItem).forEach(function (activeItem) {
-          path.active.push(activeItem)
-        })
+      if (path && !path.active.length) {
+        if (item.url === page.url && productName === page.product && version === page.version && (active = true)) {
+          path.current.concat(navItem).forEach(function (activeItem) {
+            path.active.push(activeItem)
+          })
+        }
       }
       navItem.className = active ? 'nav-li active' : 'nav-li'
       navItem.dataset.depth = level
@@ -191,7 +189,7 @@
       }
       if (item.items) {
         var nestedPath = path && { active: path.active, current: path.current.concat(navItem) }
-        buildNavTree(nav, navItem, group, version, item.items, level + 1, page, nestedPath)
+        buildNavTree(nav, navItem, productName, version, item.items, level + 1, page, nestedPath)
       }
       navList.appendChild(navItem)
     })
@@ -199,18 +197,18 @@
   }
 
   function toggleNav (e, selected, nav) {
-    var groupItem
+    var navItem
     if (!e) {
+      var navList, navListQuery
       // on page load (when navigating from the location bar)
       if (selected) {
-        var navListQuery = '.nav-list[data-product="' + selected.product + '"]'
+        navListQuery = '.nav-list[data-product="' + selected.product + '"]'
         var productVersionSelector = nav.querySelector('button[data-product="' + selected.product + '"]')
         if (productVersionSelector) {
           setPinnedVersion(productVersionSelector, selected)
           navListQuery += '[data-version="' + selected.version + '"]'
         }
-        var navList = nav.querySelector(navListQuery)
-        if (navList) {
+        if ((navList = nav.querySelector(navListQuery))) {
           scrollToActive(nav, navList)
           window.addEventListener('load', function scrollToActiveOnLoad () {
             window.removeEventListener('load', scrollToActiveOnLoad)
@@ -220,20 +218,20 @@
       }
       nav.querySelector('.nav-list').classList.add('is-loaded')
     } else if (e.target.classList.contains('nav-link')) {
-      // when toggling a group in the sidebar
-      var groupHeadingWrapper = e.target.parentNode
-      groupItem = groupHeadingWrapper.parentNode
-      ;(groupItem.querySelector('.nav-list[data-version="' + groupItem.dataset.pinnedVersion + '"]') ||
-        groupHeadingWrapper.nextSibling).style.display = groupItem.classList.toggle('active') ? '' : 'none'
+      // when toggling a product in the sidebar
+      navListQuery = (navItem = e.target.parentNode.parentNode).dataset.pinnedVersion
+        ? '.nav-list[data-version="' + navItem.dataset.pinnedVersion + '"]'
+        : '.nav-list[data-version]'
+      navItem.querySelector(navListQuery).style.display = navItem.classList.toggle('active') ? '' : 'none'
       tippy.hideAll()
       window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
     } else if (selected) {
       // when changing the selected version
-      groupItem = nav.querySelector('.nav-li[data-product="' + selected.product + '"]')
-      var navLists = groupItem.querySelectorAll('.nav-list[data-product]')
+      navItem = nav.querySelector('.nav-li[data-product="' + selected.product + '"]')
+      var navLists = navItem.querySelectorAll('.nav-list[data-product]')
       for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
-      groupItem.querySelector('.nav-list[data-version="' + selected.version + '"]').style.display = ''
-      groupItem.classList.add('active')
+      navItem.querySelector('.nav-list[data-version="' + selected.version + '"]').style.display = ''
+      navItem.classList.add('active')
       tippy.hideAll()
     }
   }
@@ -258,7 +256,7 @@
     if (adjustment > 0) nav.scrollTop = adjustment
   }
 
-  function setPinnedVersion (thisButton, pinned, groupItem) {
+  function setPinnedVersion (thisButton, pinned, navItem) {
     var analytics, pinnedVersion
     if ((pinnedVersion = pinned.version)) {
       localStorage.setItem('ms-docs-' + pinned.product, pinnedVersion)
@@ -266,7 +264,7 @@
     } else if (!(pinnedVersion = localStorage.getItem('ms-docs-' + pinned.product))) {
       return
     }
-    ;(groupItem || thisButton.parentNode.parentNode).dataset.pinnedVersion = pinnedVersion
+    ;(navItem || thisButton.parentNode.parentNode).dataset.pinnedVersion = pinnedVersion
     thisButton.querySelector('.version-label').textContent = pinnedVersion
     analytics && analytics.track('Version Pinned', { product: pinned.product, version: pinnedVersion })
   }

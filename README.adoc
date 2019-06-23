@@ -1,11 +1,11 @@
-= MuleSoft Documentation Site UI (Sandbox)
+= MuleSoft Documentation Site UI
 // Settings:
 :experimental:
 :hide-uri-scheme:
 // Variables:
-:current-release: v0
+:current-release: v313
 // Project URIs:
-:uri-project: https://github.com/mulesoft/docs-site-antora-ui-sandbox
+:uri-project: https://github.com/mulesoft/docs-site-antora-ui
 // External URIs:
 :uri-antora: https://antora.org
 :uri-git: https://git-scm.com
@@ -15,7 +15,7 @@
 :uri-nvm: https://github.com/creationix/nvm
 :uri-nvm-install: {uri-nvm}#installation
 
-This project generates the next version of the UI for the MuleSoft documentation site.
+This project generates the UI for the MuleSoft documentation site.
 
 == Use the UI
 

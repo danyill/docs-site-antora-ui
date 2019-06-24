@@ -82,7 +82,6 @@
           initVersionSelector(versionButton, versionMenu)
         } else {
           var buildNavForProductAndInitVersionSelector = function () {
-            if (dragging) return
             versionButton.removeEventListener('click', buildNavForProductAndInitVersionSelector)
             versionButton.removeEventListener('touchend', buildNavForProductAndInitVersionSelector)
             buildNavForProduct(nav, navItem, product, page)
@@ -100,7 +99,6 @@
         initVersionSelector(versionButton, versionMenu)
       } else {
         var buildNavForProductAndToggle = function (e) {
-          if (dragging) return
           productLink.removeEventListener('click', buildNavForProductAndToggle)
           productLink.removeEventListener('touchend', buildNavForProductAndToggle)
           buildNavForProduct(nav, navItem, product, page)
@@ -218,15 +216,11 @@
           })
         }
       }
-      nav.addEventListener('touchstart', function () {
-        dragging = false
-      })
-      nav.addEventListener('touchmove', function () {
-        dragging = true
-      })
+      nav.addEventListener('touchstart', ignoreTouchScroll, { capture: true, passive: true })
+      nav.addEventListener('touchmove', ignoreTouchScroll, { capture: true, passive: true })
+      nav.addEventListener('touchend', ignoreTouchScroll, { capture: true, passive: true })
       nav.querySelector('.nav-list').classList.add('is-loaded')
     } else if (e.target.classList.contains('nav-link')) {
-      if (dragging) return
       // when toggling a product in the sidebar
       navListQuery = (navItem = e.target.parentNode.parentNode).dataset.pinnedVersion
         ? '.nav-list[data-version="' + navItem.dataset.pinnedVersion + '"]'
@@ -246,7 +240,6 @@
   }
 
   function toggleSubnav (e) {
-    if (dragging) return
     var navListParent = e.target.parentNode
     var navList = navListParent.lastChild
     if (navListParent.classList.contains('active')) {
@@ -289,29 +282,18 @@
       showOnInit: show,
       offset: '-40, 5',
       onHide: function (instance) {
-        instance.popper.classList.add('hide')
         instance.popper.classList.remove('shown')
       },
       onHidden: function (instance) {
         unbindVersionEvents(instance.popper)
+        instance.popper.classList.add('hide')
       },
       onShow: function (instance) {
-        instance.hide()
         instance.popper.classList.remove('hide')
       },
       onShown: function (instance) {
         bindVersionEvents(instance.popper)
         instance.popper.classList.add('shown')
-        if (instance.state.touchClose) {
-          instance.state.touchClose = +new Date()
-        } else {
-          instance.state.touchClose = +new Date()
-          instance.reference.addEventListener('touchend', function () {
-            if (+new Date() - instance.state.touchClose > instance.props.duration[1] && instance.state.isShown) {
-              instance.hide()
-            }
-          })
-        }
       },
       placement: 'bottom',
       theme: 'popover-versions',
@@ -319,6 +301,16 @@
       trigger: 'click',
       zIndex: 14, // same as z-nav-mobile
     })
+    versionButton.addEventListener(
+      'touchstart',
+      function (e) {
+        if (versionButton._tippy.state.isVisible) {
+          versionButton._tippy.hide()
+          cancelEvent(e)
+        }
+      },
+      { capture: true, passive: true }
+    )
   }
 
   function switchVersion (e) {
@@ -348,6 +340,31 @@
 
   function cancelEvent (e) {
     e.stopPropagation()
+  }
+
+  function ignoreTouchScroll (e) {
+    if (e.type === 'touchstart') dragging = false
+    else if (e.type === 'touchmove') dragging = true
+    else if (e.type === 'touchend') {
+      if (dragging) e.stopPropagation()
+      dragging = false
+    }
+  }
+
+  function getPage () {
+    var pageProductMeta, head
+    if ((pageProductMeta = (head = document.head).querySelector('meta[name=page-component]'))) {
+      return {
+        product: pageProductMeta.getAttribute('content'),
+        version: head.querySelector('meta[name=page-version]').getAttribute('content'),
+        url: head.querySelector('meta[name=page-url]').getAttribute('content'),
+        uiRootPath: document.getElementById('site-script').dataset.uiRootPath,
+      }
+    }
+  }
+
+  function getNav () {
+    return document.querySelector('nav.nav')
   }
 
   function relativize (from, to) {
@@ -395,23 +412,7 @@
     return arr.slice(start, end)
   }
 
-  function getPage () {
-    var pageProductMeta, head
-    if ((pageProductMeta = (head = document.head).querySelector('meta[name=page-component]'))) {
-      return {
-        product: pageProductMeta.getAttribute('content'),
-        version: head.querySelector('meta[name=page-version]').getAttribute('content'),
-        url: head.querySelector('meta[name=page-url]').getAttribute('content'),
-        uiRootPath: document.getElementById('site-script').dataset.uiRootPath,
-      }
-    }
-  }
-
-  function getNav () {
-    return document.querySelector('nav.nav')
-  }
-
-  var dragging, nav
+  var nav, dragging
   var page = getPage()
   if (page) {
     buildNav((nav = getNav()), window.siteNavigationData || [], page, { active: [], current: [] })

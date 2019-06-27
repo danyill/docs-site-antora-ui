@@ -6,7 +6,7 @@
   height: 100%;
   left: 0;
   overflow-y: scroll;
-  padding: var(--lg) var(--md) var(--xl);
+  padding: 12px var(--md) 0;
   position: fixed;
   top: 0;
   transform: translateX(calc(-1 * var(--nav-width)));
@@ -35,7 +35,7 @@
 
   /* search input wrapper */
   & .search {
-    margin-bottom: var(--sm);
+    margin: 8px 0 var(--sm);
     position: relative;
     width: $nav-width - ($lg * 2);
 
@@ -58,6 +58,7 @@
   }
 
   & > .nav-list {
+    padding-bottom: 12px;
     visibility: hidden;
     &.is-loaded {
       visibility: visible;

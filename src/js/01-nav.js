@@ -96,7 +96,6 @@
         productLink.addEventListener('click', toggleNav)
         productLink.addEventListener('touchend', toggleNav)
         buildNavForProduct(nav, navItem, product, page, { active: path.active, current: [navItem] })
-        initVersionSelector(versionButton, versionMenu)
       } else {
         var buildNavForProductAndToggle = function (e) {
           productLink.removeEventListener('click', buildNavForProductAndToggle)

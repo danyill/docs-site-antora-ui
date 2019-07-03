@@ -1,230 +1,420 @@
-;(() => {
+;(function () {
   'use strict'
 
-  // navigation
-  const nav = document.querySelector('.js-nav')
-  const navLists = nav.querySelectorAll('.js-nav-list')
-  const navLink = nav.querySelectorAll('.js-nav-link')
-  let navListsHeights = []
-  let navListItems
-  let navListItemHeight
-
-  // calculate list height and set height on initial list
-  for (let i = 0; i < navLists.length; i++) {
-    // get all list items and reset height
-    navListItems = navLists[i].querySelectorAll('li')
-    navListItemHeight = 0
-
-    // get height of all list items
-    for (let x = 0; x < navListItems.length; x++) {
-      navListItemHeight += navListItems[x].offsetHeight
-      navListsHeights[i] = navListItemHeight
-    }
-
-    // set initial active list height
-    if (navLists[i].classList.contains('active')) {
-      navLists[i].style.transition = 'none'
-      navLists[i].style.maxHeight = `${navListsHeights[i]}px`
-    }
-  }
-
-  // setup toggle events
-  for (let i = 0; i < navLink.length; i++) {
-    navLink[i].addEventListener('click', (e) => toggleNav(e, navLists, navListsHeights))
-    navLink[i].addEventListener('touchend', (e) => toggleNav(e, navLists, navListsHeights))
-  }
-
-  const showNav = () => {
-    const nav = document.querySelector('.js-nav .nav-list')
-    if (!nav.classList.contains('loaded')) nav.classList.add('loaded')
-  }
-
-  const toggleNav = (e, navLists, navListsHeights, thisProduct, thisVersion) => {
-    let noTransition = false
-    let thisTarget = e.target
-    let thisList
-    let thisIndex
-    let collapse
-
-    // when navigating on page load
-    if (e.type === 'DOMContentLoaded') {
-      // check if there's a pinned version
-      const loadVersion = thisVersion || localStorage.getItem(`ms-docs-${thisProduct}`)
-      if (loadVersion) {
-        thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${loadVersion}"]`)
-      } else {
-        thisList = nav.querySelector(`.js-nav-list[data-product="${thisProduct}"]`)
+  function buildNav (nav, data, page, path) {
+    var navList = document.createElement('ol')
+    navList.className = 'nav-list'
+    var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    chevron.setAttribute('class', 'svg') // className property is read-only on an SVG
+    chevron.setAttribute('viewBox', '0 0 30 30')
+    chevron.setAttribute('width', '30')
+    chevron.setAttribute('height', '30')
+    var svgPath = document.createElementNS(chevron.namespaceURI, 'path')
+    svgPath.setAttribute('d', 'M15.003 21.284L6.563 9.232l1.928-.516 6.512 9.299 6.506-9.299 1.928.516-8.434 12.052z')
+    chevron.appendChild(svgPath)
+    var pageNavItem
+    data.splice(0, data.length).forEach(function (product) {
+      var productName = product.name
+      var productForPage = productName === page.product
+      var navItem = document.createElement('li')
+      var active
+      if (productForPage) {
+        pageNavItem = navItem
+        !path.active.length && product.url === page.url && (active = true) && path.active.push(navItem)
       }
-      noTransition = true
-    } else if (thisTarget.classList.contains('js-nav-link')) {
-      // if navigating via sidebar
-      let thisWrapper = thisTarget.parentElement
-      let thisNavLi = thisWrapper.parentElement
-      thisList = thisNavLi.querySelector('[data-pinned]') || thisWrapper.nextElementSibling
-      collapse = thisNavLi.classList.contains('active') || false
-      analytics.track('Toggled Nav', {
-        url: thisTarget.innerText,
-      })
-    } else {
-      // if navigation via version select
-      thisList = nav.querySelector(`[data-product="${thisProduct}"][data-version="${thisVersion}"]`)
-      // used for disabling transition during version change
-      noTransition = true
-    }
-
-    for (let i = 0; i < navLists.length; i++) {
-      // if transition disabled on load, re-enable
-      if (noTransition) {
-        navLists[i].classList.add('transition-opacity-only')
-      } else if (navLists[i].classList.contains('transition-opacity-only')) {
-        navLists[i].classList.remove('transition-opacity-only')
-      }
-
-      // make other elements inactive
-      navLists[i].parentNode.classList.remove('active')
-      navLists[i].style.maxHeight = null
-      navLists[i].style.opacity = '0'
-
-      // check if list matches active target
-      if (navLists[i] === thisList) {
-        thisIndex = i
-      }
-    }
-
-    // close any open popovers
-    closePopovers()
-
-    // if there's no list, stop here
-    if (!thisList) return
-
-    // make current element active if not collapsing
-    if (!collapse) {
-      thisList.style.maxHeight = `${navListsHeights[thisIndex]}px`
-      thisList.style.opacity = '1'
-      thisList.parentNode.classList.add('active')
-      if (noTransition) thisList.classList.add('transition-opacity-only')
-    }
-
-    // finish load transition
-    if (e.type === 'DOMContentLoaded') {
-      showNav()
-      scrollToActive(thisList)
-    }
-  }
-
-  // this scrolls the navbar to the current page…
-  // really this doesn't work great b/c the nav should not reload when the page changes (singe-page)
-  const scrollToActive = (thisList) => {
-    const activeLinks = thisList.querySelectorAll('.nav-link.active')
-    for (let i = 0; i < activeLinks.length; i++) {
-      let thisList = activeLinks[i].parentNode
-      while (thisList.style.opacity === '1') {
-        thisList = thisList.parentNode
-      }
-      document.querySelector('.js-nav').scrollTo({
-        behavior: 'smooth',
-        top: thisList.offsetTop - (window.innerHeight / 2) + 65, // scroll to center; 65 is the header height
-      })
-      break
-    }
-  }
-
-  // version popovers
-  // tippy plugin https://atomiks.github.io/tippyjs/
-  const versionsTrigger = document.querySelectorAll('[data-trigger="versions"]')
-  const versionsPopover = document.querySelectorAll('[data-popover="versions"]')
-
-  const setPin = (thisProduct, thisTrigger, thisVersion) => {
-    const savedVersion = localStorage.getItem(`ms-docs-${thisProduct}`)
-    if (savedVersion) {
-      thisTrigger.querySelector('.js-versions-text').textContent = savedVersion
-      for (let i = 0; i < navLists.length; i++) {
-        const listProduct = navLists[i].getAttribute('data-product')
-        const listVersion = navLists[i].getAttribute('data-version')
-        if (thisProduct === listProduct && savedVersion === listVersion) {
-          navLists[i].setAttribute('data-pinned', true)
+      navItem.className = active ? 'nav-li active' : 'nav-li'
+      navItem.dataset.depth = 0
+      navItem.dataset.product = productName
+      var productHeading = document.createElement('div')
+      productHeading.className = 'flex align-center justify-justified'
+      var productLink = document.createElement('a')
+      productLink.className = 'flex grow strong link nav-link nav-heading'
+      var productIcon = document.createElement('img')
+      productIcon.className = 'icon no-pointer'
+      productIcon.src = page.uiRootPath + '/img/icons/' + productName + '.svg'
+      productLink.appendChild(productIcon)
+      productLink.appendChild(document.createTextNode(' ' + product.title))
+      productHeading.appendChild(productLink)
+      if (product.versions.length > 1) {
+        var currentVersion = product.versions[0].version
+        var versionButton = document.createElement('button')
+        versionButton.className = 'flex align-center shrink button versions'
+        versionButton.dataset.product = productName
+        var versionLabel = document.createElement('span')
+        versionLabel.className = 'version-label'
+        versionLabel.appendChild(document.createTextNode(currentVersion))
+        versionButton.appendChild(versionLabel)
+        versionButton.appendChild(document.createTextNode(' '))
+        versionButton.appendChild(chevron.cloneNode(true))
+        var versionMenu = document.createElement('div')
+        versionMenu.className = 'popover version-popover'
+        var currentVersionList = document.createElement('ol')
+        currentVersionList.className = 'ol'
+        var currentVersionHeading = document.createElement('li')
+        currentVersionHeading.className = 'li-heading'
+        currentVersionHeading.appendChild(document.createTextNode('Current version'))
+        currentVersionList.appendChild(currentVersionHeading)
+        var currentVersionItem = document.createElement('li')
+        currentVersionItem.className = 'flex align-center justify-justified li version'
+        currentVersionItem.dataset.product = productName
+        currentVersionItem.dataset.version = currentVersion
+        currentVersionItem.appendChild(document.createTextNode(currentVersion))
+        currentVersionList.appendChild(currentVersionItem)
+        versionMenu.appendChild(currentVersionList)
+        var previousVersionsList = document.createElement('ol')
+        var previousVersionsHeading = document.createElement('li')
+        previousVersionsHeading.className = 'li-heading'
+        previousVersionsHeading.appendChild(document.createTextNode('Previous versions'))
+        previousVersionsList.appendChild(previousVersionsHeading)
+        product.versions.slice(1).forEach(function (version) {
+          var previousVersionItem = document.createElement('li')
+          previousVersionItem.className = 'flex align-center justify-justified li version'
+          previousVersionItem.dataset.product = productName
+          previousVersionItem.dataset.version = version.version
+          previousVersionItem.appendChild(document.createTextNode(version.version))
+          previousVersionsList.appendChild(previousVersionItem)
+        })
+        versionMenu.appendChild(previousVersionsList)
+        versionButton.appendChild(versionMenu)
+        productHeading.appendChild(versionButton)
+        setPinnedVersion(versionButton, { product: productName }, navItem)
+        if (productForPage) {
+          initVersionSelector(versionButton, versionMenu)
+        } else {
+          var buildNavForProductAndInitVersionSelector = function () {
+            versionButton.removeEventListener('click', buildNavForProductAndInitVersionSelector)
+            versionButton.removeEventListener('touchend', buildNavForProductAndInitVersionSelector)
+            buildNavForProduct(nav, navItem, product, page)
+            initVersionSelector(versionButton, versionMenu, true)
+          }
+          versionButton.addEventListener('click', buildNavForProductAndInitVersionSelector)
+          versionButton.addEventListener('touchend', buildNavForProductAndInitVersionSelector)
         }
       }
+      navItem.appendChild(productHeading)
+      if (productForPage) {
+        productLink.addEventListener('click', toggleNav)
+        productLink.addEventListener('touchend', toggleNav)
+        buildNavForProduct(nav, navItem, product, page, { active: path.active, current: [navItem] })
+      } else {
+        var buildNavForProductAndToggle = function (e) {
+          productLink.removeEventListener('click', buildNavForProductAndToggle)
+          productLink.removeEventListener('touchend', buildNavForProductAndToggle)
+          buildNavForProduct(nav, navItem, product, page)
+          toggleNav(e)
+          productLink.addEventListener('click', toggleNav)
+          productLink.addEventListener('touchend', toggleNav)
+        }
+        productLink.addEventListener('click', buildNavForProductAndToggle)
+        productLink.addEventListener('touchend', buildNavForProductAndToggle)
+      }
+      navList.appendChild(navItem)
+    })
+    nav.appendChild(navList)
+    // NOTE we could mark active when navigation is built if we appended children to parent eagerly
+    if (path.active.length) {
+      path.active.forEach(function (it) {
+        it.classList.add('active')
+        if (it.parentNode.classList.contains('parent')) it.parentNode.style.display = ''
+      })
+    } else if (pageNavItem) {
+      pageNavItem.classList.add('active')
+    } else {
+      var notice = document.createElement('div')
+      notice.className = 'nav-list nav-heading'
+      notice.appendChild(document.createTextNode('Site navigation data not found.'))
+      nav.replaceChild(notice, navList)
     }
-    analytics.track('Version Pinned', {
-      product: thisProduct,
-      version: thisVersion,
+  }
+
+  function buildNavForProduct (nav, navItem, product, page, path) {
+    if (navItem.classList.contains('is-loaded')) return
+    navItem.classList.add('is-loaded')
+    product.versions.forEach(function (version) {
+      var items = ((version.sets || [])[0] || {}).items || [] // only consider items in first menu
+      if (items.length) buildNavTree(nav, navItem, product.name, version.version, items, 1, page, path)
     })
   }
 
-  for (let i = 0; i < versionsTrigger.length; i++) {
-    tippy(versionsTrigger[i], {
+  function buildNavTree (nav, parent, productName, version, items, level, page, path) {
+    var navList = document.createElement('ol')
+    navList.className = 'nav-list parent'
+    if (level === 1) {
+      if (!(productName === page.product && version === page.version)) navList.style.display = 'none'
+      navList.dataset.product = productName
+      navList.dataset.version = version
+    } else if (!parent.classList.contains('active')) {
+      navList.style.display = 'none'
+    }
+    items.forEach(function (item) {
+      var navItem = document.createElement('li')
+      var active
+      if (path && !path.active.length) {
+        if (item.url === page.url && productName === page.product && version === page.version && (active = true)) {
+          path.current.concat(navItem).forEach(function (activeItem) {
+            path.active.push(activeItem)
+          })
+        }
+      }
+      navItem.className = active ? 'nav-li active' : 'nav-li'
+      navItem.dataset.depth = level
+      if (item.items) {
+        var navToggle = document.createElement('button')
+        navToggle.className = 'subnav-toggle'
+        navItem.appendChild(navToggle)
+        navToggle.addEventListener('click', toggleSubnav)
+        navToggle.addEventListener('touchend', toggleSubnav)
+      }
+      if (item.url) {
+        var navLink = document.createElement('a')
+        navLink.className =
+          'flex shrink align-center link nav-link' + (active ? ' active' : '') + (item.items ? ' nav-nested' : '')
+        if (item.urlType === 'external') {
+          navLink.href = item.url
+          navLink.target = '_blank'
+        } else {
+          navLink.href = relativize(page.url, item.url)
+        }
+        navLink.innerHTML = item.content
+        navItem.appendChild(navLink)
+      } else {
+        var navHeading = document.createElement('span')
+        navHeading.className = 'flex grow align-center nav-heading' + (item.items ? ' nav-nested' : '')
+        var navHeadingSpan = document.createElement('span')
+        navHeadingSpan.className = 'span'
+        navHeadingSpan.innerHTML = item.content
+        navHeading.appendChild(navHeadingSpan)
+        navItem.appendChild(navHeading)
+      }
+      if (item.items) {
+        var nestedPath = path && { active: path.active, current: path.current.concat(navItem) }
+        buildNavTree(nav, navItem, productName, version, item.items, level + 1, page, nestedPath)
+      }
+      navList.appendChild(navItem)
+    })
+    return parent.appendChild(navList)
+  }
+
+  function toggleNav (e, selected, nav) {
+    var navItem
+    if (!e) {
+      var navList, navListQuery
+      // on page load (when navigating from the location bar)
+      if (selected) {
+        navListQuery = '.nav-list[data-product="' + selected.product + '"]'
+        var productVersionSelector = nav.querySelector('button[data-product="' + selected.product + '"]')
+        if (productVersionSelector) {
+          setPinnedVersion(productVersionSelector, selected)
+          navListQuery += '[data-version="' + selected.version + '"]'
+        }
+        if ((navList = nav.querySelector(navListQuery))) {
+          scrollToActive(nav, navList)
+          window.addEventListener('load', function scrollToActiveOnLoad () {
+            window.removeEventListener('load', scrollToActiveOnLoad)
+            scrollToActive(nav, navList) // scroll again in case images caused layout to shift
+          })
+        }
+      }
+      nav.addEventListener('touchstart', ignoreTouchScroll, { capture: true, passive: true })
+      nav.addEventListener('touchmove', ignoreTouchScroll, { capture: true, passive: true })
+      nav.addEventListener('touchend', ignoreTouchScroll, { capture: true, passive: true })
+      nav.querySelector('.nav-list').classList.add('is-loaded')
+    } else if (e.target.classList.contains('nav-link')) {
+      // when toggling a product in the sidebar
+      navListQuery = (navItem = e.target.parentNode.parentNode).dataset.pinnedVersion
+        ? '.nav-list[data-version="' + navItem.dataset.pinnedVersion + '"]'
+        : '.nav-list[data-version]'
+      navItem.querySelector(navListQuery).style.display = navItem.classList.toggle('active') ? '' : 'none'
+      tippy.hideAll()
+      window.analytics && window.analytics.track('Toggled Nav', { url: e.target.innerText.trim() })
+    } else if (selected) {
+      // when changing the selected version
+      navItem = nav.querySelector('.nav-li[data-product="' + selected.product + '"]')
+      var navLists = navItem.querySelectorAll('.nav-list[data-product]')
+      for (var i = 0, l = navLists.length; i < l; i++) navLists[i].style.display = 'none'
+      navItem.querySelector('.nav-list[data-version="' + selected.version + '"]').style.display = ''
+      navItem.classList.add('active')
+      tippy.hideAll()
+    }
+  }
+
+  function toggleSubnav (e) {
+    var navListParent = e.target.parentNode
+    var navList = navListParent.lastChild
+    if (navListParent.classList.contains('active')) {
+      navList.style.display = 'none'
+      navListParent.classList.remove('active')
+    } else {
+      navList.style.display = ''
+      navListParent.classList.add('active')
+    }
+  }
+
+  function scrollToActive (nav, thisList) {
+    var focusElement = thisList.querySelector('.nav-link.active') || thisList.previousSibling
+    var navRect = nav.getBoundingClientRect()
+    var midpoint = (navRect.height - navRect.top) / 2
+    var adjustment = focusElement.offsetTop + focusElement.offsetHeight / 2 - midpoint
+    if (adjustment > 0) nav.scrollTop = adjustment
+  }
+
+  function setPinnedVersion (thisButton, pinned, navItem) {
+    var analytics, pinnedVersion
+    if ((pinnedVersion = pinned.version)) {
+      localStorage.setItem('ms-docs-' + pinned.product, pinnedVersion)
+      analytics = window.analytics
+    } else if (!(pinnedVersion = localStorage.getItem('ms-docs-' + pinned.product))) {
+      return
+    }
+    ;(navItem || thisButton.parentNode.parentNode).dataset.pinnedVersion = pinnedVersion
+    thisButton.querySelector('.version-label').textContent = pinnedVersion
+    analytics && analytics.track('Version Pinned', { product: pinned.product, version: pinnedVersion })
+  }
+
+  function initVersionSelector (versionButton, versionMenu, show) {
+    tippy(versionButton, {
+      content: versionMenu,
+      role: 'menu',
       duration: [0, 150],
       flip: false,
-      html: versionsPopover[i],
+      interactive: true,
+      showOnInit: show,
       offset: '-40, 5',
-      onHide (instance) {
-        this.classList.add('hide')
-        this.classList.remove('shown')
-        unbindEvents(this)
+      onHide: function (instance) {
+        instance.popper.classList.remove('shown')
       },
-      onShow (instance) {
-        closePopovers(instance)
-        this.classList.remove('hide')
-        bindEvents(this)
+      onHidden: function (instance) {
+        unbindVersionEvents(instance.popper)
+        instance.popper.classList.add('hide')
       },
-      onShown (instance) {
-        this.classList.add('shown')
+      onShow: function (instance) {
+        instance.popper.classList.remove('hide')
+      },
+      onShown: function (instance) {
+        bindVersionEvents(instance.popper)
+        instance.popper.classList.add('shown')
       },
       placement: 'bottom',
       theme: 'popover-versions',
+      touchHold: true, // maps touch as click (for some reason)
       trigger: 'click',
       zIndex: 14, // same as z-nav-mobile
     })
-
-    // if a version has been pinned
-    setPin(versionsTrigger[i].getAttribute('data-trigger-product'), versionsTrigger[i])
+    versionButton.addEventListener(
+      'touchstart',
+      function (e) {
+        if (versionButton._tippy.state.isVisible) {
+          versionButton._tippy.hide()
+          cancelEvent(e)
+        }
+      },
+      { capture: true, passive: true }
+    )
   }
 
-  const closePopovers = (instance) => {
-    const popper = document.querySelector('.tippy-popper')
-    if (popper) popper._tippy.hide()
-  }
-
-  // changing versions
-  const changeVersion = (e) => {
-    const thisTippy = document.querySelector('.tippy-popper')._tippy
-    const thisTarget = e.target
-    const thisProduct = thisTarget.getAttribute('data-product')
-    const thisVersion = thisTarget.getAttribute('data-version')
-    // save version
-    localStorage.setItem(`ms-docs-${thisProduct}`, thisVersion)
-    // update pins
-    setPin(thisProduct, thisTippy.reference, thisVersion)
-    // update nav
-    toggleNav(e, navLists, navListsHeights, thisProduct, thisVersion)
-    // close the popover
+  function switchVersion (e) {
+    var thisTippy = document.querySelector('.tippy-popper')._tippy
+    var selected = { product: e.target.dataset.product, version: e.target.dataset.version }
+    setPinnedVersion(thisTippy.reference, selected)
+    toggleNav(e, selected, getNav())
     thisTippy.hide()
+    cancelEvent(e)
+  }
+
+  function bindVersionEvents (popover) {
+    var versions = popover.querySelectorAll('.version')
+    for (var i = 0, l = versions.length; i < l; i++) {
+      versions[i].addEventListener('click', switchVersion)
+      versions[i].addEventListener('touchend', cancelEvent)
+    }
+  }
+
+  function unbindVersionEvents (popover) {
+    var versions = popover.querySelectorAll('.version')
+    for (var i = 0, l = versions.length; i < l; i++) {
+      versions[i].removeEventListener('click', switchVersion)
+      versions[i].removeEventListener('touchend', cancelEvent)
+    }
+  }
+
+  function cancelEvent (e) {
     e.stopPropagation()
   }
 
-  const bindEvents = (popover) => {
-    const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0; i < versions.length; i++) {
-      versions[i].addEventListener('click', changeVersion)
-      versions[i].addEventListener('touchend', changeVersion)
+  function ignoreTouchScroll (e) {
+    if (e.type === 'touchstart') dragging = false
+    else if (e.type === 'touchmove') dragging = true
+    else if (e.type === 'touchend') {
+      if (dragging) e.stopPropagation()
+      dragging = false
     }
   }
 
-  const unbindEvents = (popover) => {
-    const versions = popover.querySelectorAll('.js-version')
-    for (let i = 0; i < versions.length; i++) {
-      versions[i].removeEventListener('click', changeVersion)
-      versions[i].removeEventListener('touchend', changeVersion)
+  function getPage () {
+    var pageProductMeta, head
+    if ((pageProductMeta = (head = document.head).querySelector('meta[name=page-component]'))) {
+      return {
+        product: pageProductMeta.getAttribute('content'),
+        version: head.querySelector('meta[name=page-version]').getAttribute('content'),
+        url: head.querySelector('meta[name=page-url]').getAttribute('content'),
+        uiRootPath: document.getElementById('site-script').dataset.uiRootPath,
+      }
     }
   }
 
-  // open current nav on load
-  window.addEventListener('DOMContentLoaded', (e) => {
-    const thisProduct = window.location.pathname.replace(/^\/([^/]*).*$/, '$1')
-    if (thisProduct !== '') {
-      toggleNav(e, navLists, navListsHeights, thisProduct)
+  function getNav () {
+    return document.querySelector('nav.nav')
+  }
+
+  function relativize (from, to) {
+    if (!from || to.charAt() === '#') return to
+    var hash = ''
+    var hashIdx = to.indexOf('#')
+    if (~hashIdx) {
+      hash = to.substr(hashIdx)
+      to = to.substr(0, hashIdx)
     }
-    showNav()
-  })
+    if (from === to) {
+      return hash || (to.charAt(to.length - 1) === '/' ? './' : to.substr(to.lastIndexOf('/') + 1))
+    } else {
+      return (
+        (computeRelativePath(from.slice(0, from.lastIndexOf('/')), to) || '.') +
+        (to.charAt(to.length - 1) === '/' ? '/' + hash : hash)
+      )
+    }
+  }
+
+  function computeRelativePath (from, to) {
+    var fromParts = trimArray(from.split('/'))
+    var toParts = trimArray(to.split('/'))
+    for (var i = 0, l = Math.min(fromParts.length, toParts.length), sharedPathLength = l; i < l; i++) {
+      if (fromParts[i] !== toParts[i]) {
+        sharedPathLength = i
+        break
+      }
+    }
+    var outputParts = []
+    for (var remain = fromParts.length - sharedPathLength; remain > 0; remain--) outputParts.push('..')
+    return outputParts.concat(toParts.slice(sharedPathLength)).join('/')
+  }
+
+  function trimArray (arr) {
+    var start = 0
+    var length = arr.length
+    for (; start < length; start++) {
+      if (arr[start]) break
+    }
+    if (start === length) return []
+    for (var end = length; end > 0; end--) {
+      if (arr[end - 1]) break
+    }
+    return arr.slice(start, end)
+  }
+
+  var nav, dragging
+  var page = getPage()
+  if (page) {
+    buildNav((nav = getNav()), window.siteNavigationData || [], page, { active: [], current: [] })
+    toggleNav(undefined, page, nav)
+  }
 })()

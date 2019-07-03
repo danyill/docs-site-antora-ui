@@ -171,6 +171,8 @@
       background: none;
       border: 0;
       border-radius: 0;
+      display: block;
+      padding: 0;
       top: 0;
     }
   }

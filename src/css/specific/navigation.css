@@ -5,13 +5,11 @@
   flex: 0 0 var(--nav-width);
   height: 100%;
   left: 0;
-  overflow-y: auto;
-  padding: var(--lg) var(--md) var(--xl);
+  overflow-y: scroll;
+  padding: 12px var(--md) 0;
   position: fixed;
   top: 0;
-  -ms-transform: translateX(-275px);
-  transform: translateX(-275px); /* var(--nav-width) */
-  transition: transform var(--transition-speed-sm) var(--transition-timing);
+  transform: translateX(calc(-1 * var(--nav-width)));
   width: var(--nav-width);
   z-index: var(--z-nav-mobile);
 
@@ -23,7 +21,7 @@
     position: relative;
     position: sticky;
     top: 0;
-    transform: none;
+    transform: translateX(0);
     z-index: var(--z-nav);
   }
 
@@ -37,7 +35,7 @@
 
   /* search input wrapper */
   & .search {
-    margin-bottom: var(--sm);
+    margin: 8px 0 var(--sm);
     position: relative;
     width: $nav-width - ($lg * 2);
 
@@ -59,16 +57,15 @@
     }
   }
 
-  /* spacing between lists when active */
   & > .nav-list {
-    opacity: 0;
-    transition: opacity var(--transition-speed-md) var(--transition-timing);
-
-    &.loaded {
-      opacity: 1;
+    padding-bottom: 12px;
+    visibility: hidden;
+    &.is-loaded {
+      visibility: visible;
     }
   }
 
+  /* spacing between lists when active */
   & > .nav-list > .nav-li.active + .nav-li {
     margin-top: var(--md);
   }
@@ -77,15 +74,6 @@
 .nav-list {
   overflow: hidden;
 
-  & .parent {
-    max-height: 0;
-    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
-
-    /* for opacity only transition */
-    &.transition-opacity-only {
-      transition: opacity var(--transition-speed-md) var(--transition-timing);
-    }
-  }
   /* for product icons */
   & > .nav-li .nav-link,
   & > .nav-li .nav-heading {
@@ -93,19 +81,13 @@
   }
 
   & > .nav-li .nav-list .nav-heading {
-    opacity: .6;
-  }
-
-  & .nav-li {
-    transition: margin var(--transition-speed-md) var(--transition-timing);
+    color: var(--aluminum-5);
   }
 
   & > .nav-li.active {
-
     & .nav-link.nav-heading {
       color: var(--core-blue-3);
     }
-
     & .icon {
       filter: grayscale(0);
       opacity: 1;
@@ -169,23 +151,15 @@
   color: var(--steel-2);
 }
 
-/* nesting: level 1 */
-.nav-li[data-depth="1"] .nav-heading {
-  font-size: 12px;
+.nav-li[data-depth="1"] > .nav-heading {
   font-weight: var(--weight-bold);
-  margin-top: var(--md);
+  padding-top: .5em;
 
   & .span {
-    border-bottom: 1px solid rgba(0,0,0,.4);
+    border-bottom: 1px solid var(--aluminum-4);
     display: inline-block;
+    padding-bottom: .25em;
   }
-}
-
-/* nesting: level 2 */
-.nav-li[data-depth="2"] .nav-heading,
-.nav-heading[data-depth="3"],
-.nav-li[data-depth="3"] {
-  margin-left: var(--md);
 }
 
 /* collapsing margin for nested lists (note: this is why we don't use flexbox on list items) */
@@ -193,18 +167,32 @@
   margin-bottom: var(--md);
 }
 
-/* nested lists withings headings */
-.nav-nested {
+.nav-nested + .nav-list {
+  margin-left: 25px;
+}
 
-  & + .nav-list {
-    transition: max-height var(--transition-speed-md) var(--transition-timing), opacity var(--transition-speed-md) var(--transition-timing);
-
-    & .nav-link {
-      padding-left: 45px;
-    }
+button.subnav-toggle {
+  background: none;
+  border: 0;
+  color: var(--aluminum-5);
+  cursor: pointer;
+  font-weight: var(--weight-bold);
+  margin: 0;
+  padding: .5em 0;
+  position: absolute;
+  z-index: 1;
+  &:focus {
+    box-shadow: none;
+    outline: 0;
   }
-
-  &:not(.active):not(.expanded) + .nav-list {
-    max-height: 0;
+  &::before {
+    content: "+";
+    display: block;
+    text-align: center;
+    width: 1.5em;
   }
+}
+
+.nav-li.active > button.subnav-toggle::before {
+  content: "-";
 }

@@ -1,4 +1,4 @@
-<div class="modal-backdrop"></div>
+{{#if (and page.component env.COVEO_ACCESS_TOKEN)}}
 <div id="search" class="js-search-ui js-coveo CoveoSearchInterface" data-enable-automatic-responsive-mode="false">
   <div class="CoveoAnalytics" data-search-hub="Documentation"></div>
   <div class="modal">
@@ -22,6 +22,10 @@
         <div class="CoveoResultList" data-layout="card" data-wait-animation="fade" data-auto-select-fields-to-include="true"></div>
         <div class="CoveoPager"></div>
       </section>
-    </section>
+    </div>
   </div>
 </div>
+<script defer src="https://static.cloud.coveo.com/searchui/v2.4382/js/CoveoJsSearch.Lazy.min.js"></script>
+<script defer src="https://static.cloud.coveo.com/searchui/v2.4382/js/templates/templates.js"></script>
+<script defer src="{{uiRootPath}}/js/vendor/coveo.js" id="coveo-script" data-access-token="{{env.COVEO_ACCESS_TOKEN}}" data-query-pipeline="{{or env.COVEO_QUERY_PIPELINE 'doc-query-pipeline'}}"></script>
+{{/if}}
